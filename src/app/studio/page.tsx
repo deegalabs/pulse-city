@@ -1,40 +1,154 @@
 "use client";
 
-import { useRef, useState, useCallback } from "react";
+import { useRef, useCallback, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { StrudelEditor } from "@/components/editor/strudel-editor";
+import { Header } from "@/components/header";
+import { TransportBar } from "@/components/transport-bar";
+import { ChatPanel } from "@/components/chat/chat-panel";
+import { SpectrumAnalyzer } from "@/components/spectrum/spectrum-analyzer";
+import { ToolsPanel } from "@/components/tools-panel";
+import { SettingsOverlay } from "@/components/settings-overlay";
+import { PatternsModal } from "@/components/patterns/patterns-modal";
+import { useStore } from "@/lib/store";
+import { initialized as audioReady } from "@/lib/strudel/init";
 import type { StrudelMirror } from "@strudel/codemirror";
 
 export default function StudioPage() {
   const editorRef = useRef<StrudelMirror | null>(null);
-  const [playing, setPlaying] = useState(false);
+  const { setPlaying, mode, code, trackTitle, setCode, setTrackTitle, setPatternId, patternId, setMode } = useStore();
+  const router = useRouter();
+  const [ready, setReady] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [patternsOpen, setPatternsOpen] = useState(false);
+  const [energy, setEnergy] = useState(0);
+  const [isBeat, setIsBeat] = useState(false);
 
-  const handleToggle = useCallback((isPlaying: boolean) => {
-    setPlaying(isPlaying);
-  }, []);
+  useEffect(() => {
+    if (!audioReady) {
+      router.replace("/");
+      return;
+    }
+    setReady(true);
+  }, [router]);
+
+  const handleToggle = useCallback(
+    (isPlaying: boolean) => {
+      setPlaying(isPlaying);
+    },
+    [setPlaying]
+  );
 
   const handleError = useCallback((error: string) => {
     console.error("Strudel error:", error);
   }, []);
 
+  const handleCodeApply = useCallback((newCode: string) => {
+    const editor = editorRef.current;
+    if (editor) {
+      editor.setCode(newCode);
+      editor.evaluate();
+    }
+  }, []);
+
+  const handleEnergy = useCallback((e: number, beat: boolean) => {
+    setEnergy(e);
+    setIsBeat(beat);
+  }, []);
+
+  const handleSave = useCallback(async () => {
+    const currentCode = code;
+    if (!currentCode.trim()) return;
+
+    try {
+      if (patternId) {
+        // Update existing
+        const res = await fetch(`/api/patterns/${patternId}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ code: currentCode, title: trackTitle || "Untitled", mode }),
+        });
+        if (!res.ok && res.status === 401) {
+          window.dispatchEvent(new CustomEvent("pulse:need-login"));
+          return;
+        }
+      } else {
+        // Create new
+        const title = trackTitle || prompt("Pattern name:", "Untitled") || "Untitled";
+        const res = await fetch("/api/patterns", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ code: currentCode, title, mode }),
+        });
+        if (!res.ok && res.status === 401) {
+          window.dispatchEvent(new CustomEvent("pulse:need-login"));
+          return;
+        }
+        if (res.ok) {
+          const data = await res.json();
+          setPatternId(data.id);
+          setTrackTitle(data.title);
+        }
+      }
+    } catch (err) {
+      console.error("Save failed:", err);
+    }
+  }, [code, trackTitle, mode, patternId, setPatternId, setTrackTitle]);
+
+  const handleLoadPattern = useCallback(
+    (pattern: { id: string; title: string; code: string; mode: string }) => {
+      setPatternId(pattern.id);
+      setTrackTitle(pattern.title);
+      setCode(pattern.code);
+      setMode(pattern.mode as "autopilot" | "manual");
+      const editor = editorRef.current;
+      if (editor) {
+        editor.setCode(pattern.code);
+        editor.evaluate();
+      }
+    },
+    [setPatternId, setTrackTitle, setCode, setMode]
+  );
+
+  const handleToolClick = useCallback(
+    (tool: string) => {
+      // Tools send a prompt to chat describing what to add/change
+      const prompts: Record<string, string> = {
+        DRUMS: "Add or improve the drum pattern — make it groove",
+        BASS: "Add or improve the bassline — make it deep",
+        CHORDS: "Add or change the chord progression",
+        LEAD: "Add a lead melody or arpeggio",
+        FX: "Add some effects — reverb, delay, filter sweeps",
+        FILTER: "Add a filter sweep or LFO modulation",
+        TEMPO: "Change the tempo — try a different BPM",
+        DROP: "Create a drop — build tension then release",
+      };
+      const prompt = prompts[tool];
+      if (prompt) {
+        // Dispatch a custom event that the chat panel can listen to
+        window.dispatchEvent(
+          new CustomEvent("pulse:tool", { detail: { prompt } })
+        );
+      }
+    },
+    []
+  );
+
+  if (!ready) {
+    return (
+      <div className="flex-1 flex items-center justify-center">
+        <p className="text-text-dim text-sm">Initializing audio...</p>
+      </div>
+    );
+  }
+
   return (
     <>
-      {/* Header */}
-      <header className="flex items-center justify-between px-3 py-2 border-b border-border shrink-0">
-        <div className="flex items-center gap-3">
-          <h1 className="font-heading font-bold text-xl text-lime tracking-tight">
-            PULSE<span className="text-sky">·</span>CITY
-          </h1>
-          <span className="flex items-center gap-1.5 font-heading text-[0.58rem] tracking-widest text-text-dim bg-surface px-2 py-0.5 rounded-full border border-border">
-            <span className="w-1.5 h-1.5 rounded-full bg-lime animate-[pulse-dot_1.5s_ease-in-out_infinite]" />
-            {playing ? "PLAYING" : "READY"}
-          </span>
-        </div>
-        <div className="flex items-center gap-2">
-          <span className="font-heading text-[0.55rem] tracking-widest text-violet bg-violet/15 px-2.5 py-0.5 rounded-full border border-violet/30 animate-[evolve-glow_1.5s_ease-in-out_infinite]">
-            AUTOPILOT
-          </span>
-        </div>
-      </header>
+      <Header
+        onSettingsClick={() => setSettingsOpen(true)}
+        onSaveClick={handleSave}
+        onLoadClick={() => setPatternsOpen(true)}
+      />
 
       {/* Main layout */}
       <div className="flex-1 flex min-h-0">
@@ -46,6 +160,21 @@ export default function StudioPage() {
               <span className="font-heading text-[0.55rem] tracking-widest text-text-dim">
                 STRUDEL CODE
               </span>
+              <span
+                className="font-heading text-[0.45rem] tracking-widest px-1.5 py-0.5 rounded-full border"
+                style={{
+                  color:
+                    mode === "autopilot"
+                      ? "var(--color-violet)"
+                      : "var(--color-lime)",
+                  borderColor:
+                    mode === "autopilot"
+                      ? "rgba(107, 70, 255, 0.3)"
+                      : "rgba(162, 215, 41, 0.3)",
+                }}
+              >
+                {mode === "autopilot" ? "AI CONTROLLED" : "YOU CONTROL"}
+              </span>
             </div>
             <StrudelEditor
               onToggle={handleToggle}
@@ -54,99 +183,49 @@ export default function StudioPage() {
             />
           </div>
 
-          {/* Chat placeholder */}
-          <div className="shrink-0 border-t border-border max-h-32">
-            <div className="px-3 py-2">
-              <p className="text-xs text-text-dim">
-                Ready. Hit Ctrl+Enter to play, or describe a vibe below.
-              </p>
+          {/* Chat */}
+          <div className="shrink-0 border-t border-border h-48 min-h-32 max-h-64 flex flex-col">
+            <div className="flex items-center gap-2 px-3 py-1 border-b border-border shrink-0">
+              <span className="font-heading text-[0.55rem] tracking-widest text-text-dim">
+                CHAT
+              </span>
+              <span className="font-heading text-[0.45rem] tracking-widest text-text-dim">
+                {mode === "autopilot" ? "STEER MODE" : "COPILOT MODE"}
+              </span>
             </div>
-            <div className="flex items-center gap-1.5 px-3 py-1.5 border-t border-border">
-              <span className="text-lime text-[0.6rem] shrink-0">&#9658;</span>
-              <input
-                type="text"
-                placeholder="describe a vibe, give a direction..."
-                className="flex-1 py-1.5 px-3 bg-surface border border-border rounded-full text-text text-xs focus:border-lime outline-none"
-              />
-              <button className="px-3 py-1 rounded-full bg-lime text-bg font-heading font-semibold text-[0.65rem] tracking-wide">
-                SEND
-              </button>
-            </div>
+            <ChatPanel onCodeApply={handleCodeApply} />
           </div>
         </div>
 
-        {/* Right: spectrum placeholder + tools */}
+        {/* Right: spectrum + tools */}
         <div className="w-[40%] max-w-[480px] min-w-[280px] flex flex-col overflow-hidden max-md:hidden">
           <div className="flex items-center justify-between px-3 py-1.5 border-b border-border shrink-0">
             <span className="font-heading text-[0.55rem] tracking-widest text-text-dim">
               SPECTRUM ANALYZER
             </span>
+            <span className="font-mono text-[0.5rem] text-text-dim">
+              ENERGY {energy}%{isBeat ? "  ● BEAT" : ""}
+            </span>
           </div>
-          <div className="flex-1 flex items-center justify-center bg-bg text-surface-2 text-xs font-mono">
-            NO SIGNAL
+          <div className="flex-1 min-h-0">
+            <SpectrumAnalyzer onEnergy={handleEnergy} />
           </div>
-          <div className="shrink-0 border-t border-border">
-            <div className="px-3 py-1 border-b border-border">
-              <span className="font-heading text-[0.55rem] tracking-widest text-text-dim">
-                TOOLS
-              </span>
-            </div>
-            <div className="grid grid-cols-4 gap-px bg-border">
-              {[
-                { icon: "🥁", name: "DRUMS" },
-                { icon: "🔊", name: "BASS" },
-                { icon: "🎹", name: "CHORDS" },
-                { icon: "🎵", name: "LEAD" },
-                { icon: "✨", name: "FX" },
-                { icon: "🌀", name: "FILTER" },
-                { icon: "⏱", name: "TEMPO" },
-                { icon: "⚡", name: "DROP" },
-              ].map((tool) => (
-                <button
-                  key={tool.name}
-                  className="flex flex-col items-center justify-center gap-0.5 py-2 bg-surface text-text-dim hover:bg-surface-2 hover:text-text transition-all"
-                >
-                  <span className="text-lg leading-none">{tool.icon}</span>
-                  <span className="font-heading text-[0.48rem] tracking-widest font-semibold">
-                    {tool.name}
-                  </span>
-                </button>
-              ))}
-            </div>
-          </div>
+          <ToolsPanel onToolClick={handleToolClick} />
         </div>
       </div>
 
-      {/* Transport bar */}
-      <footer className="flex items-center justify-between px-3 py-1.5 border-t border-border shrink-0">
-        <div className="flex items-center gap-1.5">
-          <button
-            onClick={() => editorRef.current?.toggle()}
-            className="px-3 py-1.5 rounded-full bg-lime text-bg font-heading font-semibold text-[0.68rem] tracking-wide"
-          >
-            {playing ? "⏸ PAUSE" : "▶ PLAY"}
-          </button>
-          <button
-            onClick={() => editorRef.current?.stop()}
-            className="px-3 py-1.5 rounded-full bg-surface text-text border border-border font-heading font-semibold text-[0.68rem] tracking-wide hover:bg-surface-2"
-          >
-            ■ STOP
-          </button>
-        </div>
-        <div className="flex-1 text-center overflow-hidden">
-          <span className="text-[0.55rem] text-text-dim tracking-wide whitespace-nowrap">
-            ▓▒░ PULSE.CITY · THE CITY IS PLAYING · TUNE IN ░▒▓
-          </span>
-        </div>
-        <div className="flex items-center gap-1.5">
-          <button
-            onClick={() => editorRef.current?.evaluate()}
-            className="px-3 py-1.5 rounded-full bg-surface text-text border border-border font-heading font-semibold text-[0.68rem] tracking-wide hover:bg-surface-2"
-          >
-            ↻ RE-RUN
-          </button>
-        </div>
-      </footer>
+      <TransportBar editorRef={editorRef} />
+
+      <SettingsOverlay
+        open={settingsOpen}
+        onClose={() => setSettingsOpen(false)}
+      />
+
+      <PatternsModal
+        open={patternsOpen}
+        onClose={() => setPatternsOpen(false)}
+        onLoad={handleLoadPattern}
+      />
     </>
   );
 }

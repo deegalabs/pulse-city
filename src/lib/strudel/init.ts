@@ -6,7 +6,7 @@ import {
 import { evalScope } from "@strudel/core";
 import { SAMPLES_URL } from "./constants";
 
-let initialized = false;
+export let initialized = false;
 let prebakePromise: Promise<unknown[]> | null = null;
 
 export async function initStrudelAudio() {

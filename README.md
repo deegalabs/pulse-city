@@ -1,36 +1,105 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# pulse.city
 
-## Getting Started
+A living soundtrack for cities. AI-powered music that evolves in real-time, visible as code.
 
-First, run the development server:
+Built with [Strudel](https://strudel.cc) (live-coded algorithmic music) + AI composition. Watch code write itself, or take control and compose your own.
+
+## Modes
+
+- **Autopilot** — AI generates and evolves music continuously. Code changes visibly in the editor. You steer via chat.
+- **Manual** — You write Strudel code directly. AI assists through chat when you ask.
+
+## Features
+
+- Real-time code editor with StrudelMirror (CodeMirror 6 + inline visuals)
+- AI composition and evolution via Vercel AI SDK (Anthropic, Groq)
+- Spectrum analyzer with frequency bars, waveform overlay, spectrogram, and beat detection
+- Tool palette for quick AI-assisted edits (drums, bass, chords, lead, FX)
+- Save, load, and share patterns via public URLs
+- Google OAuth + magic link authentication
+
+## Stack
+
+| Layer | Choice |
+|-------|--------|
+| Framework | Next.js 16 + React 19 |
+| Audio | Strudel (core, codemirror, webaudio, mini, tonal, transpiler) |
+| AI | Vercel AI SDK v6 (Anthropic Claude, Groq Llama) |
+| Auth + DB | Supabase (Auth, Postgres, RLS) |
+| State | Zustand with localStorage persistence |
+| Styling | Tailwind CSS 4 |
+| Deploy | Vercel |
+
+## Getting started
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
+cp .env.example .env.local
+# Fill in your keys in .env.local
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Environment variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Variable | Description |
+|----------|-------------|
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Supabase anon/public key |
+| `ANTHROPIC_API_KEY` | Anthropic API key (pro/creator tier) |
+| `GROQ_API_KEY` | Groq API key (free tier) |
 
-## Learn More
+### Database setup
 
-To learn more about Next.js, take a look at the following resources:
+Run the SQL in [`src/lib/supabase/schema.sql`](src/lib/supabase/schema.sql) in your Supabase SQL Editor to create the `profiles` and `patterns` tables with RLS policies.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Project structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+src/
+  app/
+    page.tsx                    # Boot page (audio init)
+    studio/page.tsx             # Main studio
+    api/chat/                   # AI chat endpoint
+    api/compose/                # AI composition endpoint
+    api/evolve/                 # AI evolution endpoint
+    api/patterns/               # Pattern CRUD + sharing
+    auth/callback/              # OAuth callback
+    p/[id]/                     # Public shared pattern page
+  components/
+    editor/                     # StrudelMirror wrapper
+    chat/                       # AI chat panel
+    spectrum/                   # Spectrum analyzer
+    auth/                       # Login modal, user menu
+    patterns/                   # Patterns modal
+    header.tsx                  # App header + mode toggle
+    transport-bar.tsx           # Play/pause/stop/evolve
+    tools-panel.tsx             # Quick AI tools
+    settings-overlay.tsx        # Settings
+  lib/
+    ai/                         # Model router, prompts
+    strudel/                    # Audio init, constants
+    supabase/                   # Client, server, types, schema
+    store.ts                    # Zustand store
+docs/                           # Architecture, specs, ADRs, roadmap
+```
 
-## Deploy on Vercel
+## Important notes
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Audio requires user gesture** — the boot page handles `initAudio()` on click before entering studio
+- **webpack required** — Turbopack is incompatible with `@strudel/core`, so `--webpack` flag is mandatory
+- **`resolve.dedupe`** — Strudel requires a single `@strudel/core` instance; handled via Next.js config
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Roadmap
+
+See [docs/roadmap.md](docs/roadmap.md) for the full plan.
+
+- **Phase 1 (POC)** — Core editor + AI compose + spectrum analyzer
+- **Phase 2 (Alpha)** — Next.js migration, auth, patterns, sharing (current)
+- **Phase 3 (Beta)** — Marketplace, collab, creator profiles
+- **Phase 4 (Launch)** — Ipe Village 2026 pop-up city deployment
+
+## License
+
+AGPL-3.0-or-later
