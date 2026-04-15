@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 @theme inline {
+  /* ─── Legacy literal names (preserved for existing call-sites) ─── */
   --color-bg: #0a0e17;
   --color-surface: #111827;
   --color-surface-2: #1e293b;
@@ -12,6 +13,19 @@
   --color-text-dim: #64748b;
   --color-border: rgba(255, 255, 255, 0.08);
 
+  /* ─── Semantic aliases (brand v1 — prefer in new code) ─── */
+  --color-base: #0a0e17;
+  --color-surface-1: #111827;
+  --color-surface-3: #2a3347;
+  --color-creator: #a2d729;
+  --color-listener: #3aa5ff;
+  --color-agent: #6b46ff;
+  --color-destructive: #ef4444;
+  --color-text-muted: #94a3b8;
+  --color-signal-warn: #f2b84a;
+  --color-scrim: rgba(10, 14, 23, 0.72);
+
+  /* ─── Font variables (now wired via next/font/google in app/fonts.ts) ─── */
   --font-heading: var(--font-chakra-petch);
   --font-body: var(--font-dm-sans);
   --font-mono: var(--font-jetbrains-mono);
@@ -67,13 +81,19 @@ body {
   max-height: 60px;
 }
 
-/* Pulse animation */
+/* Ambient breath — "the room is playing" */
 @keyframes pulse-dot {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0.35; }
+  50% { opacity: 0.55; }
 }
 
+/* Mutation moment — one-shot, fires on pattern evolve */
 @keyframes evolve-glow {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
+  0%   { box-shadow: 0 0 0 0 var(--color-signal-warn); filter: blur(1px); }
+  20%  { box-shadow: 0 0 16px 2px var(--color-signal-warn); filter: blur(0); }
+  100% { box-shadow: 0 0 0 0 transparent; filter: blur(0); }
+}
+
+.evolve-glow {
+  animation: evolve-glow 600ms ease-out 1;
 }
