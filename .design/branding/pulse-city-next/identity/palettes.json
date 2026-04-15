@@ -1,0 +1,124 @@
+{
+  "$schema": "https://gsp.design/schema/palettes/v1.json",
+  "brand": "pulse-city-next",
+  "generated": "2026-04-15",
+  "mode": "dark-only",
+  "base": "#0a0e17",
+  "tokens": {
+    "base": {
+      "hex": "#0a0e17",
+      "oklch": "oklch(0.132 0.018 254)",
+      "role": "page canvas",
+      "surfaces": ["all"]
+    },
+    "surface-1": {
+      "hex": "#111827",
+      "oklch": "oklch(0.209 0.028 258)",
+      "role": "pills, gutters, inactive controls, editor chrome",
+      "surfaces": ["/studio", "/p", "/embed"]
+    },
+    "surface-2": {
+      "hex": "#1e293b",
+      "oklch": "oklch(0.293 0.038 256)",
+      "role": "hover, elevated, active row, modal back",
+      "surfaces": ["all"]
+    },
+    "surface-3": {
+      "hex": "#2a3347",
+      "oklch": "oklch(0.353 0.034 263)",
+      "role": "breathing-room tier",
+      "surfaces": ["/radio", "/p reading strip"]
+    },
+    "border": {
+      "hex": "rgba(255,255,255,0.08)",
+      "oklch": "oklch(1 0 0 / 0.08)",
+      "role": "the single border rule (glass-line)",
+      "surfaces": ["all"]
+    },
+    "scrim": {
+      "hex": "rgba(10,14,23,0.72)",
+      "oklch": "oklch(0.132 0.018 254 / 0.72)",
+      "role": "modal overlay",
+      "surfaces": ["modals"]
+    },
+    "text": {
+      "hex": "#e2e8f0",
+      "oklch": "oklch(0.913 0.014 254)",
+      "role": "body, code, wordmark, default foreground",
+      "contrast_on_base": 15.5,
+      "wcag": "AAA"
+    },
+    "text-muted": {
+      "hex": "#94a3b8",
+      "oklch": "oklch(0.685 0.028 252)",
+      "role": "/radio long-form mid-tier",
+      "contrast_on_base": 7.5,
+      "wcag": "AAA"
+    },
+    "text-dim": {
+      "hex": "#64748b",
+      "oklch": "oklch(0.513 0.034 257)",
+      "role": "micro-labels, captions, logomark dim rows",
+      "contrast_on_base": 4.1,
+      "wcag": "AA Large",
+      "note": "floor: 14px regular or larger. Never below."
+    },
+    "creator": {
+      "hex": "#a2d729",
+      "oklch": "oklch(0.813 0.198 128)",
+      "semantic": "live, now, human-authored",
+      "dominant_surface": "/studio",
+      "forbidden_surface": "/radio",
+      "contrast_on_base": 11.2,
+      "wcag": "AAA"
+    },
+    "listener": {
+      "hex": "#3aa5ff",
+      "oklch": "oklch(0.684 0.165 240)",
+      "semantic": "shared, persistent, the room",
+      "dominant_surface": ["/radio", "/p", "/embed"],
+      "contrast_on_base": 7.3,
+      "wcag": "AAA"
+    },
+    "agent": {
+      "hex": "#8a66ff",
+      "oklch": "oklch(0.561 0.229 287)",
+      "semantic": "autopilot, MCP, another hand in the room",
+      "warmed_from": "#6b46ff",
+      "contrast_on_base": 5.0,
+      "wcag": "AA",
+      "note": "never long-form text; chrome + short labels only"
+    },
+    "signal-warn": {
+      "hex": "#f2b84a",
+      "oklch": "oklch(0.812 0.141 79)",
+      "semantic": "something just changed",
+      "permitted_firings": ["pattern mutation", "autopilot handoff", "agent connected"],
+      "one_per_screen": true,
+      "contrast_on_base": 10.7,
+      "wcag": "AAA"
+    },
+    "destructive": {
+      "hex": "#ef4444",
+      "oklch": "oklch(0.637 0.234 26)",
+      "semantic": "irreversible or harmful",
+      "usage": "icon + bracketed label only",
+      "forbidden_surface": "/radio",
+      "contrast_on_base": 5.2,
+      "wcag": "AA"
+    }
+  },
+  "cross_surface_contrast": {
+    "creator_on_surface-1": { "ratio": 8.1, "wcag": "AAA" },
+    "listener_on_surface-1": { "ratio": 5.3, "wcag": "AA" },
+    "agent_on_surface-1": { "ratio": 3.6, "wcag": "AA Large", "rule": "agent never renders as text on surface-1; chrome only" },
+    "signal-warn_on_surface-1": { "ratio": 7.8, "wcag": "AAA" }
+  },
+  "rules": {
+    "no_gradients": true,
+    "no_pastel_tints": true,
+    "page_background_floor": "#0a0e17",
+    "max_signal_firings_per_screen": 1,
+    "border_is_single_value": true
+  }
+}

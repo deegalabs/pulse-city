@@ -1,0 +1,49 @@
+{
+  "version": "0.8.2",
+  "project_type": "brand",
+  "brand": {
+    "name": "pulse-city-next",
+    "created": "2026-04-15"
+  },
+  "brand_mode": "evolve",
+  "e2e": false,
+  "evolution_scope": {
+    "preserve": [
+      "tagline: the city is playing",
+      "dark base #0a0e17",
+      "surface ramp #111827 / #1e293b",
+      "red semantic #ef4444",
+      "text ramp #e2e8f0 / #64748b",
+      "border rgba(255,255,255,0.08)",
+      "JetBrains Mono (code) — the anti-Suno signal",
+      "pulse-dot animation cadence"
+    ],
+    "evolve": [
+      "lime #a2d729 — promote to semantic creator/live/now",
+      "sky #3aa5ff — promote to semantic listener/shared/persistent",
+      "violet #6b46ff — warm (higher luminance + slight magenta pull) to match compass; semantic agent/autopilot/MCP",
+      "Chakra Petch — constrain to display/mark only; stop using at 0.55rem micro-labels",
+      "DM Sans — actually use it for body copy on /radio and marketing",
+      "typography scale — define display/heading/body/micro/mono roles",
+      "uppercase tracked-widest voice — ration by surface (loud on /studio, soft on /radio and /p)",
+      "evolve-glow — rebuild as a mutation motion distinct from pulse-dot",
+      "font loading — move from Google Fonts link to next/font local"
+    ],
+    "replace": [
+      "logomark — does not exist (create)",
+      "iconography system — does not exist (create)",
+      "imagery direction — leverage Strudel draw + dithered texture",
+      "surface-level voice (/studio vs /radio vs marketing) — does not exist",
+      "voice / tone documentation — does not exist",
+      "favicon / app icon / OG image — does not exist",
+      "product name casing rules — canonicalize pulse.city for prose, PULSE·CITY for display"
+    ]
+  },
+  "system_config": {
+    "tech_stack": "Next.js 16 (webpack) + Tailwind 4 + React 19 + @strudel/*",
+    "system_strategy": "extend",
+    "style_preset": "",
+    "style_base": ["terminal"]
+  },
+  "gsp_version": "0.8.2"
+}
