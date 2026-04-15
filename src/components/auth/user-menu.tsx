@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import type { User } from "@supabase/supabase-js";
-import { createClient } from "@/lib/supabase/client";
+import { createClient, isSupabaseConfigured } from "@/lib/supabase/client";
 
 interface UserMenuProps {
   onLoginClick: () => void;
@@ -10,9 +10,14 @@ interface UserMenuProps {
 
 export function UserMenu({ onLoginClick }: UserMenuProps) {
   const [user, setUser] = useState<User | null>(null);
-  const supabase = createClient();
+  const configured = isSupabaseConfigured();
+  const supabase = useMemo(
+    () => (configured ? createClient() : null),
+    [configured]
+  );
 
   useEffect(() => {
+    if (!supabase) return;
     supabase.auth.getUser().then(({ data }) => setUser(data.user));
 
     const {
@@ -22,7 +27,9 @@ export function UserMenu({ onLoginClick }: UserMenuProps) {
     });
 
     return () => subscription.unsubscribe();
-  }, [supabase.auth]);
+  }, [supabase]);
+
+  if (!configured) return null;
 
   if (!user) {
     return (
@@ -42,6 +49,7 @@ export function UserMenu({ onLoginClick }: UserMenuProps) {
     "user";
 
   async function handleSignOut() {
+    if (!supabase) return;
     await supabase.auth.signOut();
     setUser(null);
   }
