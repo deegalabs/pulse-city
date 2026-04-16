@@ -1,21 +1,21 @@
 name: pulse-city
 description: >
-  Live-coded living soundtrack for intentional places. Creator × Sage archetype.
+  Live-coded living soundtrack for intentional places. Creator x Sage archetype.
   Dark-only, monospace-aware, code-literate but NOT terminal cosplay.
   Inherits structure from terminal scaffold; rejects terminal maximalism (no scanlines,
-  no phosphor glow, no green-on-black cliché). The brand is a music studio that respects
+  no phosphor glow, no green-on-black cliche). The brand is a music studio that respects
   engineers, not a CLI that pretends to be music.
 tags: [dark-only, live-code, monospace-aware, restrained-cypherpunk, creator-sage]
 
 inherits: terminal
-# Structural inheritance only — density:7, bracketed-button grammar, dark floor.
+# Structural inheritance only -- density:7, bracketed-button grammar, dark floor.
 # Explicitly NOT inherited: phosphor glow, scanline overlay, green-on-black primary,
 # CRT ambient, typewriter reveal, cursor-blink as global motion,
 # JetBrains Mono as body face.
 
 tokens:
   color:
-    # ─── Base ramp (floors up) ─────────────────────────────────────────
+    # --- Base ramp (floors up) ---
     base:            "#0a0e17"          # page canvas. The floor. Never brightened.
     surface-1:       "#111827"          # editor chrome, pills, card backs (/studio, /p, /embed)
     surface-2:       "#1e293b"          # hover, elevated, active row, modal back
@@ -23,21 +23,21 @@ tokens:
     border:          "rgba(255,255,255,0.08)"  # single glass-line. ONE value, ONE opacity.
     scrim:           "rgba(10,14,23,0.72)"     # modal overlay. Same hue as base, 72%.
 
-    # ─── Text ramp ────────────────────────────────────────────────────
+    # --- Text ramp ---
     text:            "#e2e8f0"          # 15.5:1 on base, AAA. Body, code, wordmark.
     text-muted:      "#94a3b8"          # 7.5:1 AAA. /radio prose mid-tier. Not on /studio.
     text-dim:        "#64748b"          # 4.1:1 AA Large. 14px floor. Captions, logomark dim rows.
 
-    # ─── Semantic trio (the whole reason the palette exists) ──────────
+    # --- Semantic trio (the whole reason the palette exists) ---
     creator:         "#a2d729"          # lime. Live, now, human-authored. Dominant on /studio.
     listener:        "#3aa5ff"          # sky. Shared, the room. Dominant /radio /p /embed.
     agent:           "#8a66ff"          # warmed violet (was #6b46ff). MCP, autopilot.
 
-    # ─── Signal ───────────────────────────────────────────────────────
+    # --- Signal ---
     signal-warn:     "#f2b84a"          # amber. ONE firing per screen. Never loops.
     destructive:     "#ef4444"          # red. Irreversible only. Icon + bracketed label.
 
-    # ─── shadcn-surface bindings (for anyone who pastes these into a UI kit) ──
+    # --- shadcn-surface bindings (for anyone who pastes these into a UI kit) ---
     background:          "{color.base}"
     foreground:          "{color.text}"
     card:                "{color.surface-1}"
@@ -46,33 +46,33 @@ tokens:
     popover-foreground:  "{color.text}"
     primary:             "{color.creator}"          # /studio's dominant voice
     primary-foreground:  "#0a0e17"
-    secondary:           "{color.listener}"
+    secondary:           "{color.listener}"         # listener sky = shadcn secondary
     secondary-foreground: "#0a0e17"
     accent:              "{color.agent}"            # chrome only, never long-form text
-    accent-foreground:   "#0a0e17"
-    muted:               "{color.surface-1}"
+    accent-foreground:   "{color.text}"
+    muted:               "{color.surface-2}"        # surface-2 for muted backgrounds
     muted-foreground:    "{color.text-dim}"
-    ring:                "{color.listener}"         # focus ring — sky, never lime
+    ring:                "{color.listener}"         # focus ring -- sky, never lime
     input:               "{color.border}"
 
   syntax:
     # CodeMirror highlight palette for the Strudel editor.
     # These are tuned to sit on base, not on surface-1, because the editor chrome is surface-1
     # but the content rendering area is base by project convention.
-    keyword:  "#ff7b72"   # red-ish — control flow, .every, .struct
-    string:   "#a5d6ff"   # cold blue — sample names
-    function: "{color.agent}"    # violet — live-code combinators
-    variable: "#ffa657"   # amber-orange — binding names
+    keyword:  "#ff7b72"   # red-ish -- control flow, .every, .struct
+    string:   "#a5d6ff"   # cold blue -- sample names
+    function: "{color.agent}"    # violet -- live-code combinators
+    variable: "#ffa657"   # amber-orange -- binding names
     comment:  "{color.text-dim}"
-    constant: "{color.listener}"  # sky — numeric literals, step counts
-    cursor:   "{color.creator}"   # the caret IS creator-colored — the hand that types is live
+    constant: "{color.listener}"  # sky -- numeric literals, step counts
+    cursor:   "{color.creator}"   # the caret IS creator-colored -- the hand that types is live
 
   typography:
     # Four families, four jobs. Max four. Ever.
-    font-display: "var(--font-display)"   # Chakra Petch — mark + hero + station-ident only
-    font-body:    "var(--font-body)"      # DM Sans — body prose, /radio narration, marketing
-    font-mono:    "var(--font-mono)"      # JetBrains Mono — code + numeric data
-    font-micro:   "var(--font-micro)"     # Space Mono — tracked-wide uppercase micro-labels
+    font-display: "var(--font-display)"   # Chakra Petch -- mark + hero + station-ident only
+    font-body:    "var(--font-body)"      # DM Sans -- body prose, /radio narration, marketing
+    font-mono:    "var(--font-mono)"      # JetBrains Mono -- code + numeric data
+    font-micro:   "var(--font-micro)"     # Space Mono -- tracked-wide uppercase micro-labels
 
     font-family-display: '"Chakra Petch", ui-sans-serif, system-ui, sans-serif'
     font-family-body:    '"DM Sans", ui-sans-serif, system-ui, sans-serif'
@@ -93,26 +93,34 @@ tokens:
     text-display-sm:  "clamp(1.769rem, 1.495rem + 1.167vw, 2.441rem)"  # 39px
     text-heading-lg:  "clamp(1.563rem, 1.367rem + 0.836vw, 1.953rem)"  # 31px
     text-heading:     "clamp(1.25rem, 1.147rem + 0.438vw, 1.563rem)"   # 25px
-    text-heading-sm:  "clamp(1.125rem, 1.094rem + 0.125vw, 1.25rem)"   # 20px
+    text-heading-sm:  "1.25rem"                                         # 20px
     text-body-lg:     "1.125rem"   # 18px
     text-body:        "1rem"       # 16px
-    text-body-sm:     "0.875rem"   # 14px — text-dim floor
-    text-code:        "0.875rem"   # 14px — CodeMirror + inline code
-    text-mono:        "0.75rem"    # 12px — data display (JetBrains Mono)
-    text-micro:       "0.6875rem"  # 11px — Space Mono micro-labels, tracked +0.12em
+    text-body-sm:     "0.875rem"   # 14px -- text-dim floor
+    text-code:        "0.875rem"   # 14px -- CodeMirror + inline code
+    text-mono:        "0.75rem"    # 12px -- data display (JetBrains Mono)
+    text-micro:       "0.6875rem"  # 11px -- Space Mono micro-labels, tracked +0.12em
 
-    line-height-tight:  1.05   # display only
-    line-height-short:  1.3    # heading-sm, micro
-    line-height-prose:  1.5    # body, long-form (/radio, docs)
-    line-height-ui:     1.6    # tooltips, short copy
+    line-height-display: 1.05     # display-lg
+    line-height-display-sm: 1.1   # display-sm
+    line-height-heading: 1.2      # heading-lg
+    line-height-heading-sm: 1.3   # heading-sm, micro
+    line-height-body:  1.6        # body
+    line-height-body-lg: 1.55     # body-lg, body-sm
+    line-height-code:  1.5        # code
+    line-height-mono:  1.4        # mono
 
+    letter-spacing-display-lg: "-0.02em"
     letter-spacing-display: "-0.015em"
+    letter-spacing-display-sm: "-0.01em"
+    letter-spacing-heading-lg: "-0.005em"
+    letter-spacing-heading: "0"
     letter-spacing-micro:   "0.12em"   # the ONE tracked-wide slot in the system
 
     # Forbidden: Chakra Petch below 1.25rem. Ever. Not even as a flourish.
 
   shape:
-    # Tight mechanical edges. Default Tailwind radii are fine — identity did not commit a scale.
+    # Tight mechanical edges. Default Tailwind radii are fine -- identity did not commit a scale.
     border-radius-sm: "2px"
     border-radius-md: "4px"
     border-radius-lg: "6px"
@@ -122,7 +130,7 @@ tokens:
 
   elevation:
     # Shadows are FORBIDDEN in chrome. The only elevation is:
-    #   1) the surface tier (base → surface-1 → surface-2 → surface-3)
+    #   1) the surface tier (base -> surface-1 -> surface-2 -> surface-3)
     #   2) the border glass-line
     # Do not add a drop-shadow scale. If a designer reaches for one, elevate via surface tier instead.
     shadow-none: "none"
@@ -155,18 +163,18 @@ tokens:
     color-muted:   "{color.text-dim}"
 
   texture:
-    # Static 1-bit dither, 4×4 px SVG tile, inlined as data URI. No image fetch.
+    # Static 1-bit dither, 4x4 px SVG tile, inlined as data URI. No image fetch.
     dither-tile: >
       url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect width='1' height='1' x='0' y='0' fill='%23ffffff' fill-opacity='0.02'/%3E%3Crect width='1' height='1' x='2' y='2' fill='%23ffffff' fill-opacity='0.02'/%3E%3C/svg%3E")
     dither-opacity-base:      "0.02"   # body, every base surface
     dither-opacity-surface-1: "0.015"
     dither-opacity-surface-2: "0.01"
-    dither-opacity-surface-3: "0"      # /radio clean — stillness
+    dither-opacity-surface-3: "0"      # /radio clean -- stillness
     dither-opacity-hero:      "0.04"   # marketing / hero strip only
-    image-rendering: "pixelated"       # MANDATORY — otherwise bilinear smoothing blurs the tile
+    image-rendering: "pixelated"       # MANDATORY -- otherwise bilinear smoothing blurs the tile
 
 intensity:
-  variance: 3      # Tight grid, monospace-aware, dense /studio vs breathable /radio. Softer than terminal's 3-with-ascii-decoration — we do not draw boxes with dashes.
+  variance: 3      # Tight grid, monospace-aware, dense /studio vs breathable /radio. Softer than terminal's 3-with-ascii-decoration -- we do not draw boxes with dashes.
   motion:   4      # Two committed shapes: pulse-dot (loop) + evolve-glow (one-shot). No third. No hover bounces. No page fades.
   density:  7      # Inherited from terminal. /studio is information-dense. /radio relaxes density via surface-3 + line-height-prose, but the token system is dense.
 
@@ -176,7 +184,7 @@ patterns:
     border: "1px solid {color.border}"
     shadow: "none"
     radius: "{shape.border-radius-md}"
-    header: "optional — no ASCII box decoration. If a header is needed, use a border-b glass-line, not a +--- TITLE ---+ frame."
+    header: "optional -- no ASCII box decoration. If a header is needed, use a border-b glass-line, not a +--- TITLE ---+ frame."
     texture: "surface-1 dither tile (1.5% opacity) underneath content"
 
   card-elevated:
@@ -187,7 +195,7 @@ patterns:
     note: "Elevation = surface tier, not drop shadow."
 
   button-primary:
-    # The [ SAVE ] bracketed button. This is a BOLD BET — the brackets are load-bearing.
+    # The [ SAVE ] bracketed button. This is a BOLD BET -- the brackets are load-bearing.
     background: "transparent"
     border: "1px solid {color.creator}"
     color: "{color.creator}"
@@ -200,7 +208,7 @@ patterns:
     label-format: "[ {label} ]"     # the brackets are part of the grammar
     radius: "{shape.border-radius-sm}"
     shadow: "none"
-    hover: "background fills {color.creator}, color → {color.base}"
+    hover: "background fills {color.creator}, color -> {color.base}"
     active: "translate-y-[1px], no bounce"
     focus: "ring 1px {color.creator}, no glow"
 
@@ -214,11 +222,11 @@ patterns:
     letter-spacing: "{typography.letter-spacing-micro}"
     label-format: "[ {label} ]"
     radius: "{shape.border-radius-sm}"
-    hover: "border brightens to {color.text-dim} → {color.text}; surface tier unchanged"
+    hover: "border brightens to {color.text-dim} -> {color.text}; surface tier unchanged"
 
   button-agent:
     # The violet bracketed button. ONLY for agent-authored affordances.
-    # Violet on surface-1 is 3.6:1 — AA Large only — so this button NEVER renders on surface-1.
+    # Violet on surface-1 is 3.6:1 -- AA Large only -- so this button NEVER renders on surface-1.
     background: "transparent"
     border: "1px solid {color.agent}"
     color: "{color.agent}"
@@ -244,7 +252,7 @@ patterns:
     radius: "{shape.border-radius-sm}"
     font-family: "{typography.font-body}"
     placeholder-color: "{color.text-dim}"
-    focus: "border-color → {color.listener}, no glow, no ring blur"
+    focus: "border-color -> {color.listener}, no glow, no ring blur"
     note: "No prompt prefix (> / $). That is a terminal cosplay move and we are not a CLI."
 
   badge:
@@ -252,7 +260,7 @@ patterns:
     shape: "radius {shape.border-radius-sm}, bordered"
     background: "transparent"
     border: "1px solid currentColor"
-    color: "role-based — {color.creator} for LIVE/PLAYING, {color.agent} for AGENT, {color.destructive} for [ERR], {color.text-dim} for [OK]"
+    color: "role-based -- {color.creator} for LIVE/PLAYING, {color.agent} for AGENT, {color.destructive} for [ERR], {color.text-dim} for [OK]"
     font-family: "{typography.font-micro}"
     font-size: "{typography.text-micro}"
     case: "UPPERCASE"
@@ -267,7 +275,7 @@ patterns:
     link-font: "{typography.font-body}"
     link-rest: "{color.text-dim}"
     link-hover: "{color.text}"
-    link-active: "{color.listener}"   # sky, not lime — active-nav is a room signal
+    link-active: "{color.listener}"   # sky, not lime -- active-nav is a room signal
     no-prefix: "no > or $ on links. Not a shell."
 
   dialog:
@@ -275,7 +283,7 @@ patterns:
     background: "{color.surface-1}"
     border: "1px solid {color.border}"
     radius: "{shape.border-radius-md}"
-    entrance: "opacity 120ms only — NO slide, NO scale, NO spring"
+    entrance: "opacity 120ms only -- NO slide, NO scale, NO spring"
     focus-trap: "required"
 
   layout:
@@ -283,20 +291,20 @@ patterns:
     max-width: "max-w-6xl for marketing; full-bleed for /studio and /radio"
     section-spacing: "py-16 for marketing prose; py-8 for /studio dense"
     grid-gap: "gap-4"
-    surface-treatment: "dither texture at base, fading across surface tiers — NOT scanlines, NOT phosphor glow"
-    dividers: "border glass-line OR middot (·) in metadata rows. NEVER ASCII rules (===) or (---). Those are terminal cosplay."
+    surface-treatment: "dither texture at base, fading across surface tiers -- NOT scanlines, NOT phosphor glow"
+    dividers: "border glass-line OR middot in metadata rows. NEVER ASCII rules (===) or (---). Those are terminal cosplay."
     codemirror-host: "{color.base} background, {color.surface-1} gutter, {color.creator} caret, {color.text-dim} line numbers"
 
   logomark:
-    # 3×7 punchcard. See identity/logo-directions.md.
-    geometry: "21 circles, 3 rows × 7 cols, 2u center-pitch, r=8 on viewBox 112×20"
+    # 3x7 punchcard. See identity/logo-directions.md.
+    geometry: "21 circles, 3 rows x 7 cols, 2u center-pitch, r=8 on viewBox 112x20"
     row-1: "all {color.text-dim} (#64748b)"
-    row-2: "6× {color.text} + col-4 {color.listener}"
+    row-2: "6x {color.text} + col-4 {color.listener}"
     row-3: "all {color.text-dim}"
-    stroke: "none — fill only"
+    stroke: "none -- fill only"
     gradient: "FORBIDDEN"
     clear-space: "1u on all sides (4px at canonical viewBox)"
-    min-size: "16px bounding height (below that: 5×3 cropped variant or ASCII [...o...])"
+    min-size: "16px bounding height (below that: 5x3 cropped variant or ASCII [...o...])"
 
   wordmark:
     display-form: "PULSE·CITY"
@@ -304,7 +312,7 @@ patterns:
     font: "{typography.font-family-display}"
     weight: 700
     case: "display-caps (as set)"
-    tracking: "tight — the middot is the kerning anchor, not a gap"
+    tracking: "tight -- the middot is the kerning anchor, not a gap"
     middot-color: "{color.listener}"
     body-color: "{color.text}"
     min-size: "14px cap-height (below that: mark-only)"
@@ -329,7 +337,7 @@ constraints:
     - "NEVER JetBrains Mono as body face. JetBrains Mono is code. DM Sans is body."
     - "NEVER Chakra Petch below 1.25rem (heading-sm). Display face only."
     - "NEVER a fifth font family. Four and done."
-    - "NEVER a gradient anywhere — background, button, border, logo, middot. Flat fills only."
+    - "NEVER a gradient anywhere -- background, button, border, logo, middot. Flat fills only."
     - "NEVER brighten the page background above #0a0e17. surface-1 is not allowed on <body>."
     - "NEVER pastel tints of the trio (no lime-100, no sky-200). One hex per accent."
     - "NEVER creator lime on /radio. The compass asks for slowness there; lime shouts."
@@ -347,14 +355,14 @@ constraints:
     - "NEVER a light mode. Dark is the only mode."
 
   always:
-    - "ALWAYS DM Sans as the body face. The audit flagged it as underused — it ends here."
+    - "ALWAYS DM Sans as the body face. The audit flagged it as underused -- it ends here."
     - "ALWAYS JetBrains Mono for code, filenames, and numeric data displays (tabular figures)."
-    - "ALWAYS Space Mono — tracked +0.12em, UPPERCASE — for micro-labels and bracketed buttons."
+    - "ALWAYS Space Mono -- tracked +0.12em, UPPERCASE -- for micro-labels and bracketed buttons."
     - "ALWAYS Chakra Petch 700 for the wordmark. No other weight renders the mark."
     - "ALWAYS the bracketed-label grammar on interactive micro-labels: [ SAVE ] [ LIVE ] [ AGENT ]."
-    - "ALWAYS the semantic trio — creator / listener / agent — only with their committed meanings."
+    - "ALWAYS the semantic trio -- creator / listener / agent -- only with their committed meanings."
     - "ALWAYS the dither tile on base surfaces. Static. Never animated. image-rendering: pixelated."
-    - "ALWAYS the sky middot in the wordmark — it is the only color accent the mark carries."
+    - "ALWAYS the sky middot in the wordmark -- it is the only color accent the mark carries."
     - "ALWAYS tabular figures in data displays (columns of times, counts, BPM)."
     - "ALWAYS present-tense, lowercase-friendly, understated product copy."
     - "ALWAYS name the actor when an agent did something (no passive 'something changed')."
@@ -365,20 +373,20 @@ constraints:
 effects:
   interaction-vocabulary:
     - "surface-tier-lift"      # hover raises a control from surface-1 to surface-2
-    - "border-brighten"        # hover walks the glass-line from text-dim → text
-    - "bracket-fill"           # bracketed button hover fills bg → accent, text → base
+    - "border-brighten"        # hover walks the glass-line from text-dim -> text
+    - "bracket-fill"           # bracketed button hover fills bg -> accent, text -> base
     - "pulse-dot"              # ambient, on anything representing "the room is still playing"
     - "evolve-glow"            # one-shot, on the exact point of a state change
     - "middot-blink"           # wordmark middot pulses ONCE on an agent handoff (optional; not required)
 
   hover:
-    card:   "background surface-1 → surface-2 via 120ms ease-out, border unchanged"
-    button-primary:   "bracket-fill — background transparent → creator, color creator → base"
-    button-secondary: "border text-dim → text, color unchanged"
-    button-agent:     "bracket-fill — background transparent → agent, color agent → base (rendered on base only)"
-    button-destructive: "bracket-fill — background transparent → destructive, color destructive → base"
-    link: "color text-dim → text. NO > prefix reveal. NO underline."
-    badge: "no hover state — badges are status, not controls"
+    card:   "background surface-1 -> surface-2 via 120ms ease-out, border unchanged"
+    button-primary:   "bracket-fill -- background transparent -> creator, color creator -> base"
+    button-secondary: "border text-dim -> text, color unchanged"
+    button-agent:     "bracket-fill -- background transparent -> agent, color agent -> base (rendered on base only)"
+    button-destructive: "bracket-fill -- background transparent -> destructive, color destructive -> base"
+    link: "color text-dim -> text. NO > prefix reveal. NO underline."
+    badge: "no hover state -- badges are status, not controls"
 
   active:
     button: "translate-y-[1px] for 100ms, return. No bounce, no spring."
@@ -394,11 +402,11 @@ effects:
     motion-none: "motion-reduce:* variants zero every transition"
 
   ambient:
-    - "pulse-dot (1.5s ease-in-out infinite, opacity 1 → 0.55 → 1) — applied only to elements that represent 'the room is still playing'"
+    - "pulse-dot (1.5s ease-in-out infinite, opacity 1 -> 0.55 -> 1) -- applied only to elements that represent 'the room is still playing'"
     - "NO scanline hum. NO cursor-blink outside CodeMirror. NO type-reveal on hero strings."
 
   one-shot:
-    - "evolve-glow — 600ms, fires on pattern mutation, autopilot handoff, and first-frame agent connection. Never chained. Never looped."
+    - "evolve-glow -- 600ms, fires on pattern mutation, autopilot handoff, and first-frame agent connection. Never chained. Never looped."
 
   keyframes:
     pulse-dot: |
@@ -415,13 +423,13 @@ effects:
 
 dark_mode:
   # pulse.city is dark-only by declaration. No light counterpart exists.
-  # This block is preserved for schema parity but holds no light→dark overrides.
+  # This block is preserved for schema parity but holds no light->dark overrides.
   color:
     background: "{color.base}"
     foreground: "{color.text}"
     card: "{color.surface-1}"
     card-foreground: "{color.text}"
-    muted: "{color.surface-1}"
+    muted: "{color.surface-2}"
     muted-foreground: "{color.text-dim}"
     border: "{color.border}"
     input: "{color.border}"
@@ -443,7 +451,7 @@ surface_flavor:
     forbidden-accents: [creator]
     dominant-type: [body, heading, display]
     body-overflow: "auto"
-    dither: "surface-3 is clean — no texture"
+    dither: "surface-3 is clean -- no texture"
   /p:
     base-tiers: [base, surface-1, surface-3]
     dominant-accent: listener

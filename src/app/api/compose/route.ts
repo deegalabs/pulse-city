@@ -1,6 +1,7 @@
 import { generateText } from "ai";
 import { getModel } from "@/lib/ai/model-router";
 import { COMPOSE_PROMPT } from "@/lib/ai/prompts";
+import { extractJson } from "@/lib/ai/extract-json";
 
 export const maxDuration = 30;
 
@@ -13,18 +14,25 @@ export async function POST(req: Request) {
 
   const model = getModel("compose");
 
-  const { text } = await generateText({
-    model,
-    system: COMPOSE_PROMPT,
-    prompt: userPrompt,
-  });
-
   try {
-    const json = JSON.parse(text);
+    const { text } = await generateText({
+      model,
+      system: COMPOSE_PROMPT,
+      prompt: userPrompt,
+    });
+
+    const json = extractJson(text);
+    if (!json || !json.code) {
+      return Response.json(
+        { message: "AI did not return valid code", code: null, title: null },
+        { status: 500 }
+      );
+    }
     return Response.json(json);
-  } catch {
+  } catch (err) {
+    console.error("Compose error:", err);
     return Response.json(
-      { message: "AI response was not valid JSON", code: null, title: null },
+      { message: "Compose failed", code: null, title: null },
       { status: 500 }
     );
   }

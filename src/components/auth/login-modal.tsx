@@ -59,28 +59,31 @@ export function LoginModal({ open, onClose }: LoginModalProps) {
 
   return (
     <div
-      className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center"
+      className="fixed inset-0 z-50 bg-scrim backdrop-blur-sm flex items-center justify-center"
       onClick={onClose}
     >
       <div
-        className="bg-surface border border-border rounded-lg w-full max-w-sm mx-4 p-5"
+        className="bg-surface-1 border border-white/10 w-full max-w-sm mx-4 p-5"
         onClick={(e) => e.stopPropagation()}
       >
+        {/* Header */}
         <div className="flex items-center justify-between mb-4">
-          <h2 className="font-heading font-bold text-lg text-text tracking-tight">
-            Sign In
-          </h2>
+          <span className="font-micro text-[10px] tracking-widest text-text-dim uppercase">
+            ACCESS TERMINAL
+          </span>
           <button
             onClick={onClose}
-            className="text-text-dim hover:text-text text-xl cursor-pointer"
+            className="text-text-dim hover:text-text transition-colors cursor-pointer"
           >
-            x
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M18 6 6 18" /><path d="m6 6 12 12" />
+            </svg>
           </button>
         </div>
 
         {sent ? (
           <div className="text-center py-4">
-            <p className="text-lime font-heading text-sm mb-2">
+            <p className="font-micro text-[10px] tracking-widest text-creator mb-2">
               CHECK YOUR EMAIL
             </p>
             <p className="text-xs text-text-dim">
@@ -90,9 +93,9 @@ export function LoginModal({ open, onClose }: LoginModalProps) {
             </p>
             <button
               onClick={() => { setSent(false); setEmail(""); }}
-              className="mt-4 text-xs text-text-dim hover:text-text cursor-pointer"
+              className="mt-4 font-micro text-[10px] tracking-widest text-text-dim hover:text-text transition-colors cursor-pointer"
             >
-              Try a different email
+              [ TRY DIFFERENT EMAIL ]
             </button>
           </div>
         ) : (
@@ -101,17 +104,18 @@ export function LoginModal({ open, onClose }: LoginModalProps) {
             <button
               onClick={handleGoogleLogin}
               disabled={loading}
-              className="w-full py-2.5 rounded-lg bg-surface-2 text-text border border-border font-heading text-xs tracking-wide hover:bg-border transition cursor-pointer disabled:opacity-50 mb-3"
+              className="w-full py-2.5 bg-surface-2 border border-white/10 font-micro text-[10px] tracking-widest text-text hover:bg-surface-3 transition cursor-pointer disabled:opacity-50 mb-3"
             >
-              Continue with Google
+              [ CONTINUE WITH GOOGLE ]
             </button>
 
+            {/* Divider */}
             <div className="flex items-center gap-3 mb-3">
-              <div className="flex-1 h-px bg-border" />
-              <span className="text-[0.6rem] text-text-dim tracking-wider">
+              <div className="flex-1 h-px bg-white/10" />
+              <span className="font-micro text-[10px] tracking-widest text-text-dim">
                 OR
               </span>
-              <div className="flex-1 h-px bg-border" />
+              <div className="flex-1 h-px bg-white/10" />
             </div>
 
             {/* Email magic link */}
@@ -120,26 +124,26 @@ export function LoginModal({ open, onClose }: LoginModalProps) {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="your@email.com"
+                placeholder="EMAIL ADDRESS"
                 required
                 disabled={loading}
-                className="w-full py-2 px-3 bg-bg border border-border rounded-lg text-text text-xs focus:border-lime outline-none mb-3 disabled:opacity-50"
+                className="w-full bg-base border border-white/10 font-micro text-xs px-4 py-2.5 text-text placeholder:text-text-dim focus:border-creator outline-none mb-3 disabled:opacity-50"
               />
               <button
                 type="submit"
                 disabled={loading || !email.trim()}
-                className="w-full py-2.5 rounded-lg bg-lime text-bg font-heading font-semibold text-xs tracking-wide hover:brightness-110 transition cursor-pointer disabled:opacity-50"
+                className="w-full py-2.5 bg-creator text-base font-micro text-[10px] tracking-widest font-bold hover:brightness-110 transition cursor-pointer disabled:opacity-50"
               >
-                {loading ? "SENDING..." : "SEND MAGIC LINK"}
+                {loading ? "[ SENDING... ]" : "[ SEND MAGIC LINK ]"}
               </button>
             </form>
 
             {error && (
-              <p className="text-red text-xs mt-2 text-center">{error}</p>
+              <p className="text-destructive text-xs mt-2 text-center">{error}</p>
             )}
 
-            <p className="text-[0.6rem] text-text-dim text-center mt-3">
-              Sign in to save patterns, share tracks, and sync across devices.
+            <p className="font-micro text-[9px] text-text-dim text-center mt-3">
+              sign in to save patterns and sync
             </p>
           </>
         )}

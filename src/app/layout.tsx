@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { chakraPetch, dmSans, jetbrainsMono } from "./fonts";
+import { chakraPetch, dmSans, jetbrainsMono, spaceMono } from "./fonts";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -21,9 +21,11 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`h-full ${chakraPetch.variable} ${dmSans.variable} ${jetbrainsMono.variable}`}
+      className={`h-full ${chakraPetch.variable} ${dmSans.variable} ${jetbrainsMono.variable} ${spaceMono.variable}`}
     >
-      <body className="h-dvh flex flex-col">{children}</body>
+      <body className="min-h-dvh flex flex-col" suppressHydrationWarning>
+        {children}
+      </body>
     </html>
   );
 }

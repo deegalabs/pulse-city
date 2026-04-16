@@ -35,7 +35,7 @@ export function UserMenu({ onLoginClick }: UserMenuProps) {
     return (
       <button
         onClick={onLoginClick}
-        className="font-heading text-[0.55rem] tracking-widest text-text-dim px-2 py-1 rounded-full border border-border hover:bg-surface-2 hover:text-lime transition cursor-pointer"
+        className="font-micro text-[10px] tracking-widest text-text-dim hover:text-text border border-white/10 px-3 py-1 transition-colors cursor-pointer"
       >
         SIGN IN
       </button>
@@ -56,15 +56,15 @@ export function UserMenu({ onLoginClick }: UserMenuProps) {
 
   return (
     <div className="flex items-center gap-2">
-      <span className="font-heading text-[0.55rem] tracking-widest text-text-dim">
+      <span className="font-micro text-[10px] tracking-widest text-text-dim">
         {name.toUpperCase()}
       </span>
       <button
         onClick={handleSignOut}
-        className="font-heading text-[0.5rem] tracking-widest text-text-dim px-1.5 py-0.5 rounded border border-border hover:bg-surface-2 hover:text-red transition cursor-pointer"
+        className="font-micro text-[9px] text-text-dim hover:text-destructive border border-white/10 px-2 py-0.5 transition-colors cursor-pointer"
         title="Sign out"
       >
-        OUT
+        [ OUT ]
       </button>
     </div>
   );

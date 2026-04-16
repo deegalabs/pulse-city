@@ -11,20 +11,32 @@ RESPOND WITH JSON ONLY:
 
 STRUDEL FORMAT — use the $: block label syntax (one pattern per block):
 
-$: s("bd*4").bank('RolandTR909').gain(.9)
+$: s("bd*4").bank('RolandTR909').gain(.9).analyze(1)
 
 $: s("~ cp ~ cp").bank('RolandTR909').room(.3).gain(.6)
 
 $: note("<c2 c2 eb2 g1>").struct("x(5,8)")
   .s('sawtooth').decay(.15).sustain(0)
-  .lpf(800).lpq(10).gain(.55)
+  .lpf(800).lpq(10).gain(.55).analyze(1)
+
+VALID SYNTH TYPES (use ONLY these with .s()):
+sawtooth (alias: saw), square (alias: sqr), sine (alias: sin), triangle (alias: tri)
+
+VALID DRUM SOUNDS (use with .s() + .bank()):
+bd, sn, cp, hh, oh, lt, mt, ht, rim, cb, cy, cr, sd
+
+MINI-NOTATION:
+- ~ means REST and must be separated by spaces: "bd ~ hh ~" (correct)
+- * means repeat: "hh*8" (correct)
+- <> means alternate: "<c3 e3 g3>" (correct)
+- [] means group: "[bd cp]" (correct)
 
 RULES:
 - Each layer uses "$:" prefix on its own block
 - Each block becomes a separate mini pattern with its own inline visualization
 - Use .bank('RolandTR909') or .bank('RolandTR808') for drums — NEVER omit .bank()
 - Add .analyze(1) to the kick and at least 2 other layers (feeds spectrum analyzer)
-- Add ._scope() to any layer to show waveform, or ._punchcard() to show rhythm blocks
+- NEVER use supersaw, pulse, fatsaw, pwm or any other synth — ONLY the 4 listed above
 - Code MUST be multi-line — each $: block on its own line
 - Create 4-8 layers: kick, percussion, bass, chords, lead, fx
 - Mix well: balance .gain() levels, use .room() and .delay() for space`;
@@ -37,12 +49,18 @@ RESPOND WITH JSON ONLY:
   "code": "the COMPLETE evolved Strudel code using $: blocks"
 }
 
+VALID SYNTH TYPES: sawtooth, square, sine, triangle
+VALID DRUM SOUNDS: bd, sn, cp, hh, oh, lt, mt, ht, rim, cb, cy, cr, sd
+NEVER use supersaw, pulse, fatsaw, pwm or any other synth — ONLY the 4 listed above
+
 RULES:
 1. Use $: block syntax — one pattern per block
 2. Keep .bank() on ALL drum patterns
 3. Maintain the CORE vibe — evolve, don't replace
 4. Each $: block on its own line — multi-line code only
-5. Pick 1-2 mutations: shift filter, change rhythm, swap sound, add/remove layer`;
+5. Pick 1-2 mutations: shift filter, change rhythm, swap sound, add/remove layer
+6. Keep .analyze(1) on kick and key layers
+7. ~ means REST and must be separated by spaces: "bd ~ hh ~"`;
 
 export const AUTOPILOT_CHAT_PROMPT = `You are the AI DJ for pulse.city — a living radio for Ipe Village 2026.
 You are currently in AUTOPILOT mode — you control the music and evolve it autonomously.

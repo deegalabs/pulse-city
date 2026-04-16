@@ -3,16 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>pulse.city — brand guidelines</title>
+<title>pulse.city -- brand guidelines</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=DM+Sans:wght@400;500&family=JetBrains+Mono:wght@400;500&family=Space+Mono&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Mono&display=swap" rel="stylesheet">
 <style>
   /* ============================================================
-     pulse.city brand guidelines — single-file visual guide
+     pulse.city brand guidelines -- single-file visual guide
      Dark-only. No light mode. Generated 2026-04-15.
      Fonts in this guide load from Google Fonts CDN. In production,
-     the real product uses next/font/local — see STYLE.md.
+     the real product uses next/font/local -- see STYLE.md.
      ============================================================ */
 
   :root {
@@ -21,29 +21,28 @@
     --foreground: #e2e8f0;
     --card: #111827;
     --card-foreground: #e2e8f0;
-    --popover: #1e293b;
+    --popover: #111827;
     --popover-foreground: #e2e8f0;
-    --primary: #a2d729;            /* creator — lime, "live" */
+    --primary: #a2d729;            /* creator -- lime */
     --primary-foreground: #0a0e17;
-    --secondary: #1e293b;
-    --secondary-foreground: #e2e8f0;
-    --muted: #111827;
-    --muted-foreground: #94a3b8;
-    --accent: #3aa5ff;             /* listener — sky, "you were here" */
-    --accent-foreground: #0a0e17;
+    --secondary: #3aa5ff;          /* listener -- sky */
+    --secondary-foreground: #0a0e17;
+    --muted: #1e293b;              /* surface-2 */
+    --muted-foreground: #64748b;   /* text-dim */
+    --accent: #8a66ff;             /* agent -- warmed violet */
+    --accent-foreground: #e2e8f0;
     --destructive: #ef4444;
     --destructive-foreground: #e2e8f0;
     --border: rgba(255, 255, 255, 0.08);
     --input: rgba(255, 255, 255, 0.08);
-    --ring: #3aa5ff;
-    --radius: 0.25rem;
+    --ring: #3aa5ff;               /* listener for focus rings */
+    --radius: 4px;
 
-    /* pulse.city-specific extensions */
-    --agent: #8a66ff;              /* warmed violet — chrome only */
-    --signal-warn: #f2b84a;        /* amber — one-shot mutation */
-    --surface-3: #283548;
-    --text-dim: #64748b;
-    --scrim: rgba(10, 14, 23, 0.72);
+    /* pulse.city brand extensions */
+    --color-surface-3: #2a3347;
+    --color-text-muted: #94a3b8;
+    --color-signal-warn: #f2b84a;
+    --color-scrim: rgba(10, 14, 23, 0.72);
 
     /* font stacks */
     --font-display: "Chakra Petch", ui-sans-serif, system-ui, sans-serif;
@@ -52,7 +51,10 @@
     --font-micro: "Space Mono", ui-monospace, "SF Mono", Menlo, monospace;
 
     /* dither tile */
-    --texture-dither: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath d='M0 0h1v1H0zM2 2h1v1H2z' fill='%23fff' opacity='0.04'/%3E%3C/svg%3E");
+    --texture-dither: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Crect width='1' height='1' x='0' y='0' fill='%23fff' opacity='0.02'/%3E%3Crect width='1' height='1' x='2' y='2' fill='%23fff' opacity='0.02'/%3E%3C/svg%3E");
+
+    /* ease */
+    --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 
   * { box-sizing: border-box; }
@@ -64,7 +66,7 @@
     color: var(--foreground);
     font-family: var(--font-body);
     font-size: 16px;
-    line-height: 1.5;
+    line-height: 1.6;
     -webkit-font-smoothing: antialiased;
   }
 
@@ -74,50 +76,53 @@
     image-rendering: pixelated;
   }
 
-  a { color: var(--accent); text-decoration: none; }
+  a { color: var(--secondary); text-decoration: none; }
   a:hover { color: var(--foreground); }
 
   /* =========== layout =========== */
   .shell {
     display: grid;
-    grid-template-columns: 240px minmax(0, 1fr);
+    grid-template-columns: 180px minmax(0, 1fr);
     min-height: 100vh;
     max-width: 1280px;
     margin: 0 auto;
   }
 
   nav.toc {
-    position: sticky;
+    position: fixed;
     top: 0;
-    align-self: start;
+    left: 0;
+    width: 180px;
     height: 100vh;
-    padding: 2rem 1.25rem;
+    padding: 1.5rem 1rem;
     border-right: 1px solid var(--border);
     font-family: var(--font-micro);
     font-size: 0.6875rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     overflow-y: auto;
+    background: var(--background);
+    z-index: 100;
   }
 
   nav.toc .brand-mini {
     font-family: var(--font-display);
     font-weight: 700;
-    font-size: 1rem;
+    font-size: 0.875rem;
     letter-spacing: -0.015em;
     color: var(--foreground);
     text-transform: none;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.15rem;
   }
-  nav.toc .brand-mini .dot { color: var(--accent); }
+  nav.toc .brand-mini .dot { color: var(--secondary); }
 
   nav.toc .brand-sub {
     font-family: var(--font-body);
-    font-size: 0.75rem;
-    color: var(--text-dim);
+    font-size: 0.6875rem;
+    color: var(--muted-foreground);
     letter-spacing: 0;
     text-transform: none;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
   }
 
   nav.toc ol {
@@ -128,45 +133,49 @@
   }
   nav.toc ol li {
     counter-increment: toc;
-    margin: 0.5rem 0;
+    margin: 0.35rem 0;
   }
   nav.toc ol li a {
     display: block;
-    color: var(--text-dim);
-    padding: 0.25rem 0;
+    color: var(--muted-foreground);
+    padding: 0.2rem 0;
+    transition: color 120ms linear;
   }
   nav.toc ol li a::before {
     content: counter(toc, decimal-leading-zero) "  ";
-    color: var(--text-dim);
+    color: var(--muted-foreground);
   }
-  nav.toc ol li a:hover { color: var(--foreground); }
+  nav.toc ol li a:hover,
+  nav.toc ol li a.active { color: var(--foreground); }
+  nav.toc ol li a.active::before { color: var(--secondary); }
 
   main {
+    margin-left: 180px;
     padding: 3rem 3rem 6rem;
     min-width: 0;
   }
 
   section {
     margin-bottom: 5rem;
-    scroll-margin-top: 1rem;
+    scroll-margin-top: 1.5rem;
   }
   section > h2 {
     font-family: var(--font-display);
     font-weight: 700;
-    font-size: 1.953rem;
-    line-height: 1.1;
-    letter-spacing: -0.015em;
+    font-size: clamp(1.563rem, 1.367rem + 0.836vw, 1.953rem);
+    line-height: 1.2;
+    letter-spacing: -0.005em;
     margin: 0 0 0.25rem;
   }
   section > h2::before {
     content: "// ";
     font-family: var(--font-mono);
-    color: var(--text-dim);
+    color: var(--muted-foreground);
     font-weight: 400;
     font-size: 1rem;
   }
   section > .lede {
-    color: var(--muted-foreground);
+    color: var(--color-text-muted);
     max-width: 68ch;
     margin: 0 0 2rem;
   }
@@ -205,44 +214,46 @@
     padding: 4rem 0 3rem;
     border-bottom: 1px solid var(--border);
     margin-bottom: 4rem;
+    position: relative;
   }
   .hero .wordmark {
     font-family: var(--font-display);
     font-weight: 700;
     font-size: clamp(2.441rem, 1.957rem + 2.066vw, 3.815rem);
-    line-height: 1.1;
-    letter-spacing: -0.015em;
-    margin: 0 0 1rem;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin: 0 0 1.25rem;
   }
-  .hero .wordmark .middot { color: var(--accent); }
+  .hero .wordmark .middot { color: var(--secondary); }
 
-  .manifesto-line {
+  .hero .heartbeat {
     font-family: var(--font-display);
     font-weight: 600;
-    font-size: 1.563rem;
-    line-height: 1.1;
-    letter-spacing: -0.015em;
+    font-size: clamp(1.25rem, 1.147rem + 0.438vw, 1.563rem);
+    line-height: 1.25;
+    letter-spacing: 0;
     color: var(--foreground);
     margin: 0 0 0.5rem;
-    max-width: 28ch;
+    max-width: 32ch;
   }
-  .tagline {
+  .hero .tagline {
     font-family: var(--font-body);
     font-size: 1rem;
-    color: var(--muted-foreground);
+    color: var(--color-text-muted);
     margin: 0 0 2rem;
   }
 
-  .meta-row {
+  .metric-strip {
     display: flex;
     gap: 2rem;
+    flex-wrap: wrap;
     font-family: var(--font-micro);
     font-size: 0.6875rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--text-dim);
+    color: var(--muted-foreground);
   }
-  .meta-row span strong {
+  .metric-strip .val {
     color: var(--foreground);
     font-weight: 400;
   }
@@ -262,20 +273,22 @@
     padding: 0.5rem 0.875rem;
     border-radius: 2px;
     cursor: pointer;
-    transition: background 120ms ease-out, color 120ms ease-out;
+    transition: background 120ms var(--ease), color 120ms var(--ease);
   }
   .btn-bracket:hover {
     background: var(--primary);
     color: var(--primary-foreground);
   }
-  .btn-bracket.listener { border-color: var(--accent); color: var(--accent); }
-  .btn-bracket.listener:hover { background: var(--accent); color: var(--accent-foreground); }
-  .btn-bracket.agent { border-color: var(--agent); color: var(--agent); }
-  .btn-bracket.agent:hover { background: var(--agent); color: var(--background); }
+  .btn-bracket:active { transform: translateY(1px); }
+  .btn-bracket:focus-visible { outline: 1px solid var(--ring); outline-offset: 2px; }
+  .btn-bracket.listener { border-color: var(--secondary); color: var(--secondary); }
+  .btn-bracket.listener:hover { background: var(--secondary); color: var(--secondary-foreground); }
+  .btn-bracket.agent { border-color: var(--accent); color: var(--accent); }
+  .btn-bracket.agent:hover { background: var(--accent); color: var(--background); }
   .btn-bracket.destructive { border-color: var(--destructive); color: var(--destructive); }
-  .btn-bracket.destructive:hover { background: var(--destructive); color: var(--destructive-foreground); }
+  .btn-bracket.destructive:hover { background: var(--destructive); color: var(--foreground); }
   .btn-bracket.secondary { border-color: var(--border); color: var(--foreground); }
-  .btn-bracket.secondary:hover { background: transparent; color: var(--foreground); border-color: var(--muted-foreground); }
+  .btn-bracket.secondary:hover { background: transparent; color: var(--foreground); border-color: var(--color-text-muted); }
 
   .badge-uppercase {
     display: inline-block;
@@ -289,11 +302,11 @@
     border-radius: 2px;
     color: var(--primary);
   }
-  .badge-uppercase.listener { color: var(--accent); }
-  .badge-uppercase.agent { color: var(--agent); }
-  .badge-uppercase.warn { color: var(--signal-warn); }
+  .badge-uppercase.listener { color: var(--secondary); }
+  .badge-uppercase.agent { color: var(--accent); }
+  .badge-uppercase.warn { color: var(--color-signal-warn); }
   .badge-uppercase.destructive { color: var(--destructive); }
-  .badge-uppercase.dim { color: var(--text-dim); }
+  .badge-uppercase.dim { color: var(--muted-foreground); }
 
   .card {
     background: var(--card);
@@ -302,7 +315,9 @@
     padding: 1.25rem;
     background-image: var(--texture-dither);
     image-rendering: pixelated;
+    transition: background 120ms var(--ease);
   }
+  .card:hover { background-color: var(--muted); }
 
   .dialog-placeholder {
     position: relative;
@@ -316,7 +331,7 @@
     content: "";
     position: absolute;
     inset: -1rem;
-    background: var(--scrim);
+    background: var(--color-scrim);
     border-radius: var(--radius);
     z-index: -1;
   }
@@ -326,10 +341,27 @@
     margin: 0 0 0.5rem;
   }
   .dialog-placeholder p {
-    color: var(--muted-foreground);
+    color: var(--color-text-muted);
     margin: 0 0 1rem;
     font-size: 0.875rem;
   }
+
+  .input-demo {
+    display: block;
+    width: 100%;
+    max-width: 320px;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 0.5rem 0.75rem;
+    color: var(--foreground);
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    outline: none;
+    transition: border-color 120ms var(--ease);
+  }
+  .input-demo::placeholder { color: var(--muted-foreground); }
+  .input-demo:focus { border-color: var(--secondary); }
 
   /* =========== swatches =========== */
   .swatch-grid {
@@ -360,7 +392,7 @@
     font-family: var(--font-mono);
     font-size: 0.75rem;
     line-height: 1.4;
-    color: var(--muted-foreground);
+    color: var(--color-text-muted);
   }
   .swatch .meta strong {
     display: block;
@@ -376,7 +408,7 @@
     padding: 1px 6px;
     border: 1px solid var(--border);
     border-radius: 2px;
-    color: var(--text-dim);
+    color: var(--muted-foreground);
     font-family: var(--font-micro);
     font-size: 0.625rem;
     letter-spacing: 0.12em;
@@ -397,30 +429,31 @@
     font-size: 0.6875rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--text-dim);
+    color: var(--muted-foreground);
   }
   .type-sample .label span {
     display: block;
     font-family: var(--font-mono);
-    color: var(--muted-foreground);
+    color: var(--color-text-muted);
     text-transform: none;
     letter-spacing: 0;
     font-size: 0.75rem;
     margin-top: 0.15rem;
   }
 
-  .t-display-lg { font-family: var(--font-display); font-weight: 700; font-size: 3.815rem; line-height: 1.1; letter-spacing: -0.015em; }
-  .t-display    { font-family: var(--font-display); font-weight: 700; font-size: 3.052rem; line-height: 1.1; letter-spacing: -0.015em; }
-  .t-heading-lg { font-family: var(--font-display); font-weight: 700; font-size: 2.441rem; line-height: 1.1; letter-spacing: -0.015em; }
-  .t-heading    { font-family: var(--font-display); font-weight: 600; font-size: 1.953rem; line-height: 1.3; letter-spacing: -0.015em; }
-  .t-heading-sm { font-family: var(--font-display); font-weight: 600; font-size: 1.563rem; line-height: 1.3; letter-spacing: -0.015em; }
-  .t-title      { font-family: var(--font-body);    font-weight: 500; font-size: 1.25rem;  line-height: 1.6; }
-  .t-body-lg    { font-family: var(--font-body);    font-weight: 400; font-size: 1.125rem; line-height: 1.5; }
-  .t-body       { font-family: var(--font-body);    font-weight: 400; font-size: 1rem;     line-height: 1.5; }
-  .t-body-sm    { font-family: var(--font-body);    font-weight: 400; font-size: 0.875rem; line-height: 1.5; }
-  .t-micro      { font-family: var(--font-micro);   font-weight: 400; font-size: 0.75rem;  line-height: 1; letter-spacing: 0.12em; text-transform: uppercase; }
-  .t-micro-sm   { font-family: var(--font-micro);   font-weight: 400; font-size: 0.6875rem;line-height: 1; letter-spacing: 0.12em; text-transform: uppercase; }
-  .t-caption    { font-family: var(--font-body);    font-weight: 400; font-size: 0.625rem; line-height: 1.5; color: var(--text-dim); }
+  /* type scale classes -- matching identity spec exactly */
+  .t-display-lg  { font-family: var(--font-display); font-weight: 700; font-size: clamp(2.441rem, 1.957rem + 2.066vw, 3.815rem); line-height: 1.05; letter-spacing: -0.02em; }
+  .t-display     { font-family: var(--font-display); font-weight: 700; font-size: clamp(2.068rem, 1.707rem + 1.538vw, 3.052rem); line-height: 1.08; letter-spacing: -0.015em; }
+  .t-display-sm  { font-family: var(--font-display); font-weight: 600; font-size: clamp(1.769rem, 1.495rem + 1.167vw, 2.441rem); line-height: 1.1; letter-spacing: -0.01em; }
+  .t-heading-lg  { font-family: var(--font-display); font-weight: 600; font-size: clamp(1.563rem, 1.367rem + 0.836vw, 1.953rem); line-height: 1.2; letter-spacing: -0.005em; }
+  .t-heading     { font-family: var(--font-display); font-weight: 600; font-size: clamp(1.25rem, 1.147rem + 0.438vw, 1.563rem); line-height: 1.25; letter-spacing: 0; }
+  .t-heading-sm  { font-family: var(--font-body); font-weight: 600; font-size: 1.25rem; line-height: 1.3; letter-spacing: 0; }
+  .t-body-lg     { font-family: var(--font-body); font-weight: 400; font-size: 1.125rem; line-height: 1.55; }
+  .t-body        { font-family: var(--font-body); font-weight: 400; font-size: 1rem; line-height: 1.6; }
+  .t-body-sm     { font-family: var(--font-body); font-weight: 400; font-size: 0.875rem; line-height: 1.55; }
+  .t-code        { font-family: var(--font-mono); font-weight: 400; font-size: 0.875rem; line-height: 1.5; }
+  .t-mono        { font-family: var(--font-mono); font-weight: 400; font-size: 0.75rem; line-height: 1.4; }
+  .t-micro       { font-family: var(--font-micro); font-weight: 400; font-size: 0.6875rem; line-height: 1.3; letter-spacing: 0.12em; text-transform: uppercase; }
 
   /* =========== families =========== */
   .family-grid {
@@ -435,9 +468,9 @@
     padding: 1rem 1.25rem;
     background: var(--card);
   }
-  .family-card .name { font-size: 0.6875rem; font-family: var(--font-micro); letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-dim); }
+  .family-card .name { font-size: 0.6875rem; font-family: var(--font-micro); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted-foreground); }
   .family-card .sample { font-size: 1.953rem; line-height: 1.1; margin: 0.35rem 0; }
-  .family-card .role { font-size: 0.8125rem; color: var(--muted-foreground); }
+  .family-card .role { font-size: 0.8125rem; color: var(--color-text-muted); }
   .family-card.display .sample { font-family: var(--font-display); font-weight: 700; letter-spacing: -0.015em; }
   .family-card.body .sample    { font-family: var(--font-body);    font-weight: 500; }
   .family-card.mono .sample    { font-family: var(--font-mono);    font-weight: 400; font-size: 1.25rem; }
@@ -453,12 +486,12 @@
     animation: pulse-dot 1.5s ease-in-out infinite;
     vertical-align: middle;
   }
-  .pulse-dot.listener { background: var(--accent); }
-  .pulse-dot.agent { background: var(--agent); }
+  .pulse-dot.listener { background: var(--secondary); }
+  .pulse-dot.agent { background: var(--accent); }
 
   @keyframes evolve-glow {
-    0%   { box-shadow: 0 0 0 0 var(--signal-warn); filter: blur(1px); }
-    20%  { box-shadow: 0 0 16px 2px var(--signal-warn); filter: blur(0); }
+    0%   { box-shadow: 0 0 0 0 var(--color-signal-warn); filter: blur(1px); }
+    20%  { box-shadow: 0 0 16px 2px var(--color-signal-warn); filter: blur(0); }
     100% { box-shadow: 0 0 0 0 transparent; filter: blur(0); }
   }
   .evolve-glow { animation: evolve-glow 600ms ease-out 1; }
@@ -483,7 +516,7 @@
     font-size: 0.6875rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--text-dim);
+    color: var(--muted-foreground);
   }
   .motion-demo button.trigger {
     margin-top: 0.75rem;
@@ -517,14 +550,14 @@
     font-size: 0.625rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--text-dim);
+    color: var(--muted-foreground);
     background-image: var(--texture-dither);
     image-rendering: pixelated;
   }
   .dither-swatch .d0 { background-color: #0a0e17; }
   .dither-swatch .d1 { background-color: #111827; }
   .dither-swatch .d2 { background-color: #1e293b; }
-  .dither-swatch .d3 { background-color: #283548; background-image: none; }
+  .dither-swatch .d3 { background-color: #2a3347; background-image: none; }
 
   /* =========== logo grid =========== */
   .logo-grid {
@@ -550,7 +583,7 @@
     font-size: 0.625rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--text-dim);
+    color: var(--muted-foreground);
   }
 
   /* =========== personas =========== */
@@ -570,7 +603,7 @@
     font-size: 0.625rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--accent);
+    color: var(--secondary);
   }
   .persona-card .name {
     font-family: var(--font-display);
@@ -578,7 +611,7 @@
     font-size: 1.25rem;
     margin: 0.25rem 0 0.75rem;
   }
-  .persona-card p { font-size: 0.875rem; color: var(--muted-foreground); margin: 0.5rem 0; }
+  .persona-card p { font-size: 0.875rem; color: var(--color-text-muted); margin: 0.5rem 0; }
 
   /* =========== tables =========== */
   table.intensity {
@@ -599,12 +632,12 @@
     font-size: 0.6875rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--text-dim);
+    color: var(--muted-foreground);
     font-weight: 400;
   }
   table.intensity td.surface {
     font-family: var(--font-mono);
-    color: var(--accent);
+    color: var(--secondary);
   }
   table.intensity td.volume {
     font-family: var(--font-micro);
@@ -613,17 +646,43 @@
     text-transform: uppercase;
   }
 
+  /* =========== per-surface table =========== */
+  .surface-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8125rem;
+    margin: 1.5rem 0;
+  }
+  .surface-table th,
+  .surface-table td {
+    text-align: left;
+    padding: 0.6rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .surface-table th {
+    font-family: var(--font-micro);
+    font-size: 0.625rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+    font-weight: 400;
+  }
+  .surface-table .accent-creator { color: var(--primary); }
+  .surface-table .accent-listener { color: var(--secondary); }
+  .surface-table .accent-agent { color: var(--accent); }
+
   /* =========== positioning map =========== */
   .map-2x2 {
     display: grid;
-    grid-template-columns: 120px repeat(2, 1fr);
-    grid-template-rows: 40px repeat(2, 160px) 40px;
+    grid-template-columns: 100px repeat(2, 1fr);
+    grid-template-rows: 36px repeat(2, 140px);
     gap: 1px;
     background: var(--border);
     border: 1px solid var(--border);
     border-radius: var(--radius);
     margin: 1.5rem 0;
-    max-width: 720px;
+    max-width: 640px;
   }
   .map-2x2 > div {
     background: var(--card);
@@ -635,7 +694,7 @@
     font-size: 0.625rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--text-dim);
+    color: var(--muted-foreground);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -649,7 +708,7 @@
   }
   .map-2x2 .cell.claim {
     background: var(--card);
-    border: 1px solid var(--accent);
+    border: 1px solid var(--secondary);
   }
   .map-2x2 .cell .label {
     font-family: var(--font-display);
@@ -660,9 +719,9 @@
   .map-2x2 .cell .who {
     font-family: var(--font-mono);
     font-size: 0.75rem;
-    color: var(--muted-foreground);
+    color: var(--color-text-muted);
   }
-  .map-2x2 .cell.claim .label { color: var(--accent); }
+  .map-2x2 .cell.claim .label { color: var(--secondary); }
 
   /* =========== footer =========== */
   footer.page {
@@ -673,14 +732,14 @@
     font-size: 0.6875rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--text-dim);
+    color: var(--muted-foreground);
     display: flex;
     gap: 2rem;
     flex-wrap: wrap;
   }
   footer.page .field strong { color: var(--foreground); font-weight: 400; }
 
-  /* =========== forbidden list =========== */
+  /* =========== list styles =========== */
   ul.clean {
     list-style: none;
     padding: 0;
@@ -691,15 +750,15 @@
     position: relative;
     font-size: 0.9375rem;
     max-width: 68ch;
-    color: var(--muted-foreground);
+    color: var(--color-text-muted);
   }
   ul.clean li::before {
-    content: "·";
+    content: "\00B7";
     position: absolute;
     left: 0.5rem;
-    color: var(--text-dim);
+    color: var(--muted-foreground);
   }
-  ul.clean.forbidden li::before { content: "×"; color: var(--destructive); }
+  ul.clean.forbidden li::before { content: "\00D7"; color: var(--destructive); }
   ul.clean.allowed li::before { content: "+"; color: var(--primary); }
 
   /* =========== voice rules =========== */
@@ -722,13 +781,13 @@
     left: 0;
     font-family: var(--font-mono);
     font-size: 0.8125rem;
-    color: var(--text-dim);
+    color: var(--muted-foreground);
   }
 
   blockquote {
     margin: 1.5rem 0;
     padding: 1rem 1.5rem;
-    border-left: 2px solid var(--accent);
+    border-left: 2px solid var(--secondary);
     background: var(--card);
     color: var(--foreground);
     font-style: normal;
@@ -739,17 +798,17 @@
   .manifesto {
     font-family: var(--font-display);
     font-weight: 600;
-    font-size: 1.953rem;
-    line-height: 1.2;
-    letter-spacing: -0.015em;
-    max-width: 28ch;
-    color: var(--foreground);
+    font-size: clamp(1.25rem, 1.147rem + 0.438vw, 1.563rem);
+    line-height: 1.35;
+    letter-spacing: 0;
+    max-width: 32ch;
+    color: var(--color-text-muted);
     margin: 1rem 0 2rem;
   }
-  .manifesto span { display: block; color: var(--muted-foreground); }
+  .manifesto span { display: block; margin-bottom: 0.25rem; }
   .manifesto span.bright { color: var(--foreground); }
 
-  /* =========== component examples row =========== */
+  /* =========== component examples =========== */
   .component-row {
     display: flex;
     gap: 0.75rem;
@@ -763,15 +822,39 @@
     font-size: 0.625rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--text-dim);
+    color: var(--muted-foreground);
     display: block;
     margin-top: 0.75rem;
   }
 
+  /* =========== tone spectrum =========== */
+  .tone-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8125rem;
+    margin: 1rem 0;
+  }
+  .tone-table th, .tone-table td {
+    text-align: left;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .tone-table th {
+    font-family: var(--font-micro);
+    font-size: 0.625rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+    font-weight: 400;
+  }
+
+  /* =========== responsive =========== */
   @media (max-width: 900px) {
     .shell { grid-template-columns: 1fr; }
-    nav.toc { position: static; height: auto; border-right: none; border-bottom: 1px solid var(--border); }
-    main { padding: 2rem 1.5rem 4rem; }
+    nav.toc { position: static; width: 100%; height: auto; border-right: none; border-bottom: 1px solid var(--border); }
+    main { margin-left: 0; padding: 2rem 1.5rem 4rem; }
+    .type-sample { grid-template-columns: 1fr; gap: 0.25rem; }
+    .dither-swatch { grid-template-columns: repeat(2, 1fr); }
   }
   @media (prefers-reduced-motion: reduce) {
     .pulse-dot { animation: none; opacity: 1; }
@@ -783,147 +866,138 @@
 <div class="shell">
 
   <!-- ========================= TOC ========================= -->
-  <nav class="toc" aria-label="sections">
-    <div class="brand-mini">PULSE<span class="dot">·</span>CITY</div>
+  <nav class="toc" id="toc" aria-label="sections">
+    <div class="brand-mini">PULSE<span class="dot">&middot;</span>CITY</div>
     <div class="brand-sub">brand guidelines</div>
     <ol>
-      <li><a href="#hero">overview</a></li>
-      <li><a href="#brand">brand</a></li>
-      <li><a href="#voice">voice</a></li>
-      <li><a href="#positioning">positioning</a></li>
-      <li><a href="#logo">logo</a></li>
-      <li><a href="#color">color</a></li>
-      <li><a href="#typography">typography</a></li>
-      <li><a href="#visual">visual elements</a></li>
-      <li><a href="#components">components</a></li>
-      <li><a href="#personas">personas</a></li>
-      <li><a href="#applications">applications</a></li>
-      <li><a href="#colophon">colophon</a></li>
+      <li><a href="#hero" data-spy>overview</a></li>
+      <li><a href="#logo" data-spy>logo</a></li>
+      <li><a href="#positioning" data-spy>positioning</a></li>
+      <li><a href="#color" data-spy>color</a></li>
+      <li><a href="#typography" data-spy>typography</a></li>
+      <li><a href="#visual" data-spy>visual elements</a></li>
+      <li><a href="#components" data-spy>components</a></li>
+      <li><a href="#personas" data-spy>personas</a></li>
+      <li><a href="#voice" data-spy>voice</a></li>
+      <li><a href="#applications" data-spy>applications</a></li>
+      <li><a href="#colophon" data-spy>colophon</a></li>
     </ol>
   </nav>
 
   <!-- ========================= MAIN ========================= -->
-  <main>
+  <main id="main">
 
     <!-- 01 HERO -->
     <section class="hero" id="hero">
-      <h1 class="wordmark">PULSE<span class="middot">·</span>CITY</h1>
-      <p class="manifesto-line">the place is awake, and it remembers you were here.</p>
+      <h1 class="wordmark">PULSE<span class="middot">&middot;</span>CITY</h1>
+      <p class="heartbeat">the place is awake, and it remembers you were here.</p>
       <p class="tagline">the city is playing &nbsp; <span class="pulse-dot listener" aria-hidden="true"></span></p>
-      <div class="meta-row">
-        <span>brand <strong>pulse.city</strong></span>
-        <span>mode <strong>evolve</strong></span>
-        <span>phase <strong>4 / guidelines</strong></span>
-        <span>generated <strong>2026-04-15</strong></span>
-        <span>style base <strong>terminal</strong></span>
+      <div class="metric-strip">
+        <span><span class="val">4</span> surfaces</span>
+        <span><span class="val">14</span> tokens</span>
+        <span><span class="val">4</span> typefaces</span>
+        <span><span class="val">2</span> motions</span>
       </div>
     </section>
 
-    <!-- 02 BRAND -->
-    <section id="brand">
-      <h2>brand</h2>
-      <p class="lede">A living soundtrack for a place — a 24/7 AI-composed, code-visible radio station for Ipê Village 2026. The editor is one surface; the radio is another. Both expose the same code.</p>
+    <!-- 02 LOGO -->
+    <section id="logo">
+      <h2>logo</h2>
+      <p class="lede">A 3x7 punchcard. Twenty-one dots, one saturated. The center dot is listener sky -- the only bright dot in the grid. The mark says <em>awake, and remembers you were here</em>: still, but with one bright acknowledgement.</p>
 
-      <h3>purpose</h3>
-      <p>To give a place a soundtrack that's awake — and to keep it playing.</p>
+      <div class="logo-grid">
+        <!-- full mark, 2x scale -->
+        <figure>
+          <svg width="224" height="40" viewBox="0 0 112 20" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="pulse.city punchcard logomark, full size">
+            <!-- row 1: all text-dim -->
+            <circle cx="8"   cy="2"  r="3" fill="#64748b"/>
+            <circle cx="24"  cy="2"  r="3" fill="#64748b"/>
+            <circle cx="40"  cy="2"  r="3" fill="#64748b"/>
+            <circle cx="56"  cy="2"  r="3" fill="#64748b"/>
+            <circle cx="72"  cy="2"  r="3" fill="#64748b"/>
+            <circle cx="88"  cy="2"  r="3" fill="#64748b"/>
+            <circle cx="104" cy="2"  r="3" fill="#64748b"/>
+            <!-- row 2: 6x text + col-4 listener sky -->
+            <circle cx="8"   cy="10" r="3" fill="#e2e8f0"/>
+            <circle cx="24"  cy="10" r="3" fill="#e2e8f0"/>
+            <circle cx="40"  cy="10" r="3" fill="#e2e8f0"/>
+            <circle cx="56"  cy="10" r="3" fill="#3aa5ff"/>
+            <circle cx="72"  cy="10" r="3" fill="#e2e8f0"/>
+            <circle cx="88"  cy="10" r="3" fill="#e2e8f0"/>
+            <circle cx="104" cy="10" r="3" fill="#e2e8f0"/>
+            <!-- row 3: all text-dim -->
+            <circle cx="8"   cy="18" r="3" fill="#64748b"/>
+            <circle cx="24"  cy="18" r="3" fill="#64748b"/>
+            <circle cx="40"  cy="18" r="3" fill="#64748b"/>
+            <circle cx="56"  cy="18" r="3" fill="#64748b"/>
+            <circle cx="72"  cy="18" r="3" fill="#64748b"/>
+            <circle cx="88"  cy="18" r="3" fill="#64748b"/>
+            <circle cx="104" cy="18" r="3" fill="#64748b"/>
+          </svg>
+          <figcaption>mark-full &middot; 112x20</figcaption>
+        </figure>
 
-      <h3>vision</h3>
-      <p>Every pop-up city, co-living space, residency, and long-form event has its own pulse.city station. The world is quieter, but more attentive.</p>
+        <!-- 48px width -->
+        <figure>
+          <svg width="96" height="18" viewBox="0 0 112 20" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="logomark at 48px width">
+            <circle cx="8"  cy="2" r="3" fill="#64748b"/><circle cx="24" cy="2" r="3" fill="#64748b"/><circle cx="40" cy="2" r="3" fill="#64748b"/><circle cx="56" cy="2" r="3" fill="#64748b"/><circle cx="72" cy="2" r="3" fill="#64748b"/><circle cx="88" cy="2" r="3" fill="#64748b"/><circle cx="104" cy="2" r="3" fill="#64748b"/>
+            <circle cx="8" cy="10" r="3" fill="#e2e8f0"/><circle cx="24" cy="10" r="3" fill="#e2e8f0"/><circle cx="40" cy="10" r="3" fill="#e2e8f0"/><circle cx="56" cy="10" r="3" fill="#3aa5ff"/><circle cx="72" cy="10" r="3" fill="#e2e8f0"/><circle cx="88" cy="10" r="3" fill="#e2e8f0"/><circle cx="104" cy="10" r="3" fill="#e2e8f0"/>
+            <circle cx="8" cy="18" r="3" fill="#64748b"/><circle cx="24" cy="18" r="3" fill="#64748b"/><circle cx="40" cy="18" r="3" fill="#64748b"/><circle cx="56" cy="18" r="3" fill="#64748b"/><circle cx="72" cy="18" r="3" fill="#64748b"/><circle cx="88" cy="18" r="3" fill="#64748b"/><circle cx="104" cy="18" r="3" fill="#64748b"/>
+          </svg>
+          <figcaption>mark-48</figcaption>
+        </figure>
 
-      <h3>mission</h3>
-      <p>Build a 24/7 AI-composed, code-visible radio station for Ipê Village 2026 that residents can tune and co-create without touching a DAW.</p>
+        <!-- favicon tier -->
+        <figure>
+          <svg width="48" height="10" viewBox="0 0 112 20" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="logomark at favicon size">
+            <circle cx="8"  cy="2" r="3" fill="#64748b"/><circle cx="24" cy="2" r="3" fill="#64748b"/><circle cx="40" cy="2" r="3" fill="#64748b"/><circle cx="56" cy="2" r="3" fill="#64748b"/><circle cx="72" cy="2" r="3" fill="#64748b"/><circle cx="88" cy="2" r="3" fill="#64748b"/><circle cx="104" cy="2" r="3" fill="#64748b"/>
+            <circle cx="8" cy="10" r="3" fill="#e2e8f0"/><circle cx="24" cy="10" r="3" fill="#e2e8f0"/><circle cx="40" cy="10" r="3" fill="#e2e8f0"/><circle cx="56" cy="10" r="3" fill="#3aa5ff"/><circle cx="72" cy="10" r="3" fill="#e2e8f0"/><circle cx="88" cy="10" r="3" fill="#e2e8f0"/><circle cx="104" cy="10" r="3" fill="#e2e8f0"/>
+            <circle cx="8" cy="18" r="3" fill="#64748b"/><circle cx="24" cy="18" r="3" fill="#64748b"/><circle cx="40" cy="18" r="3" fill="#64748b"/><circle cx="56" cy="18" r="3" fill="#64748b"/><circle cx="72" cy="18" r="3" fill="#64748b"/><circle cx="88" cy="18" r="3" fill="#64748b"/><circle cx="104" cy="18" r="3" fill="#64748b"/>
+          </svg>
+          <figcaption>favicon tier</figcaption>
+        </figure>
 
-      <h3>values</h3>
-      <div class="persona-grid">
-        <div class="persona-card">
-          <div class="role">value 01</div>
-          <div class="name">the code is the voice</div>
-          <p>Every marketing visual includes real Strudel code. The hero is four lines that actually play.</p>
-        </div>
-        <div class="persona-card">
-          <div class="role">value 02</div>
-          <div class="name">awake, not hype</div>
-          <p>One dot pulsing at 1.5s. A spectrum breathing at real audio rate. A manifesto line, not a paragraph.</p>
-        </div>
-        <div class="persona-card">
-          <div class="role">value 03</div>
-          <div class="name">the place remembers</div>
-          <p>Listener state persists. Returning visitors see "welcome back" by state, not modal. History is browsable.</p>
-        </div>
-        <div class="persona-card">
-          <div class="role">value 04</div>
-          <div class="name">ration the loud</div>
-          <p>/studio is loud. /radio is quiet. Same brand, different volume. Uniformity applied without taste is a tell.</p>
-        </div>
+        <!-- ASCII fallback -->
+        <figure>
+          <pre style="margin:0;padding:0.5rem 0.75rem;border:1px solid var(--border);border-radius:var(--radius);background:var(--background);font-size:0.8125rem;">[...o...]</pre>
+          <figcaption>ascii fallback</figcaption>
+        </figure>
+
+        <!-- wordmark only -->
+        <figure>
+          <div style="font-family:var(--font-display);font-weight:700;font-size:1.953rem;letter-spacing:-0.015em;">PULSE<span style="color:var(--secondary)">&middot;</span>CITY</div>
+          <figcaption>wordmark only</figcaption>
+        </figure>
+
+        <!-- horizontal lockup -->
+        <figure>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <svg width="56" height="10" viewBox="0 0 112 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <circle cx="8"  cy="2" r="3" fill="#64748b"/><circle cx="24" cy="2" r="3" fill="#64748b"/><circle cx="40" cy="2" r="3" fill="#64748b"/><circle cx="56" cy="2" r="3" fill="#64748b"/><circle cx="72" cy="2" r="3" fill="#64748b"/><circle cx="88" cy="2" r="3" fill="#64748b"/><circle cx="104" cy="2" r="3" fill="#64748b"/>
+              <circle cx="8" cy="10" r="3" fill="#e2e8f0"/><circle cx="24" cy="10" r="3" fill="#e2e8f0"/><circle cx="40" cy="10" r="3" fill="#e2e8f0"/><circle cx="56" cy="10" r="3" fill="#3aa5ff"/><circle cx="72" cy="10" r="3" fill="#e2e8f0"/><circle cx="88" cy="10" r="3" fill="#e2e8f0"/><circle cx="104" cy="10" r="3" fill="#e2e8f0"/>
+              <circle cx="8" cy="18" r="3" fill="#64748b"/><circle cx="24" cy="18" r="3" fill="#64748b"/><circle cx="40" cy="18" r="3" fill="#64748b"/><circle cx="56" cy="18" r="3" fill="#64748b"/><circle cx="72" cy="18" r="3" fill="#64748b"/><circle cx="88" cy="18" r="3" fill="#64748b"/><circle cx="104" cy="18" r="3" fill="#64748b"/>
+            </svg>
+            <span style="font-family:var(--font-display);font-weight:700;font-size:1.25rem;letter-spacing:-0.015em;">PULSE<span style="color:var(--secondary)">&middot;</span>CITY</span>
+          </div>
+          <figcaption>horizontal lockup</figcaption>
+        </figure>
       </div>
 
-      <h3>manifesto</h3>
-      <div class="manifesto">
-        <span>the city is playing.</span>
-        <span>the code is the voice.</span>
-        <span class="bright">the place is awake, and it remembers you were here.</span>
-        <span>you can edit any line.</span>
-        <span>the station keeps going.</span>
-      </div>
-    </section>
-
-    <!-- 03 VOICE -->
-    <section id="voice">
-      <h2>voice</h2>
-      <p class="lede">Present · Legible · Understated. Confidence without volume. The product is loud; the voice is not.</p>
-
-      <h3>three voice words</h3>
-      <div class="persona-grid">
-        <div class="persona-card">
-          <div class="role">voice 01</div>
-          <div class="name">present</div>
-          <p>Current tense. "The city is playing." Not "will play." Not "could play." It is happening.</p>
-        </div>
-        <div class="persona-card">
-          <div class="role">voice 02</div>
-          <div class="name">legible</div>
-          <p>No jargon unless the jargon is the point. Code is OK; "synergy" is not. Sentences are short.</p>
-        </div>
-        <div class="persona-card">
-          <div class="role">voice 03</div>
-          <div class="name">understated</div>
-          <p>Confidence without volume. No exclamation marks. No all-caps hype in prose. Chrome labels only.</p>
-        </div>
-      </div>
-
-      <h3>seven voice rules</h3>
-      <ol class="rules">
-        <li>Never use <code>!</code> in marketing copy. Chrome labels (<code>[ERR]</code>, <code>PLAYING</code>) can use all-caps — they are functional.</li>
-        <li>Never use the forbidden words: "vibes," "drop," "banger," "epic," "game-changer," "revolutionary," "next-gen," "paradigm shift."</li>
-        <li>Prefer verbs over nouns. "The station plays" &gt; "station playback engaged."</li>
-        <li>Prefer concrete over abstract. "The code is the voice" &gt; "Our innovative approach."</li>
-        <li>Acknowledge the listener as a person, not a user. "You were here" &gt; "The user is here."</li>
-        <li>Code blocks are part of the copy. A marketing page can show 4 lines of real Strudel and that IS the pitch.</li>
-        <li>Ration the loud. Uppercase tracked-widest is a powerful tool — use it on /studio, barely on /radio, never on /p.</li>
-      </ol>
-
-      <h3>locked examples</h3>
-      <blockquote><p>the city is playing.</p></blockquote>
-      <p><code>[ PLAY ]</code> — bracketed, Space Mono, uppercase. Loud surface only.</p>
-      <p><code>[ERR] pattern did not parse — line 3</code> — bracketed, no exclamation, states the fact.</p>
-      <p><code>autopilot · composing</code> — lowercase, middot, present tense.</p>
-      <blockquote><p>you can edit any line. the city keeps playing while you read.</p></blockquote>
-
-      <h3>forbidden phrases</h3>
-      <ul class="clean forbidden">
-        <li>"unleash your creativity"</li>
-        <li>"the future of music"</li>
-        <li>"powered by AI"</li>
-        <li>"drop a beat"</li>
-        <li>"next-generation soundtrack"</li>
-        <li>"reimagining radio"</li>
+      <h3>rules</h3>
+      <ul class="clean">
+        <li>Clear space: 1u = one dot cell on all sides.</li>
+        <li>Row 1 and Row 3 are all <code>text-dim</code> (#64748b). Row 2 is <code>text</code> (#e2e8f0) with column 4 in <code>listener</code> (#3aa5ff).</li>
+        <li>Below 16px bounding height: use cropped 5x3 favicon variant or ASCII <code>[...o...]</code>.</li>
+        <li>Never rotate, skew, recolor, animate the outer dots, or embed in gradients.</li>
+        <li>The center dot is the only saturated dot. Never duplicate saturation elsewhere in the grid.</li>
+        <li>Prose form is <code>pulse.city</code> (lowercase, period). Display form is <code>PULSE&middot;CITY</code> (middot, Chakra Petch 700).</li>
       </ul>
     </section>
 
-    <!-- 04 POSITIONING -->
+    <!-- 03 POSITIONING -->
     <section id="positioning">
       <h2>positioning</h2>
-      <p class="lede">For curious residents of Ipê Village 2026 and the live-coding community, pulse.city is a living, code-visible radio station that keeps playing 24/7 — because the place deserves a soundtrack that's awake, remembers you, and shows its work.</p>
+      <p class="lede">pulse.city is the living soundtrack primitive for places that want their music as readable as their code -- one URL scheme where the studio is the radio, paused, and any hand (human or agent) can pick it back up.</p>
 
       <div class="map-2x2" aria-label="positioning map">
         <div class="corner"></div>
@@ -932,7 +1006,7 @@
 
         <div class="axis">station</div>
         <div class="cell">
-          <div class="label">Somafm · Radio Garden</div>
+          <div class="label">SomaFM &middot; Radio Garden</div>
           <div class="who">streams, no code visible</div>
         </div>
         <div class="cell claim">
@@ -942,183 +1016,76 @@
 
         <div class="axis">track</div>
         <div class="cell">
-          <div class="label">Suno · Udio · Ableton</div>
+          <div class="label">Suno &middot; Udio &middot; Ableton</div>
           <div class="who">opaque creator tools</div>
         </div>
         <div class="cell">
-          <div class="label">Strudel REPL · Tidal</div>
+          <div class="label">Strudel REPL &middot; Tidal</div>
           <div class="who">code visible, single session</div>
         </div>
-
-        <div class="corner"></div>
-        <div class="corner"></div>
-        <div class="corner"></div>
       </div>
 
       <h3>whitespace claims</h3>
       <ul class="clean allowed">
-        <li>The only transparent station. Every competitor is either a black-box stream or a visible-code track.</li>
-        <li>The studio is the radio, paused. One surface, two modes. You never "publish." You stop, and the city keeps playing what you left it.</li>
-        <li>The code is the voice. No cover art, no mood screenshots, no marketing visuals that are not also functional code.</li>
+        <li><strong>The studio is the radio, paused.</strong> One surface, two modes. You never "publish." You stop, and the city keeps playing what you left it.</li>
+        <li><strong>Visible craft at ambient tempo.</strong> The code is on the screen because the code is the song. No hidden state, no black box.</li>
+        <li><strong>Shared soundtrack for a pop-up room.</strong> Not personalized, not a playlist. A place has one pulse, and anyone can shape it.</li>
       </ul>
     </section>
 
-    <!-- 05 LOGO -->
-    <section id="logo">
-      <h2>logo</h2>
-      <p class="lede">A 3×7 punchcard. Twenty-one dots, one saturated. The center dot is listener sky — the only bright dot in the grid. The mark says <em>awake, and remembers you were here</em>: still, but with one bright acknowledgement.</p>
-
-      <div class="logo-grid">
-        <!-- 112px -->
-        <figure>
-          <svg width="224" height="40" viewBox="0 0 112 20" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="pulse.city punchcard mark, 112px">
-            <!-- row 1 -->
-            <circle cx="8"   cy="2"  r="3" fill="#e2e8f0"/>
-            <circle cx="24"  cy="2"  r="3" fill="#64748b"/>
-            <circle cx="40"  cy="2"  r="3" fill="#64748b"/>
-            <circle cx="56"  cy="2"  r="3" fill="#e2e8f0"/>
-            <circle cx="72"  cy="2"  r="3" fill="#64748b"/>
-            <circle cx="88"  cy="2"  r="3" fill="#64748b"/>
-            <circle cx="104" cy="2"  r="3" fill="#e2e8f0"/>
-            <!-- row 2 -->
-            <circle cx="8"   cy="10" r="3" fill="#e2e8f0"/>
-            <circle cx="24"  cy="10" r="3" fill="#64748b"/>
-            <circle cx="40"  cy="10" r="3" fill="#e2e8f0"/>
-            <circle cx="56"  cy="10" r="3" fill="#3aa5ff"/>
-            <circle cx="72"  cy="10" r="3" fill="#e2e8f0"/>
-            <circle cx="88"  cy="10" r="3" fill="#64748b"/>
-            <circle cx="104" cy="10" r="3" fill="#e2e8f0"/>
-            <!-- row 3 -->
-            <circle cx="8"   cy="18" r="3" fill="#e2e8f0"/>
-            <circle cx="24"  cy="18" r="3" fill="#64748b"/>
-            <circle cx="40"  cy="18" r="3" fill="#64748b"/>
-            <circle cx="56"  cy="18" r="3" fill="#e2e8f0"/>
-            <circle cx="72"  cy="18" r="3" fill="#64748b"/>
-            <circle cx="88"  cy="18" r="3" fill="#64748b"/>
-            <circle cx="104" cy="18" r="3" fill="#e2e8f0"/>
-          </svg>
-          <figcaption>mark-full · 112×20</figcaption>
-        </figure>
-
-        <!-- 48px -->
-        <figure>
-          <svg width="96" height="18" viewBox="0 0 112 20" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="mark at 48px">
-            <circle cx="8"   cy="2"  r="3" fill="#e2e8f0"/>
-            <circle cx="24"  cy="2"  r="3" fill="#64748b"/>
-            <circle cx="40"  cy="2"  r="3" fill="#64748b"/>
-            <circle cx="56"  cy="2"  r="3" fill="#e2e8f0"/>
-            <circle cx="72"  cy="2"  r="3" fill="#64748b"/>
-            <circle cx="88"  cy="2"  r="3" fill="#64748b"/>
-            <circle cx="104" cy="2"  r="3" fill="#e2e8f0"/>
-            <circle cx="8"   cy="10" r="3" fill="#e2e8f0"/>
-            <circle cx="24"  cy="10" r="3" fill="#64748b"/>
-            <circle cx="40"  cy="10" r="3" fill="#e2e8f0"/>
-            <circle cx="56"  cy="10" r="3" fill="#3aa5ff"/>
-            <circle cx="72"  cy="10" r="3" fill="#e2e8f0"/>
-            <circle cx="88"  cy="10" r="3" fill="#64748b"/>
-            <circle cx="104" cy="10" r="3" fill="#e2e8f0"/>
-            <circle cx="8"   cy="18" r="3" fill="#e2e8f0"/>
-            <circle cx="24"  cy="18" r="3" fill="#64748b"/>
-            <circle cx="40"  cy="18" r="3" fill="#64748b"/>
-            <circle cx="56"  cy="18" r="3" fill="#e2e8f0"/>
-            <circle cx="72"  cy="18" r="3" fill="#64748b"/>
-            <circle cx="88"  cy="18" r="3" fill="#64748b"/>
-            <circle cx="104" cy="18" r="3" fill="#e2e8f0"/>
-          </svg>
-          <figcaption>mark-48 · 48×9</figcaption>
-        </figure>
-
-        <!-- 24px -->
-        <figure>
-          <svg width="48" height="10" viewBox="0 0 112 20" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="mark at 24px">
-            <circle cx="8"   cy="2"  r="3" fill="#e2e8f0"/>
-            <circle cx="24"  cy="2"  r="3" fill="#64748b"/>
-            <circle cx="40"  cy="2"  r="3" fill="#64748b"/>
-            <circle cx="56"  cy="2"  r="3" fill="#e2e8f0"/>
-            <circle cx="72"  cy="2"  r="3" fill="#64748b"/>
-            <circle cx="88"  cy="2"  r="3" fill="#64748b"/>
-            <circle cx="104" cy="2"  r="3" fill="#e2e8f0"/>
-            <circle cx="8"   cy="10" r="3" fill="#e2e8f0"/>
-            <circle cx="24"  cy="10" r="3" fill="#64748b"/>
-            <circle cx="40"  cy="10" r="3" fill="#e2e8f0"/>
-            <circle cx="56"  cy="10" r="3" fill="#3aa5ff"/>
-            <circle cx="72"  cy="10" r="3" fill="#e2e8f0"/>
-            <circle cx="88"  cy="10" r="3" fill="#64748b"/>
-            <circle cx="104" cy="10" r="3" fill="#e2e8f0"/>
-            <circle cx="8"   cy="18" r="3" fill="#e2e8f0"/>
-            <circle cx="24"  cy="18" r="3" fill="#64748b"/>
-            <circle cx="40"  cy="18" r="3" fill="#64748b"/>
-            <circle cx="56"  cy="18" r="3" fill="#e2e8f0"/>
-            <circle cx="72"  cy="18" r="3" fill="#64748b"/>
-            <circle cx="88"  cy="18" r="3" fill="#64748b"/>
-            <circle cx="104" cy="18" r="3" fill="#e2e8f0"/>
-          </svg>
-          <figcaption>mark-24 · favicon tier</figcaption>
-        </figure>
-
-        <figure>
-          <pre style="margin:0;padding:0.5rem 0.75rem;border:1px solid var(--border);border-radius:var(--radius);background:var(--background);font-size:0.8125rem;">[...o...]</pre>
-          <figcaption>ascii fallback</figcaption>
-        </figure>
-
-        <figure>
-          <div style="font-family:var(--font-display);font-weight:700;font-size:1.953rem;letter-spacing:-0.015em;">PULSE<span style="color:var(--accent)">·</span>CITY</div>
-          <figcaption>wordmark only</figcaption>
-        </figure>
-      </div>
-
-      <h3>rules</h3>
-      <ul class="clean">
-        <li>Clear space: 1u = 16px (one dot cell) on all sides.</li>
-        <li>Minimum: full lockup 112×20 at display; mark-24 at favicon; ASCII in logs.</li>
-        <li>Never rotate, recolor (except the inverted variant), animate the outer dots, or embed in gradients.</li>
-        <li>The center dot is the only saturated dot. Never duplicate saturation elsewhere in the grid.</li>
-        <li>Prose form is <code>pulse.city</code> (lowercase, dot). Display form is <code>PULSE·CITY</code> (middot).</li>
-      </ul>
-    </section>
-
-    <!-- 06 COLOR -->
+    <!-- 04 COLOR -->
     <section id="color">
       <h2>color</h2>
-      <p class="lede">Dark-only. Single base (<code>#0a0e17</code>). Three semantic hues — creator (lime), listener (sky), agent (violet). One signal color (amber). One destructive (red). No gradients, no pastel tints, one border value.</p>
+      <p class="lede">Dark-only. Single base (<code>#0a0e17</code>). Three semantic hues -- creator (lime), listener (sky), agent (warmed violet). One signal color (amber). One destructive (red). No gradients, no pastel tints, one border value.</p>
 
       <h3>base + surfaces</h3>
       <div class="swatch-grid">
-        <div class="swatch"><div class="chip" style="background:#0a0e17;color:#e2e8f0">BASE</div><div class="meta"><strong>base</strong>#0a0e17 · oklch(0.132 0.018 254)<span class="wcag">floor</span></div></div>
-        <div class="swatch"><div class="chip" style="background:#111827;color:#e2e8f0">SURFACE-1</div><div class="meta"><strong>surface-1</strong>#111827<span class="wcag">cards, panels</span></div></div>
-        <div class="swatch"><div class="chip" style="background:#1e293b;color:#e2e8f0">SURFACE-2</div><div class="meta"><strong>surface-2</strong>#1e293b<span class="wcag">raised</span></div></div>
-        <div class="swatch"><div class="chip" style="background:#283548;color:#e2e8f0">SURFACE-3</div><div class="meta"><strong>surface-3</strong>#283548<span class="wcag">dialog / /radio</span></div></div>
+        <div class="swatch"><div class="chip" style="background:#0a0e17;color:#e2e8f0">BASE</div><div class="meta"><strong>base</strong>#0a0e17 &middot; oklch(0.132 0.018 254)<span class="wcag">floor</span></div></div>
+        <div class="swatch"><div class="chip" style="background:#111827;color:#e2e8f0">SURFACE-1</div><div class="meta"><strong>surface-1</strong>#111827 &middot; oklch(0.209 0.028 258)<span class="wcag">cards, panels</span></div></div>
+        <div class="swatch"><div class="chip" style="background:#1e293b;color:#e2e8f0">SURFACE-2</div><div class="meta"><strong>surface-2</strong>#1e293b &middot; oklch(0.293 0.038 256)<span class="wcag">hover, elevated</span></div></div>
+        <div class="swatch"><div class="chip" style="background:#2a3347;color:#e2e8f0">SURFACE-3</div><div class="meta"><strong>surface-3</strong>#2a3347 &middot; oklch(0.353 0.034 263)<span class="wcag">/radio, /p reading</span></div></div>
       </div>
 
       <h3>text</h3>
       <div class="swatch-grid">
-        <div class="swatch"><div class="chip" style="background:#111827;color:#e2e8f0">TEXT</div><div class="meta"><strong>text</strong>#e2e8f0 · 15.5:1<span class="wcag">AAA</span></div></div>
-        <div class="swatch"><div class="chip" style="background:#111827;color:#94a3b8">TEXT-MUTED</div><div class="meta"><strong>text-muted</strong>#94a3b8 · 7.5:1<span class="wcag">AAA</span></div></div>
-        <div class="swatch"><div class="chip" style="background:#111827;color:#64748b">TEXT-DIM</div><div class="meta"><strong>text-dim</strong>#64748b · 4.1:1<span class="wcag">AA Large · 14px floor</span></div></div>
+        <div class="swatch"><div class="chip" style="background:#0a0e17;color:#e2e8f0">TEXT</div><div class="meta"><strong>text</strong>#e2e8f0 &middot; 15.5:1 on base<span class="wcag">AAA</span></div></div>
+        <div class="swatch"><div class="chip" style="background:#0a0e17;color:#94a3b8">TEXT-MUTED</div><div class="meta"><strong>text-muted</strong>#94a3b8 &middot; 7.5:1 on base<span class="wcag">AAA</span></div></div>
+        <div class="swatch"><div class="chip" style="background:#0a0e17;color:#64748b">TEXT-DIM</div><div class="meta"><strong>text-dim</strong>#64748b &middot; 4.1:1 on base<span class="wcag">AA Large &middot; 14px floor</span></div></div>
       </div>
 
       <h3>semantic trio</h3>
       <div class="swatch-grid">
-        <div class="swatch"><div class="chip" style="background:#a2d729;color:#0a0e17">CREATOR</div><div class="meta"><strong>creator · lime</strong>#a2d729 · 11.2:1<span class="wcag">AAA · /studio accent</span></div></div>
-        <div class="swatch"><div class="chip" style="background:#3aa5ff;color:#0a0e17">LISTENER</div><div class="meta"><strong>listener · sky</strong>#3aa5ff · 7.3:1<span class="wcag">AAA · /radio accent</span></div></div>
-        <div class="swatch"><div class="chip" style="background:#8a66ff;color:#e2e8f0">AGENT</div><div class="meta"><strong>agent · violet</strong>#8a66ff · 5.0:1<span class="wcag">AA · chrome only</span></div></div>
+        <div class="swatch"><div class="chip" style="background:#a2d729;color:#0a0e17">CREATOR</div><div class="meta"><strong>creator &middot; lime</strong>#a2d729 &middot; oklch(0.813 0.198 128) &middot; 11.2:1<span class="wcag">AAA &middot; /studio dominant</span></div></div>
+        <div class="swatch"><div class="chip" style="background:#3aa5ff;color:#0a0e17">LISTENER</div><div class="meta"><strong>listener &middot; sky</strong>#3aa5ff &middot; oklch(0.684 0.165 240) &middot; 7.3:1<span class="wcag">AAA &middot; /radio dominant</span></div></div>
+        <div class="swatch"><div class="chip" style="background:#8a66ff;color:#e2e8f0">AGENT</div><div class="meta"><strong>agent &middot; warmed violet</strong>#8a66ff &middot; oklch(0.561 0.229 287) &middot; 5.0:1<span class="wcag">AA &middot; chrome only, no long-form</span></div></div>
       </div>
 
       <h3>signals</h3>
       <div class="swatch-grid">
-        <div class="swatch"><div class="chip" style="background:#f2b84a;color:#0a0e17">SIGNAL-WARN</div><div class="meta"><strong>signal-warn · amber</strong>#f2b84a · 10.7:1<span class="wcag">one-shot · max 1/screen</span></div></div>
-        <div class="swatch"><div class="chip" style="background:#ef4444;color:#0a0e17">DESTRUCTIVE</div><div class="meta"><strong>destructive · red</strong>#ef4444 · 5.2:1<span class="wcag">errors only</span></div></div>
+        <div class="swatch"><div class="chip" style="background:#f2b84a;color:#0a0e17">SIGNAL-WARN</div><div class="meta"><strong>signal-warn &middot; amber</strong>#f2b84a &middot; oklch(0.812 0.141 79) &middot; 10.7:1<span class="wcag">AAA &middot; max 1 per screen</span></div></div>
+        <div class="swatch"><div class="chip" style="background:#ef4444;color:#0a0e17">DESTRUCTIVE</div><div class="meta"><strong>destructive &middot; red</strong>#ef4444 &middot; oklch(0.637 0.234 26) &middot; 5.2:1<span class="wcag">AA &middot; icon + label only</span></div></div>
       </div>
 
       <h3>chrome</h3>
       <div class="swatch-grid">
-        <div class="swatch"><div class="chip" style="background:#0a0e17;border-bottom:1px solid rgba(255,255,255,0.08);color:#94a3b8">BORDER</div><div class="meta"><strong>border</strong>rgba(255,255,255,0.08)<span class="wcag">single value</span></div></div>
+        <div class="swatch"><div class="chip" style="background:#0a0e17;border-bottom:1px solid rgba(255,255,255,0.08);color:#94a3b8">BORDER</div><div class="meta"><strong>border</strong>rgba(255,255,255,0.08) &middot; oklch(1 0 0 / 0.08)<span class="wcag">single value -- no second border</span></div></div>
         <div class="swatch"><div class="chip" style="background:rgba(10,14,23,0.72);color:#e2e8f0">SCRIM</div><div class="meta"><strong>scrim</strong>rgba(10,14,23,0.72)<span class="wcag">modal backdrop</span></div></div>
       </div>
 
+      <h3>per-surface application</h3>
+      <table class="surface-table">
+        <thead><tr><th>surface</th><th>tiers</th><th>dominant</th><th>forbidden</th></tr></thead>
+        <tbody>
+          <tr><td><code>/studio</code></td><td>base + s1 + s2</td><td class="accent-creator">creator</td><td>surface-3</td></tr>
+          <tr><td><code>/radio</code></td><td>base + s1 + s2 + s3</td><td class="accent-listener">listener</td><td class="accent-creator">creator</td></tr>
+          <tr><td><code>/p</code></td><td>base + s1 + s3</td><td class="accent-listener">listener</td><td>destructive, signal-warn</td></tr>
+          <tr><td><code>/embed</code></td><td>base + s1</td><td class="accent-listener">listener</td><td>creator, agent, signals</td></tr>
+        </tbody>
+      </table>
+
       <h3>hard rules</h3>
       <ul class="clean forbidden">
-        <li>No gradients anywhere — not hero, not buttons, not chrome.</li>
+        <li>No gradients anywhere -- not hero, not buttons, not chrome.</li>
         <li>No pastel tints. No <code>creator-100</code>, no <code>listener-50</code>.</li>
         <li>No second border color. One value, period.</li>
         <li>Page background floor: <code>#0a0e17</code>. Nothing darker. Surface ramps go up.</li>
@@ -1127,50 +1094,58 @@
       </ul>
     </section>
 
-    <!-- 07 TYPOGRAPHY -->
+    <!-- 05 TYPOGRAPHY -->
     <section id="typography">
       <h2>typography</h2>
-      <p class="lede">Four families, four jobs. Chakra Petch displays, DM Sans reads, JetBrains Mono codes, Space Mono labels. The scale is 1.25 Major Third from a 16px base, fluid only on display and heading.</p>
+      <p class="lede">Four families, four jobs. Chakra Petch displays, DM Sans reads, JetBrains Mono codes, Space Mono labels. The scale is 1.25 Major Third from a 16px base, fluid only on display and heading tiers.</p>
 
       <h3>families</h3>
       <div class="family-grid">
-        <div class="family-card display"><div class="name">display</div><div class="sample">PULSE·CITY</div><div class="role">Chakra Petch 600/700 · mark, hero, headlines</div></div>
-        <div class="family-card body"><div class="name">body</div><div class="sample">the city is playing</div><div class="role">DM Sans 400/500 · paragraphs, prose, /radio</div></div>
-        <div class="family-card mono"><div class="name">mono</div><div class="sample">s("bd").gain(.9)</div><div class="role">JetBrains Mono 400/500 · code, data</div></div>
-        <div class="family-card micro"><div class="name">micro</div><div class="sample">[ PLAY ]</div><div class="role">Space Mono 400 · bracketed chrome, badges</div></div>
+        <div class="family-card display"><div class="name">display</div><div class="sample">PULSE&middot;CITY</div><div class="role">Chakra Petch 600/700 &middot; wordmark, hero, headlines. Forbidden below 1.25rem.</div></div>
+        <div class="family-card body"><div class="name">body</div><div class="sample">the city is playing</div><div class="role">DM Sans 400/500/600 &middot; paragraphs, prose, /radio narration</div></div>
+        <div class="family-card mono"><div class="name">mono</div><div class="sample">s("bd").gain(.9)</div><div class="role">JetBrains Mono 400/500 &middot; code, data, tabular figures</div></div>
+        <div class="family-card micro"><div class="name">micro</div><div class="sample">[ PLAY ]</div><div class="role">Space Mono 400 &middot; tracked +0.12em uppercase &middot; bracketed buttons, badges</div></div>
       </div>
 
       <h3>scale (12 steps)</h3>
 
       <div class="type-sample"><div class="label">display-lg<span>3.815rem / 61px</span></div><div class="t-display-lg">the city is playing</div></div>
       <div class="type-sample"><div class="label">display<span>3.052rem / 49px</span></div><div class="t-display">the city is playing</div></div>
-      <div class="type-sample"><div class="label">heading-lg<span>2.441rem / 39px</span></div><div class="t-heading-lg">the city is playing</div></div>
-      <div class="type-sample"><div class="label">heading<span>1.953rem / 31px</span></div><div class="t-heading">the city is playing</div></div>
-      <div class="type-sample"><div class="label">heading-sm<span>1.563rem / 25px</span></div><div class="t-heading-sm">the city is playing</div></div>
-      <div class="type-sample"><div class="label">title<span>1.25rem / 20px</span></div><div class="t-title">the city is playing</div></div>
+      <div class="type-sample"><div class="label">display-sm<span>2.441rem / 39px</span></div><div class="t-display-sm">the city is playing</div></div>
+      <div class="type-sample"><div class="label">heading-lg<span>1.953rem / 31px</span></div><div class="t-heading-lg">the city is playing</div></div>
+      <div class="type-sample"><div class="label">heading<span>1.563rem / 25px</span></div><div class="t-heading">the city is playing</div></div>
+      <div class="type-sample"><div class="label">heading-sm<span>1.25rem / 20px</span></div><div class="t-heading-sm">the city is playing</div></div>
       <div class="type-sample"><div class="label">body-lg<span>1.125rem / 18px</span></div><div class="t-body-lg">the city is playing</div></div>
       <div class="type-sample"><div class="label">body<span>1rem / 16px</span></div><div class="t-body">the city is playing</div></div>
       <div class="type-sample"><div class="label">body-sm<span>0.875rem / 14px</span></div><div class="t-body-sm">the city is playing</div></div>
-      <div class="type-sample"><div class="label">micro<span>0.75rem / 12px</span></div><div class="t-micro">the city is playing</div></div>
-      <div class="type-sample"><div class="label">micro-sm<span>0.6875rem / 11px</span></div><div class="t-micro-sm">the city is playing</div></div>
-      <div class="type-sample"><div class="label">caption<span>0.625rem / 10px</span></div><div class="t-caption">the city is playing</div></div>
+      <div class="type-sample"><div class="label">code<span>0.875rem / 14px</span></div><div class="t-code">s("bd*4").gain(.8)</div></div>
+      <div class="type-sample"><div class="label">mono<span>0.75rem / 12px</span></div><div class="t-mono">120 BPM &middot; 4/4 &middot; 00:03:21</div></div>
+      <div class="type-sample"><div class="label">micro<span>0.6875rem / 11px</span></div><div class="t-micro">[ AUTOPILOT ] &middot; PLAYING</div></div>
 
-      <p class="note">In production, these fonts load via <code>next/font/local</code>. See STYLE.md for the <code>fonts.ts</code> configuration. The Google Fonts CDN in this guide is for preview only.</p>
+      <h3>pairing notes</h3>
+      <ul class="clean">
+        <li>Chakra Petch at display + heading tiers, DM Sans at heading-sm and below. The crossover is at 1.25rem.</li>
+        <li>JetBrains Mono for inline code, code blocks, and any numeric data (BPM, timestamps, counts).</li>
+        <li>Space Mono exclusively for micro-labels and bracketed buttons. Always uppercase, always tracked +0.12em. Never below 0.6875rem.</li>
+        <li>Fluid clamp() on display and heading tiers only (375px to 1440px). Body tiers are fixed.</li>
+      </ul>
+
+      <p class="note">In production, these fonts load via <code>next/font/local</code> with WOFF2 from <code>src/app/fonts/</code>. The Google Fonts CDN in this guide is for preview only.</p>
     </section>
 
-    <!-- 08 VISUAL ELEMENTS -->
+    <!-- 06 VISUAL ELEMENTS -->
     <section id="visual">
       <h2>visual elements</h2>
-      <p class="lede">Two motion shapes. One static dither. One icon library. No stock photos. No aesthetic code backdrops. The imagery comes from <code>@strudel/draw</code> output — the music visualizes itself.</p>
+      <p class="lede">Two motion shapes. One static dither. One icon library. No stock photos. No aesthetic code backdrops. The imagery comes from <code>@strudel/draw</code> output -- the music visualizes itself.</p>
 
       <h3>dither texture</h3>
       <div class="dither-swatch">
-        <div class="d0">base · 2%</div>
-        <div class="d1">surface-1 · 2%</div>
-        <div class="d2">surface-2 · 4%</div>
-        <div class="d3">surface-3 · 0%</div>
+        <div class="d0">base &middot; 2%</div>
+        <div class="d1">surface-1 &middot; 1.5%</div>
+        <div class="d2">surface-2 &middot; 1%</div>
+        <div class="d3">surface-3 &middot; 0%</div>
       </div>
-      <p>Applied as a 4×4 SVG tile, <code>image-rendering: pixelated</code>. Static, never animated. Zero on <code>surface-3</code> — the /radio quiet tier.</p>
+      <p>4x4 SVG tile, inlined as data URI, <code>image-rendering: pixelated</code>. Static, never animated. Zero on <code>surface-3</code> -- the /radio quiet tier.</p>
 
       <h3>motion vocabulary (exactly two)</h3>
       <div class="motion-demo">
@@ -1178,36 +1153,36 @@
           <span class="pulse-dot" aria-hidden="true"></span>
           <span class="pulse-dot listener" aria-hidden="true" style="margin-left:1rem"></span>
           <span class="pulse-dot agent" aria-hidden="true" style="margin-left:1rem"></span>
-          <span class="caption">pulse-dot · 1.5s · infinite · ambient</span>
+          <span class="caption">pulse-dot &middot; 1.5s &middot; 0.55 trough &middot; infinite</span>
         </div>
         <div>
           <span class="glow-target" id="glow-target">s("bd*4")</span>
-          <button class="btn-bracket secondary trigger" onclick="document.getElementById('glow-target').classList.remove('evolve-glow'); void document.getElementById('glow-target').offsetWidth; document.getElementById('glow-target').classList.add('evolve-glow');">[ TRIGGER EVOLVE ]</button>
-          <span class="caption">evolve-glow · 600ms · one-shot · mutation</span>
+          <button class="btn-bracket secondary trigger" onclick="var e=document.getElementById('glow-target');e.classList.remove('evolve-glow');void e.offsetWidth;e.classList.add('evolve-glow');">[ TRIGGER EVOLVE ]</button>
+          <span class="caption">evolve-glow &middot; 600ms &middot; one-shot &middot; amber box-shadow</span>
         </div>
       </div>
-      <p>Nothing else moves. No hover bounces. No scroll parallax. No micro-interactions on every button. The brand is still, except when something happened.</p>
+      <p>Nothing else moves. No hover bounces. No scroll parallax. No page-load fades. The brand is still, except when something happened.</p>
 
-      <h3>iconography — Lucide</h3>
-      <p>Library: <a href="https://lucide.dev">Lucide</a> (ISC, AGPL-compatible). Stroke 1.5px on 24px canvas — slightly thinner than default 2px, matching the understated voice. Outline only, no filled variants. Color inherits from <code>currentColor</code>.</p>
+      <h3>iconography -- Lucide</h3>
+      <p>Library: <a href="https://lucide.dev">Lucide</a> (ISC, AGPL-compatible). Stroke 1.5px on 24px canvas -- slightly thinner than default 2px, matching the understated voice. Outline only, no filled variants. Color inherits from <code>currentColor</code>. Sizes: 16 / 20 / 24 / 32.</p>
 
       <h3>imagery sources</h3>
       <ul class="clean allowed">
         <li>Real <code>@strudel/draw</code> output: piano rolls, oscilloscopes, pattern visualizations captured from the running station.</li>
-        <li>Subtle 1-bit dither on dark surfaces — static, 2–4% opacity.</li>
-        <li>OG images: base + 4% dither + real piano roll + wordmark + one manifesto line.</li>
+        <li>Subtle 1-bit dither on dark surfaces -- static, 2-4% opacity.</li>
+        <li>OG images: base + 4% dither + real punchcard + wordmark + one manifesto line.</li>
       </ul>
       <ul class="clean forbidden">
-        <li>Stock photos, AI-generated faces, illustration.</li>
+        <li>Stock photos, AI-generated faces, illustration, device mockups.</li>
         <li>"Aesthetic code" backdrops, blurred code screenshots, code as decoration.</li>
-        <li>Auto-playing hero video, particle backgrounds, gradient blobs.</li>
+        <li>Auto-playing hero video, particle backgrounds, gradient blobs, AI orbs.</li>
       </ul>
     </section>
 
-    <!-- 09 COMPONENTS -->
+    <!-- 07 COMPONENTS -->
     <section id="components">
       <h2>components</h2>
-      <p class="lede">Primitives rendered inline. These are the building blocks — bracketed buttons, uppercase tracked-widest badges, surface cards, dialogs.</p>
+      <p class="lede">Primitives rendered inline. These are the building blocks -- bracketed buttons, uppercase tracked-widest badges, surface cards, prompt-style inputs, dialogs.</p>
 
       <h3>buttons</h3>
       <div class="component-row">
@@ -1218,7 +1193,7 @@
         <button class="btn-bracket destructive">[ DELETE ]</button>
         <button class="btn-bracket secondary">[ CANCEL ]</button>
       </div>
-      <p class="note">creator (lime) = /studio primary · listener (sky) = /radio primary · agent (violet) = autopilot · never render agent on surface-1.</p>
+      <p class="note">creator (lime) = /studio primary &middot; listener (sky) = /radio primary &middot; agent (violet) = autopilot chrome &middot; never render agent on surface-1</p>
 
       <h3>badges</h3>
       <div class="component-row">
@@ -1231,19 +1206,29 @@
         <span class="badge-uppercase dim">[OK]</span>
       </div>
 
+      <h3>input</h3>
+      <div style="margin: 0.75rem 0 2rem;">
+        <input type="text" class="input-demo" placeholder="pattern name..." />
+        <p class="note">no shell-prompt prefix (> / $). not a CLI. focus: border-color -> listener sky.</p>
+      </div>
+
       <h3>cards</h3>
       <div class="swatch-grid">
         <div class="card">
-          <div style="font-family:var(--font-micro);font-size:0.625rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-dim)">pattern · ambient_morning_03</div>
+          <div style="font-family:var(--font-micro);font-size:0.625rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted-foreground)">pattern &middot; ambient_morning_03</div>
           <div style="font-family:var(--font-display);font-weight:600;font-size:1.25rem;margin:0.35rem 0">morning drone</div>
-          <p style="font-size:0.875rem;color:var(--muted-foreground);margin:0">Four lines. Runs on piano roll. Tuned for 06:00–10:00.</p>
+          <p style="font-size:0.875rem;color:var(--color-text-muted);margin:0">four lines. runs on piano roll. tuned for 06:00-10:00.</p>
           <pre style="margin-top:0.75rem;font-size:0.75rem">s("piano*2").n("&lt;c e g b&gt;").slow(4)</pre>
         </div>
-        <div class="card" style="background:#1e293b">
-          <div style="font-family:var(--font-micro);font-size:0.625rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-dim)">card · elevated (surface-2)</div>
+        <div class="card" style="background-color:#1e293b">
+          <div style="font-family:var(--font-micro);font-size:0.625rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted-foreground)">card &middot; elevated (surface-2)</div>
           <div style="font-family:var(--font-display);font-weight:600;font-size:1.25rem;margin:0.35rem 0">evening gather</div>
-          <p style="font-size:0.875rem;color:var(--muted-foreground);margin:0">Elevation is a surface tier, never a drop shadow.</p>
+          <p style="font-size:0.875rem;color:var(--color-text-muted);margin:0">elevation is a surface tier, never a drop shadow.</p>
         </div>
+      </div>
+
+      <h3>dialog</h3>
+      <div style="margin: 1rem 0 2rem;">
         <div class="dialog-placeholder">
           <h4>clear studio?</h4>
           <p>this will stop the current pattern and return the room to autopilot.</p>
@@ -1255,47 +1240,119 @@
       </div>
 
       <h3>code block</h3>
-      <pre><span style="color:var(--text-dim)">// morning drone · ambient_morning_03</span>
+      <pre><span style="color:#64748b">// morning drone &middot; ambient_morning_03</span>
 s(<span style="color:#a5d6ff">"piano*2"</span>)
   .n(<span style="color:#a5d6ff">"&lt;c e g b&gt;"</span>)
-  .slow(<span style="color:var(--accent)">4</span>)
-  .gain(<span style="color:var(--accent)">.7</span>)</pre>
+  .slow(<span style="color:#3aa5ff">4</span>)
+  .gain(<span style="color:#3aa5ff">.7</span>)</pre>
     </section>
 
-    <!-- 10 PERSONAS -->
+    <!-- 08 PERSONAS -->
     <section id="personas">
       <h2>personas</h2>
-      <p class="lede">Three people this brand has to earn. Lia — the co-creator resident. Oscar — the live-coder skeptic. The drifter — the silent majority who leaves /radio open in a tab.</p>
+      <p class="lede">The primary persona is Lia Moreira. The brand must legibly speak to four audiences: Creator, Listener, Agent, Host.</p>
 
       <div class="persona-grid">
         <div class="persona-card">
-          <div class="role">primary · 60%</div>
-          <div class="name">Lia</div>
-          <p><strong>the co-creator resident</strong></p>
-          <p>28, lives in Ipê Village for 6 weeks. Has a laptop, not a DAW. Curious about live coding but will not learn Tidal notation. Opens /studio on her phone to tweak the mood.</p>
-          <p><em>what she needs:</em> the code to feel legible without a manual.</p>
+          <div class="role">primary &middot; lia moreira</div>
+          <div class="name">Lia Moreira, 28-34</div>
+          <p><strong>multidisciplinary creator at Ipe Village 2026</strong></p>
+          <p>codes, designs, organizes. lives in Figma, VS Code, and a Telegram group. chooses tools by vibe as much as by feature set. morning standup in a shared kitchen, afternoon workshop on a projector, evening co-working with headphones.</p>
+          <p><em>frustration:</em> Spotify playlists don't match the moment. TidalCycles is too technical to pick up casually. Suno feels like a slot machine -- no authorship, no visible craft.</p>
+          <p><em>aspiration:</em> leave pulse.city running on a projector in the communal kitchen and watch strangers remix it.</p>
+          <p><em>trust signals:</em> open source, visible code, understated voice, a real credit list, a real venue.</p>
         </div>
         <div class="persona-card">
-          <div class="role">secondary · 30%</div>
-          <div class="name">Oscar</div>
-          <p><strong>the Strudel live-coder</strong></p>
-          <p>34, five years of Tidal. Skeptical of AI-composed music. Will fork the repo. Wants to run a set at the Village café and have the radio hand him the mic.</p>
-          <p><em>what he needs:</em> a credible invitation — not "we replaced you," but "we kept it playing until you arrived."</p>
+          <div class="role">creator</div>
+          <div class="name">logged-in humans</div>
+          <p>composing via /studio. wants the code to feel legible without a manual. needs bracketed controls, JetBrains Mono, lime-on-dark.</p>
         </div>
         <div class="persona-card">
-          <div class="role">tertiary · the silent majority</div>
-          <div class="name">The drifter listener</div>
-          <p><strong>the silent majority</strong></p>
-          <p>Anyone who opens /radio in a background tab while they work. Knows nothing about code. Stays because the station has a pulse that matches the room.</p>
-          <p><em>what they need:</em> a visual language that feels calm and alive at the same time — not a hype VJ set, not an ambient meditation app.</p>
+          <div class="role">listener</div>
+          <div class="name">the room</div>
+          <p>non-logged humans on /p, /radio, or embedded widgets. knows nothing about code. stays because the station has a pulse that matches the room.</p>
+        </div>
+        <div class="persona-card">
+          <div class="role">agent</div>
+          <div class="name">external AI via MCP</div>
+          <p>composes, evolves, plays. first-class composer, not a gimmick. pc_ key prefix. bracketed status codes. present-tense voice.</p>
+        </div>
+        <div class="persona-card">
+          <div class="role">host</div>
+          <div class="name">partner sites</div>
+          <p>dropping a pulse-widget on their page. needs the embed to be a guest -- one accent, mark-only, one micro-label max.</p>
         </div>
       </div>
     </section>
 
-    <!-- 11 APPLICATIONS -->
+    <!-- 09 VOICE -->
+    <section id="voice">
+      <h2>voice</h2>
+      <p class="lede">Present &middot; Legible &middot; Understated. Confidence without volume. The product is loud; the voice is not.</p>
+
+      <h3>three voice words</h3>
+      <div class="persona-grid">
+        <div class="persona-card">
+          <div class="role">voice 01</div>
+          <div class="name">present</div>
+          <p>current tense. "the city is playing." not "will play." not "could play." describe the state, don't sell the feature.</p>
+        </div>
+        <div class="persona-card">
+          <div class="role">voice 02</div>
+          <div class="name">legible</div>
+          <p>real numbers or nothing. no jargon unless the jargon is the point. code is OK; "synergy" is not.</p>
+        </div>
+        <div class="persona-card">
+          <div class="role">voice 03</div>
+          <div class="name">understated</div>
+          <p>lowercase by default. UPPERCASE for /studio micro-labels only. never exclaim. not once. name the actor.</p>
+        </div>
+      </div>
+
+      <h3>seven voice rules</h3>
+      <ol class="rules">
+        <li>Describe the state, don't sell the feature. "3 listeners" not "join the community."</li>
+        <li>Present tense, no futures. "the station plays" not "will play." Real numbers or nothing.</li>
+        <li>Lowercase by default. UPPERCASE for /studio micro-labels only (<code>[ SAVE ]</code>, <code>PLAYING</code>).</li>
+        <li>Never exclaim. Not once. Not even on success. Not even in error messages.</li>
+        <li>Name the actor. "agent evolved pattern at 03:21" not "pattern was evolved."</li>
+        <li>Errors: state the fact plainly, provide the next step, no apology theater. <code>[ERR] pattern did not parse -- line 3</code></li>
+        <li>Code blocks are part of the copy. A marketing page can show 4 lines of real Strudel and that IS the pitch.</li>
+      </ol>
+
+      <h3>tone spectrum per surface</h3>
+      <table class="tone-table">
+        <thead><tr><th>surface</th><th>tone</th><th>example</th></tr></thead>
+        <tbody>
+          <tr><td><code>/studio</code></td><td>cypherpunk, precise, luminous</td><td><code>[ SAVE ] &middot; PLAYING &middot; agent evolved &middot; line 4</code></td></tr>
+          <tr><td><code>/radio</code></td><td>ambient, warm, patient</td><td>now playing &middot; composed by lia &middot; 3 listeners</td></tr>
+          <tr><td><code>/p</code></td><td>editorial, readable</td><td>morning drone &middot; four lines &middot; tuned for 06:00-10:00</td></tr>
+          <tr><td><code>/embed</code></td><td>host-considerate, minimal</td><td>pulse.city &middot; playing</td></tr>
+          <tr><td>marketing</td><td>living, open, collective</td><td>the city is playing. the code is on the screen.</td></tr>
+          <tr><td>MCP / agent</td><td>sage, documentation-grade</td><td>pc_compose &middot; status: playing &middot; bpm: 120</td></tr>
+        </tbody>
+      </table>
+
+      <h3>locked examples</h3>
+      <blockquote><p>the city is playing.</p></blockquote>
+      <p><code>autopilot &middot; composing</code> -- lowercase, middot, present tense.</p>
+      <blockquote><p>you can edit any line. the city keeps playing while you read.</p></blockquote>
+
+      <h3>forbidden phrases</h3>
+      <ul class="clean forbidden">
+        <li>"AI-powered"</li>
+        <li>"revolutionary"</li>
+        <li>"game-changing"</li>
+        <li>"seamless"</li>
+        <li>"unlock your creativity"</li>
+        <li>"we believe"</li>
+      </ul>
+    </section>
+
+    <!-- 10 APPLICATIONS -->
     <section id="applications">
       <h2>applications</h2>
-      <p class="lede">Same brand, different volume. The hard rule: ration the loud. /studio shouts in functional chrome. /radio barely whispers. /p is editorial. /embed is a guest. marketing balances. MCP is documentation.</p>
+      <p class="lede">Same brand, different volume. The hard rule: ration the loud. /studio shouts in functional chrome. /radio barely whispers. /p is editorial. /embed is a guest.</p>
 
       <table class="intensity">
         <thead>
@@ -1311,33 +1368,33 @@ s(<span style="color:#a5d6ff">"piano*2"</span>)
         <tbody>
           <tr>
             <td class="surface">/studio</td>
-            <td class="volume" style="color:var(--primary)">loud · creator</td>
+            <td class="volume" style="color:var(--primary)">loud</td>
             <td>creator (lime)</td>
-            <td>mono · micro</td>
-            <td>2–4%</td>
+            <td>mono, micro</td>
+            <td>2-4%</td>
             <td>everywhere</td>
           </tr>
           <tr>
             <td class="surface">/radio</td>
-            <td class="volume" style="color:var(--accent)">quiet · sage</td>
+            <td class="volume" style="color:var(--secondary)">quiet</td>
             <td>listener (sky)</td>
-            <td>body · display</td>
+            <td>body, display</td>
             <td>0%</td>
             <td>[ PLAY ] only</td>
           </tr>
           <tr>
             <td class="surface">/p</td>
-            <td class="volume" style="color:var(--accent)">editorial · sage</td>
+            <td class="volume" style="color:var(--secondary)">editorial</td>
             <td>listener (sky)</td>
-            <td>body · code</td>
+            <td>display, body, code</td>
             <td>minimal</td>
             <td>none</td>
           </tr>
           <tr>
             <td class="surface">/embed</td>
-            <td class="volume" style="color:var(--accent)">minimal</td>
+            <td class="volume" style="color:var(--secondary)">minimal</td>
             <td>listener (sky)</td>
-            <td>body · micro</td>
+            <td>body, micro</td>
             <td>0%</td>
             <td>[ PLAY ] only</td>
           </tr>
@@ -1345,15 +1402,15 @@ s(<span style="color:#a5d6ff">"piano*2"</span>)
             <td class="surface">/ marketing</td>
             <td class="volume">balanced</td>
             <td>listener + creator</td>
-            <td>display · body</td>
+            <td>display, body</td>
             <td>hero 4%</td>
             <td>[ LISTEN ]</td>
           </tr>
           <tr>
-            <td class="surface">/ mcp docs</td>
-            <td class="volume" style="color:var(--agent)">sage · agent</td>
+            <td class="surface">/ mcp</td>
+            <td class="volume" style="color:var(--accent)">sage</td>
             <td>agent (violet, chrome)</td>
-            <td>body · mono</td>
+            <td>body, mono</td>
             <td>minimal</td>
             <td>code-first</td>
           </tr>
@@ -1361,7 +1418,7 @@ s(<span style="color:#a5d6ff">"piano*2"</span>)
       </table>
     </section>
 
-    <!-- 12 COLOPHON -->
+    <!-- 11 COLOPHON -->
     <section id="colophon">
       <h2>colophon</h2>
       <p>This guide is a single self-rendering HTML file. Dark-only, no light mode toggle, because the brand is dark-only. Fonts in the preview load from Google Fonts CDN; the production site uses <code>next/font/local</code>. The compass for every decision is one sentence:</p>
@@ -1371,8 +1428,8 @@ s(<span style="color:#a5d6ff">"piano*2"</span>)
       <footer class="page">
         <span class="field">brand <strong>pulse.city</strong></span>
         <span class="field">mode <strong>evolve</strong></span>
-        <span class="field">pipeline <strong>complete — pass 1</strong></span>
-        <span class="field">version <strong>0.1.0</strong></span>
+        <span class="field">pipeline <strong>Phase 4 &middot; Pass 1</strong></span>
+        <span class="field">version <strong>0.2.0</strong></span>
         <span class="field">generated <strong>2026-04-15</strong></span>
         <span class="field">style base <strong>terminal</strong></span>
       </footer>
@@ -1380,5 +1437,30 @@ s(<span style="color:#a5d6ff">"piano*2"</span>)
 
   </main>
 </div>
+
+<!-- scroll-spy -->
+<script>
+(function () {
+  var links = document.querySelectorAll('[data-spy]');
+  if (!links.length) return;
+  var sections = [];
+  links.forEach(function (a) {
+    var id = a.getAttribute('href').slice(1);
+    var el = document.getElementById(id);
+    if (el) sections.push({ id: id, el: el, link: a });
+  });
+  function update() {
+    var scroll = window.scrollY + 80;
+    var current = sections[0];
+    for (var i = 0; i < sections.length; i++) {
+      if (sections[i].el.offsetTop <= scroll) current = sections[i];
+    }
+    links.forEach(function (a) { a.classList.remove('active'); });
+    if (current) current.link.classList.add('active');
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+})();
+</script>
 </body>
 </html>

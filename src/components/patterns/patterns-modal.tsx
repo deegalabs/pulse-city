@@ -77,70 +77,134 @@ export function PatternsModal({ open, onClose, onLoad }: PatternsModalProps) {
 
   return (
     <div
-      className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center"
+      className="fixed inset-0 z-50 bg-scrim backdrop-blur-sm flex items-center justify-center"
       onClick={onClose}
     >
       <div
-        className="bg-surface border border-border rounded-lg w-full max-w-md mx-4 p-5 max-h-[70vh] flex flex-col"
+        className="bg-surface-1 border border-white/10 rounded-sm w-full max-w-md mx-4 max-h-[70vh] flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="font-heading font-bold text-lg text-text tracking-tight">
-            My Patterns
-          </h2>
+        {/* ── Header ── */}
+        <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
+          <span className="font-micro text-[10px] tracking-widest text-text-dim uppercase">
+            PATTERNS
+          </span>
           <button
             onClick={onClose}
-            className="text-text-dim hover:text-text text-xl cursor-pointer"
+            className="text-text-dim hover:text-text cursor-pointer transition-colors"
           >
-            x
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M18 6 6 18" />
+              <path d="m6 6 12 12" />
+            </svg>
           </button>
         </div>
 
-        {loading && (
-          <p className="text-text-dim text-xs text-center py-8">Loading...</p>
-        )}
+        {/* ── Tab bar ── */}
+        <div className="flex gap-4 px-4 pt-3 border-b border-white/10">
+          <button className="font-micro text-[10px] tracking-widest uppercase text-creator border-b-2 border-creator pb-2 cursor-pointer">
+            MY PATTERNS
+          </button>
+          <button
+            className="font-micro text-[10px] tracking-widest uppercase text-text-dim pb-2 cursor-pointer hover:text-text-muted transition-colors"
+            disabled
+          >
+            COMMUNITY
+          </button>
+        </div>
 
-        {error && (
-          <p className="text-red text-xs text-center py-4">{error}</p>
-        )}
+        {/* ── Content ── */}
+        <div className="flex-1 overflow-y-auto p-3 space-y-2">
+          {/* Loading state */}
+          {loading && (
+            <div className="flex items-center justify-center py-12">
+              <span className="font-micro text-[10px] tracking-widest text-text-dim uppercase animate-pulse">
+                LOADING...
+              </span>
+            </div>
+          )}
 
-        {!loading && !error && patterns.length === 0 && (
-          <p className="text-text-dim text-xs text-center py-8">
-            No saved patterns yet. Hit SAVE to store your first one.
-          </p>
-        )}
+          {/* Error state */}
+          {error && (
+            <div className="flex items-center justify-center py-8">
+              <span className="font-micro text-[10px] tracking-widest text-destructive uppercase">
+                {error}
+              </span>
+            </div>
+          )}
 
-        <div className="flex-1 overflow-y-auto space-y-1">
+          {/* Empty state */}
+          {!loading && !error && patterns.length === 0 && (
+            <div className="flex items-center justify-center gap-2 py-12">
+              <span
+                className="inline-block w-1.5 h-1.5 rounded-full bg-text-dim"
+                style={{ animation: "pulse-dot 2s ease-in-out infinite" }}
+              />
+              <span className="font-micro text-[10px] tracking-widest text-text-dim uppercase">
+                no patterns saved yet
+              </span>
+            </div>
+          )}
+
+          {/* Pattern list */}
           {patterns.map((p) => (
             <div
               key={p.id}
-              className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-surface-2 group"
+              className="group bg-surface-2 border border-white/5 p-3 hover:bg-surface-3 transition-colors"
             >
-              <button
-                onClick={() => handleLoad(p.id)}
-                className="flex-1 text-left cursor-pointer"
-              >
-                <span className="font-heading text-xs text-text block">
-                  {p.title}
-                </span>
-                <span className="text-[0.55rem] text-text-dim">
-                  {p.mode.toUpperCase()} · {new Date(p.updated_at).toLocaleDateString()}
-                </span>
-              </button>
-              <button
-                onClick={() => handleShare(p.id)}
-                className="font-heading text-[0.45rem] tracking-widest text-text-dim px-1.5 py-0.5 rounded border border-border hover:bg-surface-2 hover:text-sky cursor-pointer opacity-0 group-hover:opacity-100 transition"
-                title={p.is_public ? "Make private" : "Share (copy link)"}
-              >
-                {p.is_public ? "UNSHARE" : "SHARE"}
-              </button>
-              <button
-                onClick={() => handleDelete(p.id)}
-                className="font-heading text-[0.45rem] tracking-widest text-text-dim px-1.5 py-0.5 rounded border border-border hover:bg-surface-2 hover:text-red cursor-pointer opacity-0 group-hover:opacity-100 transition"
-                title="Delete"
-              >
-                DEL
-              </button>
+              <div className="flex items-start justify-between gap-2">
+                <div className="flex-1 min-w-0">
+                  <span className="font-heading text-sm text-text block truncate">
+                    {p.title}
+                  </span>
+                  <div className="flex items-center gap-2 mt-1">
+                    <span
+                      className={`font-micro text-[10px] tracking-widest uppercase ${
+                        p.mode === "autopilot" ? "text-agent" : "text-creator"
+                      }`}
+                    >
+                      {p.mode.toUpperCase()}
+                    </span>
+                    <span className="text-text-dim text-[10px]">
+                      {new Date(p.updated_at).toLocaleDateString()}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Action buttons (visible on hover) */}
+                <div className="flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+                  <button
+                    onClick={() => handleLoad(p.id)}
+                    className="font-micro text-[10px] tracking-widest text-creator hover:text-creator/80 cursor-pointer transition-colors"
+                  >
+                    [ LOAD ]
+                  </button>
+                  <button
+                    onClick={() => handleShare(p.id)}
+                    className="font-micro text-[10px] tracking-widest text-listener hover:text-listener/80 cursor-pointer transition-colors"
+                    title={p.is_public ? "Make private" : "Share (copy link)"}
+                  >
+                    {p.is_public ? "[ UNSHARE ]" : "[ SHARE ]"}
+                  </button>
+                  <button
+                    onClick={() => handleDelete(p.id)}
+                    className="font-micro text-[10px] tracking-widest text-destructive hover:text-destructive/80 cursor-pointer transition-colors"
+                    title="Delete"
+                  >
+                    [ DEL ]
+                  </button>
+                </div>
+              </div>
             </div>
           ))}
         </div>

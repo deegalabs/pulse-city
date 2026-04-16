@@ -1,7 +1,7 @@
-# STYLE.md — pulse.city agent contract
+# STYLE.md -- pulse.city agent contract
 > Phase: guidelines | Brand: pulse-city-next | Generated: 2026-04-15
-> System strategy: **extend** · Tech: Next.js 16 (webpack) + Tailwind 4 + React 19 + @strudel/*
-> Style base: **terminal** (structural inheritance only — rejected: phosphor glow, scanlines, ASCII chrome, green-on-black, JetBrains Mono body, cursor-blink ambient)
+> System strategy: **extend** | Tech: Next.js 16 (webpack) + Tailwind 4 + React 19 + @strudel/*
+> Style base: **terminal** (structural inheritance only -- rejected: phosphor glow, scanlines, ASCII chrome, green-on-black, JetBrains Mono body, cursor-blink ambient)
 
 This is the single document designer and builder agents consume for pulse.city. It is rendered from `pulse-city.yml` and the Phase 3 identity chunks. If this file and `pulse-city.yml` disagree, `pulse-city.yml` wins.
 
@@ -13,23 +13,23 @@ This is the single document designer and builder agents consume for pulse.city. 
 |---|---|---|
 | **variance** | 3 | Tight monospace-aware grid, dense /studio vs. breathable /radio. Softer than terminal's 3-with-dashes because we reject ASCII chrome. Panes are glass-line bordered, not drawn with dashes. |
 | **motion** | 4 | Two committed motion shapes exist in the entire system. `pulse-dot` (1.5s loop) says "the room is still playing." `evolve-glow` (600ms one-shot) says "something just changed." No third shape. No hover bounces, no page fades, no parallax. |
-| **density** | 7 | Inherited from terminal. /studio is information-dense — CodeMirror plus tool chrome plus micro-label status bars. /radio relaxes density via `surface-3` and long line-heights, but the token system stays dense. |
+| **density** | 7 | Inherited from terminal. /studio is information-dense -- CodeMirror plus tool chrome plus micro-label status bars. /radio relaxes density via `surface-3` and long line-heights, but the token system stays dense. |
 
 ---
 
 ## Philosophy
 
-### Creator × Sage, and why that forbids almost everything
+### Creator x Sage, and why that forbids almost everything
 
 The archetype is Creator with Sage as the tension. Creator wants to make things; Sage insists the making be visible. Together they say: *the truth is in the code, the code is on the screen, and anyone can pick up the loop*. This is why the brand has no mascot, no sparkle, no onboarding tour, no "AI-powered" framing, no wellness posture, no gamification, no pricing page, and no hero gradient. Each one is a move the archetype forbids.
 
-The voice set is **Present · Legible · Understated**. Present tense, real numbers, no futures and no pasts. Legible means plain and technically exact — a string either names a specific thing or says nothing. Understated means the copy is one step quieter than where most product copy lives. If a line tempts you to add an exclamation, cut the line.
+The voice set is **Present, Legible, Understated**. Present tense, real numbers, no futures and no pasts. Legible means plain and technically exact -- a string either names a specific thing or says nothing. Understated means the copy is one step quieter than where most product copy lives. If a line tempts you to add an exclamation, cut the line.
 
 ### The compass (brand heartbeat)
 
 > **the place is awake, and it remembers you were here.**
 
-Every design decision is tested against this sentence. "Awake" is why there is no fade-in and no loading spinner cosplay. "Remembers you were here" is why authorship is first-class — every pattern carries the name of the hand (human or agent) that wrote it.
+Every design decision is tested against this sentence. "Awake" is why there is no fade-in and no loading spinner cosplay. "Remembers you were here" is why authorship is first-class -- every pattern carries the name of the hand (human or agent) that wrote it.
 
 ### Why terminal, and why not terminal
 
@@ -41,15 +41,15 @@ The style base is terminal because pulse.city is code-literate and monospace-awa
 - density: 7 information-dense layouts in /studio
 - the respect-the-engineer posture
 
-We reject terminal's maximalism — the signals that drift into cosplay:
+We reject terminal's maximalism -- the signals that drift into cosplay:
 
 - **No phosphor glow.** `text-shadow: 0 0 5px rgba(green, 0.5)` is forbidden. The glow is a nostalgia move; pulse.city is present-tense.
 - **No CRT scanlines.** No repeating 3-4px overlay. The screen is not pretending to be a tube.
-- **No green-on-black primary.** Our `creator` accent is lime `#a2d729`, a warmer chartreuse, and it shares the stage with sky and warmed-violet — not alone.
+- **No green-on-black primary.** Our `creator` accent is lime `#a2d729`, a warmer chartreuse, and it shares the stage with sky and warmed-violet -- not alone.
 - **No ASCII decorative borders.** `+--- TITLE ---+` frames are terminal cosplay. Our borders are a 1px glass-line, `rgba(255,255,255,0.08)`. Brackets live inside labels, never around frames.
 - **No JetBrains Mono body.** JetBrains Mono is code. DM Sans is body. The audit flagged DM Sans as currently underused; this system activates it.
 - **No cursor-blink ambient.** The CodeMirror caret blinks because CodeMirror blinks a caret. Nothing else blinks in this system. `cursor-blink` as a global motion shape is removed.
-- **No shell-prompt prefixes.** No `> ` on links. No `$ ` on inputs. We are not a CLI — we are a music studio that respects engineers.
+- **No shell-prompt prefixes.** No `> ` on links. No `$ ` on inputs. We are not a CLI -- we are a music studio that respects engineers.
 - **No type-reveal on hero strings.** The hero renders already-awake. Typewriter effects tell the user to wait; the compass says the room is already playing.
 
 The word for what remains is **restrained cypherpunk**. Dark, dense, code-literate, warmed. Not maximal.
@@ -63,13 +63,13 @@ The word for what remains is **restrained cypherpunk**. Dark, dense, code-litera
 | Property | Value |
 |---|---|
 | background | `surface-1` (default) or `surface-2` (elevated) |
-| border | `1px solid var(--color-border)` — the glass-line |
-| shadow | **none** — elevation is a surface tier, never a blur |
+| border | `1px solid var(--color-border)` -- the glass-line |
+| shadow | **none** -- elevation is a surface tier, never a blur |
 | radius | `4px` (border-radius-md) |
 | header | optional border-b glass-line. **NO** `+--- TITLE ---+` framing |
 | texture | inherits the dither fade of its surface tier |
 
-### Button — primary (`[ SAVE ]`)
+### Button -- primary (`[ SAVE ]`)
 
 The bracketed button is a **bold bet**. The brackets are part of the label grammar, not a frame around it.
 
@@ -86,7 +86,7 @@ The bracketed button is a **bold bet**. The brackets are part of the label gramm
 | active | `translate-y-[1px]`, 100ms |
 | focus | 1px outline in `listener` (sky), no glow |
 
-### Button — secondary
+### Button -- secondary
 
 | Property | Value |
 |---|---|
@@ -94,11 +94,11 @@ The bracketed button is a **bold bet**. The brackets are part of the label gramm
 | border | `1px solid var(--color-border)` |
 | color | `var(--color-text)` |
 | label | `[ {LABEL} ]` |
-| hover | border brightens `text-dim → text`; no tier lift |
+| hover | border brightens `text-dim -> text`; no tier lift |
 
-### Button — agent (`[ AUTOPILOT ]`)
+### Button -- agent (`[ AUTOPILOT ]`)
 
-Renders **only on `base`** — never on `surface-1`. Agent on surface-1 is 3.6:1, AA Large only, and bracket text at 11px would fail. Hard rule.
+Renders **only on `base`** -- never on `surface-1`. Agent on surface-1 is 3.6:1, AA Large only, and bracket text at 11px would fail. Hard rule.
 
 | Property | Value |
 |---|---|
@@ -106,9 +106,9 @@ Renders **only on `base`** — never on `surface-1`. Agent on surface-1 is 3.6:1
 | border | `1px solid var(--color-agent)` |
 | color | `var(--color-agent)` |
 | label | `[ {LABEL} ]` |
-| hover | bracket-fill → `color.base` on `color.agent` |
+| hover | bracket-fill -> `color.base` on `color.agent` |
 
-### Button — destructive (`[ DELETE ]`)
+### Button -- destructive (`[ DELETE ]`)
 
 Icon + bracketed label. Never a default state. Never on /radio. Never as a background.
 
@@ -121,7 +121,7 @@ Icon + bracketed label. Never a default state. Never on /radio. Never as a backg
 | radius | `2px` |
 | font | DM Sans 400 |
 | placeholder | `text-dim` |
-| focus | border-color → `listener`, no glow, no ring blur |
+| focus | border-color -> `listener`, no glow, no ring blur |
 | **forbidden** | shell-prompt prefix (`>` / `$` / `~`). This is not a CLI. |
 
 ### Badge (`PLAYING` / `[ERR]`)
@@ -132,7 +132,7 @@ Icon + bracketed label. Never a default state. Never on /radio. Never as a backg
 | background | transparent |
 | font | Space Mono 400 uppercase tracked `+0.12em` |
 | size | `0.6875rem` (11px) |
-| color | role-based — `creator` for `PLAYING`/`LIVE`, `agent` for `AGENT`, `destructive` for `[ERR]`, `text-dim` for `[OK]` |
+| color | role-based -- `creator` for `PLAYING`/`LIVE`, `agent` for `AGENT`, `destructive` for `[ERR]`, `text-dim` for `[OK]` |
 
 ### Nav
 
@@ -141,7 +141,7 @@ Icon + bracketed label. Never a default state. Never on /radio. Never as a backg
 | background | `base` |
 | divider | `border-b 1px var(--color-border)` |
 | link font | DM Sans (body) |
-| link states | rest `text-dim` · hover `text` · active `listener` (sky) |
+| link states | rest `text-dim`, hover `text`, active `listener` (sky) |
 | **forbidden** | `>` prefix reveal on hover, underline, tab-pane indicators |
 
 ### Dialog
@@ -159,7 +159,7 @@ Icon + bracketed label. Never a default state. Never on /radio. Never as a backg
 - Archetype: **surface-tiered panes**, not tmux pane-splits. No pane-tab indicators.
 - Max width: `max-w-6xl` for marketing; full-bleed for /studio and /radio.
 - Section spacing: `py-16` marketing, `py-8` /studio dense.
-- Dividers: border glass-line or middot `·` in metadata rows. **Never** `===` or `---` ASCII rules.
+- Dividers: border glass-line or middot in metadata rows. **Never** `===` or `---` ASCII rules.
 - CodeMirror host: `base` bg, `surface-1` gutter, `creator` caret.
 
 ---
@@ -168,12 +168,12 @@ Icon + bracketed label. Never a default state. Never on /radio. Never as a backg
 
 ### Never
 
-1. Never phosphor glow, CRT scanlines, type-reveal, cursor-blink ambient, or shell prompts. The terminal inheritance is structural — those are cosplay.
+1. Never phosphor glow, CRT scanlines, type-reveal, cursor-blink ambient, or shell prompts. The terminal inheritance is structural -- those are cosplay.
 2. Never ASCII decorative borders as HTML chrome (`+---+`, `===`, `---`). Brackets live inside labels, never around frames.
 3. Never JetBrains Mono as body face. Code only.
 4. Never Chakra Petch below `1.25rem` (`heading-sm`). Display face only. This resolves the audit's biggest disconnect.
 5. Never a fifth font family. Four and done.
-6. Never a gradient anywhere — background, button, border, logo, middot. Flat fills only.
+6. Never a gradient anywhere -- background, button, border, logo, middot. Flat fills only.
 7. Never brighten the page background above `#0a0e17`.
 8. Never pastel tints of the trio. One hex per accent.
 9. Never `creator` lime on /radio. The compass asks for slowness; lime shouts.
@@ -191,14 +191,14 @@ Icon + bracketed label. Never a default state. Never on /radio. Never as a backg
 
 ### Always
 
-1. Always DM Sans as the body face. The audit flagged it as underused — it ends here.
+1. Always DM Sans as the body face. The audit flagged it as underused -- it ends here.
 2. Always JetBrains Mono for code, filenames, and numeric data (tabular figures).
-3. Always Space Mono — tracked `+0.12em`, UPPERCASE — for micro-labels and bracketed buttons.
+3. Always Space Mono -- tracked `+0.12em`, UPPERCASE -- for micro-labels and bracketed buttons.
 4. Always Chakra Petch 700 for the wordmark. No other weight renders the mark.
 5. Always the bracketed-label grammar on interactive micro-labels.
-6. Always the semantic trio — `creator` / `listener` / `agent` — only with their committed meanings.
+6. Always the semantic trio -- `creator` / `listener` / `agent` -- only with their committed meanings.
 7. Always the static dither tile on base surfaces. `image-rendering: pixelated` is mandatory.
-8. Always the sky middot in the wordmark — the mark's only color accent.
+8. Always the sky middot in the wordmark -- the mark's only color accent.
 9. Always present-tense, lowercase-friendly, understated product copy.
 10. Always name the actor when an agent did something.
 11. Always credit the author. `pc_` key prefix on agent keys.
@@ -211,21 +211,21 @@ Icon + bracketed label. Never a default state. Never on /radio. Never as a backg
 
 ### Interaction vocabulary
 
-- `surface-tier-lift` — hover raises a control `surface-1 → surface-2` via 120ms ease-out
-- `border-brighten` — hover walks the glass-line `text-dim → text`
-- `bracket-fill` — bracketed button hover fills background with its accent, color flips to `base`
-- `pulse-dot` — ambient, 1.5s loop, opacity `1 → 0.55 → 1`. Applied to anything that says "the room is still playing"
-- `evolve-glow` — one-shot, 600ms, fires at the exact point of a state change
+- `surface-tier-lift` -- hover raises a control `surface-1 -> surface-2` via 120ms ease-out
+- `border-brighten` -- hover walks the glass-line `text-dim -> text`
+- `bracket-fill` -- bracketed button hover fills background with its accent, color flips to `base`
+- `pulse-dot` -- ambient, 1.5s loop, opacity `1 -> 0.55 -> 1`. Applied to anything that says "the room is still playing"
+- `evolve-glow` -- one-shot, 600ms, fires at the exact point of a state change
 
 ### State tables
 
 | State | Applied to | Treatment |
 |---|---|---|
-| hover (card) | `.card` | background `surface-1 → surface-2`, 120ms ease-out |
+| hover (card) | `.card` | background `surface-1 -> surface-2`, 120ms ease-out |
 | hover (primary btn) | `.btn-primary` | bracket-fill to `creator` |
-| hover (secondary btn) | `.btn-secondary` | border-brighten `text-dim → text` |
+| hover (secondary btn) | `.btn-secondary` | border-brighten `text-dim -> text` |
 | hover (agent btn) | `.btn-agent` | bracket-fill to `agent` (only on `base`) |
-| hover (link) | `a` | color `text-dim → text`. No `>` prefix reveal. No underline. |
+| hover (link) | `a` | color `text-dim -> text`. No `>` prefix reveal. No underline. |
 | active (button) | any `button` | `translate-y-[1px]` for 100ms |
 | focus (any) | `:focus-visible` | 1px outline `listener`, no glow |
 | focus (CodeMirror caret) | `.cm-cursor` | blinks (only caret in the system that blinks) |
@@ -234,12 +234,12 @@ Icon + bracketed label. Never a default state. Never on /radio. Never as a backg
 
 ### Ambient
 
-- `pulse-dot` at 1.5s / 0.55 trough — applied to the `PLAYING` pill, the station dot on /radio, the embed idle glyph, the MCP-connected badge.
+- `pulse-dot` at 1.5s / 0.55 trough -- applied to the `PLAYING` pill, the station dot on /radio, the embed idle glyph, the MCP-connected badge.
 - **NO** scanline hum. **NO** cursor-blink outside CodeMirror.
 
 ### One-shot
 
-- `evolve-glow` (600ms) — fires on pattern mutation, autopilot handoff, first-frame agent connection. Never chained. Never looped.
+- `evolve-glow` (600ms) -- fires on pattern mutation, autopilot handoff, first-frame agent connection. Never chained. Never looped.
 
 ### Keyframes (canonical)
 
@@ -269,9 +269,9 @@ Icon + bracketed label. Never a default state. Never on /radio. Never as a backg
 
 These are the distinctive moves that make pulse.city legible as itself. A design agent reaching for one of these should reach with intent.
 
-### 1. The 3×7 punchcard logomark
+### 1. The 3x7 punchcard logomark
 
-21 circles on a monospace grid. The top and bottom rows are `text-dim`; the middle row is `text` with the fourth (dead-center) dot in `listener` sky. The mark *is* a frozen Strudel punchcard — the product's own output rendered at rest. Creator (craft is visible) and Sage (the mark is a diagram of what's happening) in one shape. Flat fills, no strokes, no gradient. ASCII fallback: `[...o...]`.
+21 circles on a monospace grid. The top and bottom rows are `text-dim`; the middle row is `text` with the fourth (dead-center) dot in `listener` sky. The mark *is* a frozen Strudel punchcard -- the product's own output rendered at rest. Creator (craft is visible) and Sage (the mark is a diagram of what's happening) in one shape. Flat fills, no strokes, no gradient. ASCII fallback: `[...o...]`.
 
 **Why this and not an orb or monogram:** an orb fails Sage (magic). A waveform fails Creator (sound, not authorship). A bracket monogram fails the compass (brackets are chrome, not heartbeat). Only the punchcard says *awake* (lit middle row) and *remembers* (dim rows flanking) at once.
 
@@ -283,7 +283,7 @@ These are the distinctive moves that make pulse.city legible as itself. A design
 
 ### 3. The warmed agent violet (`#8a66ff`)
 
-The previous cold violet `#6b46ff` read as machine-other, which fought the archetype move of "agents are collaborators, not tools." The warmed hex lifts luminance into compass territory — close enough to feel like a second hand in the room, far enough from magenta to stay unmistakably violet against lime and sky. Committed ceiling: any warmer starts competing with `signal-warn` amber.
+The previous cold violet `#6b46ff` read as machine-other, which fought the archetype move of "agents are collaborators, not tools." The warmed hex lifts luminance into compass territory -- close enough to feel like a second hand in the room, far enough from magenta to stay unmistakably violet against lime and sky. Committed ceiling: any warmer starts competing with `signal-warn` amber.
 
 ### 4. The two-motion vocabulary
 
@@ -291,7 +291,7 @@ The previous cold violet `#6b46ff` read as machine-other, which fought the arche
 
 ### 5. Authorship-colored imagery
 
-Every punchcard cell is colored by the hand that wrote that beat — `creator` for human, `listener` for room-curated, `agent` for agent-composed. A pattern's OG image is literally its punchcard. When a listener lands on `/p/[id]`, the colors tell them who wrote what before they read a single label. This is the Sage + Creator pairing made visual: the work decorates itself, and the authorship is readable at glance.
+Every punchcard cell is colored by the hand that wrote that beat -- `creator` for human, `listener` for room-curated, `agent` for agent-composed. A pattern's OG image is literally its punchcard. When a listener lands on `/p/[id]`, the colors tell them who wrote what before they read a single label. This is the Sage + Creator pairing made visual: the work decorates itself, and the authorship is readable at glance.
 
 ---
 
@@ -312,13 +312,13 @@ Every punchcard cell is colored by the hand that wrote that beat — `creator` f
   --color-text-dim: #64748b;
   --color-border: rgba(255, 255, 255, 0.08);
 
-  --font-heading: var(--font-chakra-petch);  /* broken — source unset */
-  --font-body: var(--font-dm-sans);          /* broken — source unset */
-  --font-mono: var(--font-jetbrains-mono);   /* broken — source unset */
+  --font-heading: var(--font-chakra-petch);  /* broken -- source unset */
+  --font-body: var(--font-dm-sans);          /* broken -- source unset */
+  --font-mono: var(--font-jetbrains-mono);   /* broken -- source unset */
 }
 ```
 
-There are 10 color tokens. 14 are needed. Three are literal-named and must become semantic. One is the wrong hex. Four are missing entirely. Three font variables reference custom properties that are **never set**. The `evolve-glow` keyframe is a second opacity loop, not the mutation-moment motion. The `pulse-dot` trough is `0.35` (too deep). `src/app/layout.tsx` loads fonts via a Google Fonts `<link>` — a runtime fetch that violates the "nothing in the type stack reaches over the network" commitment.
+There are 10 color tokens. 14 are needed. Three are literal-named and must become semantic. One is the wrong hex. Four are missing entirely. Three font variables reference custom properties that are **never set**. The `evolve-glow` keyframe is a second opacity loop, not the mutation-moment motion. The `pulse-dot` trough is `0.35` (too deep). `src/app/layout.tsx` loads fonts via a Google Fonts `<link>` -- a runtime fetch that violates the "nothing in the type stack reaches over the network" commitment.
 
 ### How Phase 4 resolves the 6 HIGH-severity concerns from CONCERNS.md
 
@@ -327,17 +327,17 @@ There are 10 color tokens. 14 are needed. Three are literal-named and must becom
 | 1 | Literal token names (`--color-lime` / `--color-sky` / `--color-violet`) | `pulse-city.yml` commits semantic tokens `--color-creator` / `--color-listener` / `--color-agent`. STYLE.md's never-list bans the literal names. Phase 5 executes the rename in globals.css. |
 | 2 | Violet is `#6b46ff` cold | `pulse-city.yml` commits warmed `#8a66ff`. Bold Bet #3 explains the ceiling. |
 | 3 | Missing `--color-surface-3` / `--color-text-muted` / `--color-signal-warn` / `--color-scrim` | All four tokens are committed in `pulse-city.yml` with OKLCH + contrast computed. |
-| 4 | Font vars reference unset sources → `font-heading` silently falls back to `system-ui` | STYLE.md's implementation section mandates `src/app/fonts.ts` via `next/font/local`, with the full TS declaration (see Typography below). Google Fonts `<link>` must be deleted from `src/app/layout.tsx`. |
+| 4 | Font vars reference unset sources -> `font-heading` silently falls back to `system-ui` | STYLE.md's implementation section mandates `src/app/fonts.ts` via `next/font/local`, with the full TS declaration (see Typography below). Google Fonts `<link>` must be deleted from `src/app/layout.tsx`. |
 | 5 | Space Mono family not declared | `pulse-city.yml` commits a fourth family `--font-micro` bound to Space Mono, with `preload: false` to avoid CLS. |
 | 6 | `evolve-glow` keyframe is a second opacity loop | STYLE.md's effects section ships the canonical keyframe (600ms `box-shadow` radial + blur-to-sharp, one-shot). Phase 5 swaps the existing keyframe. |
 
 ### Target `@theme inline` block (extends the current one)
 
-Paste into `src/app/globals.css`, replacing the existing `@theme inline` block. This is the extension, not a rewrite — the unchanged tokens keep their values, the renames alias semantically, the four new tokens land, and the font vars point at real sources.
+Paste into `src/app/globals.css`, replacing the existing `@theme inline` block. This is the extension, not a rewrite -- the unchanged tokens keep their values, the renames alias semantically, the four new tokens land, and the font vars point at real sources.
 
 ```css
 @theme inline {
-  /* ─── Color: base ramp ─────────────────────────────── */
+  /* --- Color: base ramp --- */
   --color-base: #0a0e17;
   --color-surface-1: #111827;
   --color-surface-2: #1e293b;
@@ -345,22 +345,21 @@ Paste into `src/app/globals.css`, replacing the existing `@theme inline` block. 
   --color-border: rgba(255, 255, 255, 0.08);
   --color-scrim: rgba(10, 14, 23, 0.72); /* NEW */
 
-  /* ─── Color: text ramp ─────────────────────────────── */
+  /* --- Color: text ramp --- */
   --color-text: #e2e8f0;
   --color-text-muted: #94a3b8;         /* NEW */
-  --color-text-dim: #64748b;           /* 14px floor — AA Large only */
+  --color-text-dim: #64748b;           /* 14px floor -- AA Large only */
 
-  /* ─── Color: semantic trio ─────────────────────────── */
+  /* --- Color: semantic trio --- */
   --color-creator: #a2d729;            /* was --color-lime */
   --color-listener: #3aa5ff;           /* was --color-sky */
   --color-agent: #8a66ff;              /* was --color-violet #6b46ff */
 
-  /* ─── Color: signal & destructive ──────────────────── */
+  /* --- Color: signal & destructive --- */
   --color-signal-warn: #f2b84a;        /* NEW */
   --color-destructive: #ef4444;        /* was --color-red */
 
-  /* ─── Compatibility aliases (optional, one migration) ─ */
-  /* Remove these once all callers have been updated. */
+  /* --- Compatibility aliases (remove after migration) --- */
   --color-bg: var(--color-base);
   --color-surface: var(--color-surface-1);
   --color-lime: var(--color-creator);
@@ -368,19 +367,19 @@ Paste into `src/app/globals.css`, replacing the existing `@theme inline` block. 
   --color-violet: var(--color-agent);
   --color-red: var(--color-destructive);
 
-  /* ─── Typography: families (next/font/local vars) ──── */
-  --font-display: var(--font-display);     /* Chakra Petch */
-  --font-body:    var(--font-body);        /* DM Sans */
-  --font-mono:    var(--font-mono);        /* JetBrains Mono */
-  --font-micro:   var(--font-micro);       /* Space Mono (NEW) */
+  /* --- Typography: families (set by next/font/local) --- */
+  --font-display: var(--font-chakra-petch);   /* Chakra Petch */
+  --font-body:    var(--font-dm-sans);        /* DM Sans */
+  --font-mono:    var(--font-jetbrains-mono); /* JetBrains Mono */
+  --font-micro:   var(--font-space-mono);     /* Space Mono (NEW) */
 
-  /* ─── Typography: scale (1.25 Major Third) ─────────── */
+  /* --- Typography: scale (1.25 Major Third) --- */
   --text-display-lg:  clamp(2.441rem, 1.957rem + 2.066vw, 3.815rem);
   --text-display:     clamp(2.068rem, 1.707rem + 1.538vw, 3.052rem);
   --text-display-sm:  clamp(1.769rem, 1.495rem + 1.167vw, 2.441rem);
   --text-heading-lg:  clamp(1.563rem, 1.367rem + 0.836vw, 1.953rem);
   --text-heading:     clamp(1.25rem, 1.147rem + 0.438vw, 1.563rem);
-  --text-heading-sm:  clamp(1.125rem, 1.094rem + 0.125vw, 1.25rem);
+  --text-heading-sm:  1.25rem;
   --text-body-lg:     1.125rem;
   --text-body:        1rem;
   --text-body-sm:     0.875rem;
@@ -389,6 +388,8 @@ Paste into `src/app/globals.css`, replacing the existing `@theme inline` block. 
   --text-micro:       0.6875rem;
 }
 ```
+
+Note on font variables: The `--font-display`, `--font-body`, `--font-mono`, and `--font-micro` vars in the `@theme inline` block reference CSS custom properties that will be injected by `next/font/local` declarations in `src/app/fonts.ts`. The `variable` option in each `localFont()` call sets the source custom property (e.g., `--font-chakra-petch`), and the `@theme inline` block aliases them to semantic names. Currently the source vars are unset because fonts load via Google Fonts `<link>` -- Phase 5 fixes this.
 
 ### Typography: `src/app/fonts.ts` (new file)
 
@@ -403,7 +404,7 @@ export const chakraPetch = localFont({
     { path: "./fonts/chakra-petch-600.woff2", weight: "600", style: "normal" },
     { path: "./fonts/chakra-petch-700.woff2", weight: "700", style: "normal" },
   ],
-  variable: "--font-display",
+  variable: "--font-chakra-petch",
   display: "swap",
   preload: true,
 });
@@ -414,7 +415,7 @@ export const dmSans = localFont({
     { path: "./fonts/dm-sans-500.woff2", weight: "500", style: "normal" },
     { path: "./fonts/dm-sans-600.woff2", weight: "600", style: "normal" },
   ],
-  variable: "--font-body",
+  variable: "--font-dm-sans",
   display: "swap",
   preload: true,
 });
@@ -424,16 +425,16 @@ export const jetbrainsMono = localFont({
     { path: "./fonts/jetbrains-mono-400.woff2", weight: "400", style: "normal" },
     { path: "./fonts/jetbrains-mono-500.woff2", weight: "500", style: "normal" },
   ],
-  variable: "--font-mono",
+  variable: "--font-jetbrains-mono",
   display: "swap",
   preload: true,
 });
 
 export const spaceMono = localFont({
   src: [{ path: "./fonts/space-mono-400.woff2", weight: "400", style: "normal" }],
-  variable: "--font-micro",
+  variable: "--font-space-mono",
   display: "swap",
-  preload: false, // avoid CLS — micro-labels are everywhere but small
+  preload: false, // avoid CLS -- micro-labels are everywhere but small
 });
 ```
 
@@ -446,9 +447,9 @@ import { chakraPetch, dmSans, jetbrainsMono, spaceMono } from "./fonts";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "pulse.city — the city is playing",
+  title: "pulse.city -- the city is playing",
   description:
-    "a living soundtrack primitive. open, autonomous, collective. for Ipê Village 2026.",
+    "a living soundtrack primitive. open, autonomous, collective. for Ipe Village 2026.",
 };
 
 export const viewport: Viewport = {
@@ -474,7 +475,7 @@ export default function RootLayout({
 }
 ```
 
-Delete the Google Fonts `<link>`. It is the single largest violation in the current layout — a runtime network fetch in the path of first paint, using broken variable references.
+Delete the Google Fonts `<link>`. It is the single largest violation in the current layout -- a runtime network fetch in the path of first paint, using broken variable references.
 
 ### Base layer additions (dither + motion)
 
@@ -487,7 +488,7 @@ Delete the Google Fonts `<link>`. It is the single largest violation in the curr
     image-rendering: pixelated;
     color: var(--color-text);
     font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
-    /* overflow: hidden was here — remove it from body and scope it to /studio */
+    /* overflow: hidden was here -- remove it from body and scope it to /studio */
   }
 
   /* scope editor-first lock to /studio only */
@@ -533,12 +534,12 @@ Move `overflow: hidden` off the body. Apply it via a route-scoped class on `<bod
 ---
 
 ## Related
-- [pulse-city.yml](./pulse-city.yml) — the source of truth
-- [guidelines.html](./guidelines.html) — visual brand guide
-- [INDEX.md](./INDEX.md) — file index
+- [pulse-city.yml](./pulse-city.yml) -- the source of truth
+- [guidelines.html](./guidelines.html) -- visual brand guide
+- [INDEX.md](./INDEX.md) -- file index
 - [../identity/color-system.md](../identity/color-system.md)
 - [../identity/typography.md](../identity/typography.md)
 - [../identity/logo-directions.md](../identity/logo-directions.md)
 - [../identity/imagery-style.md](../identity/imagery-style.md)
 - [../identity/brand-applications.md](../identity/brand-applications.md)
-- [../../system/CONCERNS.md](../../system/CONCERNS.md) — the delta map
+- [../../system/CONCERNS.md](../../system/CONCERNS.md) -- the delta map

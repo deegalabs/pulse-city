@@ -39,7 +39,7 @@ export default function StrudelEditorInner({
 
     const mirror = new StrudelMirror({
       root: containerRef.current,
-      initialCode: initialCode || INITIAL_CODE,
+      initialCode: initialCode ?? INITIAL_CODE,
       defaultOutput: webaudioOutput,
       getTime: () => getAudioContext().currentTime,
       transpiler,
