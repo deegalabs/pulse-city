@@ -1,5 +1,8 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { asString, safeJson } from "@/lib/server/validation";
+
+const ALLOWED_MODES = new Set(["autopilot", "manual"]);
 
 // GET /api/patterns — list current user's patterns
 export async function GET() {
@@ -19,7 +22,8 @@ export async function GET() {
     .order("updated_at", { ascending: false });
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    console.error("Patterns GET failed:", error);
+    return NextResponse.json({ error: "Failed to load patterns" }, { status: 500 });
   }
 
   return NextResponse.json(data);
@@ -36,26 +40,38 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const body = await request.json();
-  const { title, code, mode } = body;
+  const body = await safeJson(request);
+  if (!body || typeof body !== "object") {
+    return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
+  }
+
+  const raw = body as { title?: unknown; code?: unknown; mode?: unknown };
+  const code = asString(raw.code, 40_000);
+  const title = asString(raw.title, 120) ?? "Untitled";
+  const mode = typeof raw.mode === "string" ? raw.mode : "autopilot";
 
   if (!code) {
     return NextResponse.json({ error: "Code is required" }, { status: 400 });
+  }
+
+  if (!ALLOWED_MODES.has(mode)) {
+    return NextResponse.json({ error: "Invalid mode" }, { status: 400 });
   }
 
   const { data, error } = await supabase
     .from("patterns")
     .insert({
       user_id: user.id,
-      title: title || "Untitled",
+      title,
       code,
-      mode: mode || "autopilot",
+      mode: mode as "autopilot" | "manual",
     })
     .select()
     .single();
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    console.error("Patterns POST failed:", error);
+    return NextResponse.json({ error: "Failed to create pattern" }, { status: 500 });
   }
 
   return NextResponse.json(data, { status: 201 });

@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import type { Pattern, Profile, Database } from "@/lib/supabase/types";
+import { asString, isUuid, safeJson } from "@/lib/server/validation";
 
 type PatternUpdate = Database["public"]["Tables"]["patterns"]["Update"];
+const ALLOWED_MODES = new Set(["autopilot", "manual"]);
 
 // GET /api/patterns/:id — load a single pattern (own or public)
 export async function GET(
@@ -10,6 +12,10 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
+  if (!isUuid(id)) {
+    return NextResponse.json({ error: "Pattern not found" }, { status: 404 });
+  }
+
   const supabase = await createClient();
 
   // Get user first to check access
@@ -26,6 +32,7 @@ export async function GET(
   const pattern = data as Pattern | null;
 
   if (error || !pattern) {
+    if (error) console.error("Pattern GET failed:", error);
     return NextResponse.json({ error: "Pattern not found" }, { status: 404 });
   }
 
@@ -57,6 +64,10 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
+  if (!isUuid(id)) {
+    return NextResponse.json({ error: "Pattern not found" }, { status: 404 });
+  }
+
   const supabase = await createClient();
   const {
     data: { user },
@@ -66,13 +77,58 @@ export async function PATCH(
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const body = await request.json();
-  const updates: PatternUpdate = { updated_at: new Date().toISOString() };
+  const body = await safeJson(request);
+  if (!body || typeof body !== "object") {
+    return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
+  }
 
-  if (body.title !== undefined) updates.title = body.title;
-  if (body.code !== undefined) updates.code = body.code;
-  if (body.mode !== undefined) updates.mode = body.mode;
-  if (body.is_public !== undefined) updates.is_public = body.is_public;
+  const raw = body as {
+    title?: unknown;
+    code?: unknown;
+    mode?: unknown;
+    is_public?: unknown;
+  };
+
+  const updates: PatternUpdate = { updated_at: new Date().toISOString() };
+  let hasUpdate = false;
+
+  if (raw.title !== undefined) {
+    const title = asString(raw.title, 120);
+    if (!title) {
+      return NextResponse.json({ error: "Invalid title" }, { status: 400 });
+    }
+    updates.title = title;
+    hasUpdate = true;
+  }
+
+  if (raw.code !== undefined) {
+    const code = asString(raw.code, 40_000);
+    if (!code) {
+      return NextResponse.json({ error: "Invalid code" }, { status: 400 });
+    }
+    updates.code = code;
+    hasUpdate = true;
+  }
+
+  if (raw.mode !== undefined) {
+    if (typeof raw.mode !== "string" || !ALLOWED_MODES.has(raw.mode)) {
+      return NextResponse.json({ error: "Invalid mode" }, { status: 400 });
+    }
+    updates.mode = raw.mode as "autopilot" | "manual";
+    hasUpdate = true;
+  }
+
+  if (raw.is_public !== undefined) {
+    if (typeof raw.is_public !== "boolean") {
+      return NextResponse.json({ error: "Invalid is_public" }, { status: 400 });
+    }
+    updates.is_public = raw.is_public;
+    hasUpdate = true;
+  }
+
+  if (!hasUpdate) {
+    return NextResponse.json({ error: "No valid fields to update" }, { status: 400 });
+  }
 
   const { data, error } = await supabase
     .from("patterns")
@@ -83,7 +139,8 @@ export async function PATCH(
     .single();
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    console.error("Pattern PATCH failed:", error);
+    return NextResponse.json({ error: "Failed to update pattern" }, { status: 500 });
   }
 
   if (!data) {
@@ -99,6 +156,10 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
+  if (!isUuid(id)) {
+    return NextResponse.json({ error: "Pattern not found" }, { status: 404 });
+  }
+
   const supabase = await createClient();
   const {
     data: { user },
@@ -115,7 +176,8 @@ export async function DELETE(
     .eq("user_id", user.id);
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    console.error("Pattern DELETE failed:", error);
+    return NextResponse.json({ error: "Failed to delete pattern" }, { status: 500 });
   }
 
   return NextResponse.json({ ok: true });

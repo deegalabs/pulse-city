@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import type { Pattern } from "@/lib/supabase/types";
+import { isUuid } from "@/lib/server/validation";
 
 // POST /api/patterns/:id/share — toggle public sharing
 export async function POST(
@@ -8,6 +9,10 @@ export async function POST(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
+  if (!isUuid(id)) {
+    return NextResponse.json({ error: "Pattern not found" }, { status: 404 });
+  }
+
   const supabase = await createClient();
   const {
     data: { user },
@@ -41,7 +46,8 @@ export async function POST(
     .eq("user_id", user.id);
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    console.error("Pattern share toggle failed:", error);
+    return NextResponse.json({ error: "Failed to update sharing" }, { status: 500 });
   }
 
   return NextResponse.json({ is_public: newState, share_url: newState ? `/p/${id}` : null });
