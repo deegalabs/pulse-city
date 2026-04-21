@@ -30,7 +30,7 @@ export function SpectrumAnalyzer({ onEnergy }: SpectrumAnalyzerProps) {
     barGradTop: 0,
   });
 
-  const draw = useCallback(() => {
+  const draw = useCallback(function frame() {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
@@ -46,7 +46,7 @@ export function SpectrumAnalyzer({ onEnergy }: SpectrumAnalyzerProps) {
     const W = canvas.width;
     const H = canvas.height;
     if (!W || !H) {
-      st.afr = requestAnimationFrame(draw);
+      st.afr = requestAnimationFrame(frame);
       return;
     }
 
@@ -79,7 +79,7 @@ export function SpectrumAnalyzer({ onEnergy }: SpectrumAnalyzerProps) {
       ctx.font = '12px "Chakra Petch", sans-serif';
       ctx.textAlign = "center";
       ctx.fillText("NO SIGNAL", W / 2, H / 2);
-      st.afr = requestAnimationFrame(draw);
+      st.afr = requestAnimationFrame(frame);
       return;
     }
 
@@ -182,7 +182,7 @@ export function SpectrumAnalyzer({ onEnergy }: SpectrumAnalyzerProps) {
       }
     }
 
-    st.afr = requestAnimationFrame(draw);
+    st.afr = requestAnimationFrame(frame);
   }, [onEnergy]);
 
   useEffect(() => {

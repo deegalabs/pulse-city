@@ -9,6 +9,47 @@ interface ChatPanelProps {
   onCodeApply?: (code: string) => void;
 }
 
+function RobotIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="text-agent shrink-0 mt-0.5"
+    >
+      <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7v1H3v-1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z" />
+      <rect x="3" y="15" width="18" height="6" rx="2" />
+      <circle cx="9" cy="18" r="1" fill="currentColor" />
+      <circle cx="15" cy="18" r="1" fill="currentColor" />
+    </svg>
+  );
+}
+
+function ChevronDown() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="text-text-dim"
+    >
+      <path d="m6 9 6 6 6-6" />
+    </svg>
+  );
+}
+
 export function ChatPanel({ onCodeApply }: ChatPanelProps) {
   const { mode, code } = useStore();
   const isAutopilot = mode === "autopilot";
@@ -78,45 +119,6 @@ export function ChatPanel({ onCodeApply }: ChatPanelProps) {
     window.addEventListener("pulse:tool", handler);
     return () => window.removeEventListener("pulse:tool", handler);
   }, [sendMessage]);
-
-  /* ── Robot icon for autopilot messages ── */
-  const RobotIcon = () => (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="14"
-      height="14"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className="text-agent shrink-0 mt-0.5"
-    >
-      <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7v1H3v-1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z" />
-      <rect x="3" y="15" width="18" height="6" rx="2" />
-      <circle cx="9" cy="18" r="1" fill="currentColor" />
-      <circle cx="15" cy="18" r="1" fill="currentColor" />
-    </svg>
-  );
-
-  /* ── Chevron icon for manual mode ── */
-  const ChevronDown = () => (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className="text-text-dim"
-    >
-      <path d="m6 9 6 6 6-6" />
-    </svg>
-  );
 
   if (isAutopilot) {
     return (

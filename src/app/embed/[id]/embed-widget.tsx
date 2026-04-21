@@ -1,6 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { silence } from "@strudel/core";
+import { transpiler } from "@strudel/transpiler";
+import { getAudioContext, webaudioOutput } from "@strudel/webaudio";
+import { getDrawContext } from "@strudel/draw";
+import { StrudelMirror } from "@strudel/codemirror";
 
 interface EmbedWidgetProps {
   title: string;
@@ -12,15 +17,44 @@ interface EmbedWidgetProps {
 export function EmbedWidget({ title, author, code, patternId }: EmbedWidgetProps) {
   const [playing, setPlaying] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const mirrorRef = useRef<StrudelMirror | null>(null);
+
+  useEffect(() => {
+    return () => {
+      mirrorRef.current?.stop();
+      mirrorRef.current = null;
+    };
+  }, []);
 
   async function handleToggle() {
     if (playing) {
+      mirrorRef.current?.stop();
       setPlaying(false);
       return;
     }
     try {
       const { initStrudelAudio } = await import("@/lib/strudel/init");
       await initStrudelAudio();
+
+      if (!mirrorRef.current && rootRef.current) {
+        mirrorRef.current = new StrudelMirror({
+          root: rootRef.current,
+          initialCode: code,
+          defaultOutput: webaudioOutput,
+          getTime: () => getAudioContext().currentTime,
+          transpiler,
+          autodraw: false,
+          drawContext: getDrawContext(),
+          pattern: silence,
+        });
+      }
+
+      if (mirrorRef.current) {
+        mirrorRef.current.setCode(code);
+        mirrorRef.current.evaluate();
+      }
+
       setPlaying(true);
     } catch (err) {
       console.error("Embed play failed:", err);
@@ -41,6 +75,7 @@ export function EmbedWidget({ title, author, code, patternId }: EmbedWidgetProps
 
   return (
     <div className="fixed bottom-6 right-6 w-80 bg-surface-1 border border-white/10 shadow-2xl flex flex-col gap-3 p-5">
+      <div ref={rootRef} className="hidden" aria-hidden="true" />
       {/* Top Row: Wordmark + Close */}
       <div className="flex justify-between items-center">
         <span className="font-heading text-[10px] tracking-widest text-text-dim uppercase">

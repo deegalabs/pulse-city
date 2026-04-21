@@ -14,7 +14,7 @@ interface HeaderProps {
 }
 
 export function Header({ onSettingsClick, onSaveClick, onLoadClick }: HeaderProps) {
-  const { mode, playing, toggleMode } = useStore();
+  const { mode, toggleMode } = useStore();
   const isAutopilot = mode === "autopilot";
   const pathname = usePathname();
   const [loginOpen, setLoginOpen] = useState(false);

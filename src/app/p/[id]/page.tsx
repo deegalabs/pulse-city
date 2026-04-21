@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import type { Pattern, Profile } from "@/lib/supabase/types";
 import { PatternPlayer } from "./pattern-player";
@@ -40,19 +41,19 @@ export default async function SharedPatternPage({
     <div className="min-h-dvh bg-base text-text font-body selection:bg-listener selection:text-base overflow-y-auto">
       {/* Header */}
       <header className="bg-base flex justify-between items-center w-full px-6 py-4 border-b border-white/10 sticky top-0 z-50">
-        <a href="/" className="font-heading text-[10px] tracking-widest text-text-dim uppercase">
+        <Link href="/" className="font-heading text-[10px] tracking-widest text-text-dim uppercase">
           PULSE<span className="text-listener">·</span>CITY
-        </a>
+        </Link>
         <div className="flex items-center gap-6">
           <nav className="hidden md:flex gap-8 font-micro text-[10px] tracking-widest">
-            <a href="/" className="text-text-dim hover:text-listener transition-colors">EXPLORE</a>
+            <Link href="/" className="text-text-dim hover:text-listener transition-colors">EXPLORE</Link>
           </nav>
-          <a
+          <Link
             href={`/?load=${pattern.id}`}
             className="font-micro text-[10px] tracking-widest text-creator hover:opacity-80 transition-opacity"
           >
             [ OPEN IN STUDIO ]
-          </a>
+          </Link>
         </div>
       </header>
 
@@ -122,12 +123,12 @@ export default async function SharedPatternPage({
 
           {/* Action Cluster */}
           <div className="flex flex-wrap gap-4 mb-20">
-            <a
+            <Link
               href={`/?load=${pattern.id}`}
               className="font-micro text-[10px] tracking-widest text-creator py-2 px-4 border border-creator/20 hover:bg-creator/5 transition-colors uppercase"
             >
               [ OPEN IN STUDIO ]
-            </a>
+            </Link>
             <CopyCodeButton code={pattern.code} />
           </div>
         </article>
@@ -136,9 +137,9 @@ export default async function SharedPatternPage({
       {/* Footer */}
       <footer className="bg-base border-t border-white/10 py-16 px-6">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-12">
-          <a href="/" className="font-heading text-[10px] tracking-widest text-text-dim uppercase">
+          <Link href="/" className="font-heading text-[10px] tracking-widest text-text-dim uppercase">
             PULSE<span className="text-listener">·</span>CITY
-          </a>
+          </Link>
         </div>
         <div className="max-w-7xl mx-auto mt-16 pt-8 border-t border-white/10">
           <p className="font-micro text-[10px] text-text-dim tracking-widest text-center md:text-left">
@@ -153,7 +154,8 @@ export default async function SharedPatternPage({
 function PunchcardHero() {
   const colors = ["bg-creator", "bg-listener", "bg-agent"];
   const dots = Array.from({ length: 120 }, (_, i) => {
-    const opacity = Math.random() > 0.3 ? Math.random() * 0.8 + 0.2 : 0.05;
+    const seeded = ((i * 37) % 100) / 100;
+    const opacity = seeded > 0.3 ? 0.2 + seeded * 0.8 : 0.05;
     const color = colors[i % 3];
     return { opacity, color };
   });

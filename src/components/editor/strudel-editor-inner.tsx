@@ -34,11 +34,12 @@ export default function StrudelEditorInner({
 
   useEffect(() => {
     if (!containerRef.current || mirrorRef.current) return;
+    const root = containerRef.current;
 
     const drawContext = getDrawContext();
 
     const mirror = new StrudelMirror({
-      root: containerRef.current,
+      root,
       initialCode: initialCode ?? INITIAL_CODE,
       defaultOutput: webaudioOutput,
       getTime: () => getAudioContext().currentTime,
@@ -70,9 +71,7 @@ export default function StrudelEditorInner({
     return () => {
       // StrudelMirror doesn't have a destroy method,
       // but we clear the container on unmount
-      if (containerRef.current) {
-        containerRef.current.innerHTML = "";
-      }
+      root.innerHTML = "";
       mirrorRef.current = null;
       if (editorRef) editorRef.current = null;
     };
