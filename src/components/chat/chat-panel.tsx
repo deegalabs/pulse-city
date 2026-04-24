@@ -4,9 +4,13 @@ import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
 import { useState, useRef, useEffect, useCallback } from "react";
 import { useStore } from "@/lib/store";
+import { CodeDiff } from "@/components/chat/code-diff";
+import { extractCode, extractMessage } from "@/lib/ai/extract-ai-response";
 
 interface ChatPanelProps {
   onCodeApply?: (code: string) => void;
+  onCodePreview?: (code: string) => void;
+  onCodeRevert?: () => void;
 }
 
 function RobotIcon() {
@@ -50,18 +54,26 @@ function ChevronDown() {
   );
 }
 
-export function ChatPanel({ onCodeApply }: ChatPanelProps) {
+export function ChatPanel({ onCodeApply, onCodePreview, onCodeRevert }: ChatPanelProps) {
   const { mode, code } = useStore();
-  const isAutopilot = mode === "autopilot";
   const [input, setInput] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [userScrolledUp, setUserScrolledUp] = useState(false);
+  const [previewingId, setPreviewingId] = useState<string | null>(null);
+  const [appliedIds, setAppliedIds] = useState<Set<string>>(() => new Set());
+  const [rejectedIds, setRejectedIds] = useState<Set<string>>(() => new Set());
+  // Snapshot of the code at the moment a message's diff is first shown, so
+  // the diff keeps its "before" state even after the user hits Listen/Keep.
+  const baselineRef = useRef<Map<string, string>>(new Map());
 
   const { messages, sendMessage, status } = useChat({
     transport: new DefaultChatTransport({
       api: "/api/chat",
-      body: { mode, currentCode: code },
+      body: () => {
+        const s = useStore.getState();
+        return { mode: s.mode, currentCode: s.code };
+      },
     }),
   });
 
@@ -97,17 +109,7 @@ export function ChatPanel({ onCodeApply }: ChatPanelProps) {
       .join("");
   };
 
-  const tryParseCode = (text: string): string | null => {
-    try {
-      const json = JSON.parse(text);
-      if (json.code) return json.code;
-      if (json.action === "apply" && json.code) return json.code;
-    } catch {
-      const match = text.match(/```(?:js|javascript)?\n([\s\S]*?)```/);
-      if (match) return match[1].trim();
-    }
-    return null;
-  };
+  const tryParseCode = extractCode;
 
   useEffect(() => {
     const handler = (e: Event) => {
@@ -120,111 +122,57 @@ export function ChatPanel({ onCodeApply }: ChatPanelProps) {
     return () => window.removeEventListener("pulse:tool", handler);
   }, [sendMessage]);
 
-  if (isAutopilot) {
-    return (
-      <div className="h-48 border-t border-white/10 bg-surface-1 flex flex-col">
-        {/* Header */}
-        <div className="h-8 border-b border-white/5 px-4 flex items-center justify-between shrink-0">
-          <div className="flex gap-4">
-            <span className="font-micro text-[9px] tracking-[0.2em] text-agent">
-              CHAT
-            </span>
-            <span className="font-micro text-[9px] tracking-[0.2em] text-text-dim hover:text-text cursor-pointer transition-colors">
-              STEER MODE
-            </span>
-          </div>
-          <span className="w-1.5 h-1.5 bg-agent rounded-full animate-[pulse-dot_1.5s_ease-in-out_infinite]" />
-        </div>
+  const getBaseline = (messageId: string, current: string): string => {
+    const existing = baselineRef.current.get(messageId);
+    if (existing !== undefined) return existing;
+    baselineRef.current.set(messageId, current);
+    return current;
+  };
 
-        {/* Messages */}
-        <div
-          ref={containerRef}
-          onScroll={handleScroll}
-          className="flex-1 p-4 overflow-y-auto space-y-3 min-h-0"
-        >
-          {messages.length === 0 && (
-            <p className="text-xs text-text-dim">
-              Autopilot is composing. Send a direction to steer the music.
-            </p>
-          )}
+  const handleListen = useCallback(
+    (messageId: string, newCode: string) => {
+      if (previewingId === messageId) {
+        onCodeRevert?.();
+        setPreviewingId(null);
+        return;
+      }
+      onCodePreview?.(newCode);
+      setPreviewingId(messageId);
+    },
+    [previewingId, onCodePreview, onCodeRevert]
+  );
 
-          {messages.map((message) => {
-            const text = getMessageText(message);
-            const isUser = message.role === "user";
-            const extractedCode = !isUser ? tryParseCode(text) : null;
+  const handleKeep = useCallback(
+    (messageId: string, newCode: string) => {
+      onCodeApply?.(newCode);
+      setPreviewingId((curr) => (curr === messageId ? null : curr));
+      setAppliedIds((prev) => {
+        const next = new Set(prev);
+        next.add(messageId);
+        return next;
+      });
+    },
+    [onCodeApply]
+  );
 
-            let displayText = text;
-            try {
-              const json = JSON.parse(text);
-              if (json.message) displayText = json.message;
-            } catch {
-              // keep original
-            }
-
-            return (
-              <div key={message.id} className="flex gap-2 items-start">
-                {!isUser && <RobotIcon />}
-                <div className="flex-1">
-                  <p
-                    className={`text-xs ${
-                      isUser ? "text-text" : "text-text-dim italic"
-                    }`}
-                  >
-                    {isUser && (
-                      <span className="text-listener font-micro text-[9px] mr-1.5">
-                        YOU:
-                      </span>
-                    )}
-                    {displayText}
-                  </p>
-                  {extractedCode && onCodeApply && (
-                    <button
-                      onClick={() => onCodeApply(extractedCode)}
-                      className="mt-1.5 font-micro text-[10px] tracking-widest text-agent hover:underline cursor-pointer"
-                    >
-                      [ APPLY ]
-                    </button>
-                  )}
-                </div>
-              </div>
-            );
-          })}
-
-          {isLoading && (
-            <div className="flex gap-2 items-start">
-              <RobotIcon />
-              <p className="text-xs text-text-dim italic animate-pulse">
-                thinking...
-              </p>
-            </div>
-          )}
-
-          <div ref={messagesEndRef} />
-        </div>
-
-        {/* Input -- steer mode: no SEND button */}
-        <form onSubmit={handleSubmit} className="p-3 border-t border-white/5 shrink-0">
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
-                handleSubmit(e);
-              }
-            }}
-            placeholder="steer: more bass, darker, speed up..."
-            disabled={isLoading}
-            className="w-full bg-base border border-white/5 px-4 py-2 text-xs font-micro text-text focus:outline-none focus:border-agent/50 transition-colors placeholder:text-text-dim/50 disabled:opacity-50"
-          />
-        </form>
-      </div>
-    );
-  }
+  const handleReject = useCallback(
+    (messageId: string) => {
+      if (previewingId === messageId) {
+        onCodeRevert?.();
+        setPreviewingId(null);
+      }
+      setRejectedIds((prev) => {
+        const next = new Set(prev);
+        next.add(messageId);
+        return next;
+      });
+    },
+    [previewingId, onCodeRevert]
+  );
 
   /* ── Manual / Copilot mode ── */
   return (
-    <div className="h-[200px] bg-base glass-line border-x-0 border-b-0 flex flex-col">
+    <div className="flex-1 min-h-0 bg-base flex flex-col">
       {/* Header */}
       <div className="px-4 py-2 flex justify-between items-center border-b border-white/5 shrink-0">
         <div className="flex items-center gap-2">
@@ -254,14 +202,9 @@ export function ChatPanel({ onCodeApply }: ChatPanelProps) {
           const text = getMessageText(message);
           const isUser = message.role === "user";
           const extractedCode = !isUser ? tryParseCode(text) : null;
+          const displayText = isUser ? text : extractMessage(text);
 
-          let displayText = text;
-          try {
-            const json = JSON.parse(text);
-            if (json.message) displayText = json.message;
-          } catch {
-            // keep original
-          }
+          const showDiff = !!extractedCode && !rejectedIds.has(message.id);
 
           return (
             <div key={message.id} className="flex gap-3">
@@ -272,7 +215,7 @@ export function ChatPanel({ onCodeApply }: ChatPanelProps) {
               >
                 {isUser ? "YOU" : "AGENT"}
               </span>
-              <div className="flex-1">
+              <div className="flex-1 min-w-0">
                 <p
                   className={`text-sm ${
                     isUser ? "text-text" : "text-text-dim italic"
@@ -280,13 +223,16 @@ export function ChatPanel({ onCodeApply }: ChatPanelProps) {
                 >
                   {displayText}
                 </p>
-                {extractedCode && onCodeApply && (
-                  <button
-                    onClick={() => onCodeApply(extractedCode)}
-                    className="mt-1.5 font-micro text-[10px] tracking-widest text-agent hover:underline cursor-pointer"
-                  >
-                    [ APPLY ]
-                  </button>
+                {showDiff && extractedCode && (
+                  <CodeDiff
+                    oldCode={getBaseline(message.id, code)}
+                    newCode={extractedCode}
+                    previewing={previewingId === message.id}
+                    applied={appliedIds.has(message.id)}
+                    onListen={() => handleListen(message.id, extractedCode)}
+                    onKeep={() => handleKeep(message.id, extractedCode)}
+                    onReject={() => handleReject(message.id)}
+                  />
                 )}
               </div>
             </div>

@@ -3,12 +3,6 @@
 import type { StrudelMirror } from "@strudel/codemirror";
 import { useStore } from "@/lib/store";
 
-const MANUAL_TICKER =
-  "▓▒░ PULSE.CITY · THE CITY IS PLAYING · TUNE IN · BROADCASTING LIVE FROM VIRTUAL CLUSTER 7 · RE-SEQUENCING AUDIO BUFFER... · PULSE.CITY · THE CITY IS PLAYING · TUNE IN ░▒▓";
-
-const AUTOPILOT_TICKER =
-  "▓▒░ AUTOPILOT ACTIVE · AGENT IS COMPOSING ░▒▓       ▓▒░ AUTOPILOT ACTIVE · AGENT IS COMPOSING ░▒▓";
-
 /* ── Inline SVG icons ── */
 
 function PlayIcon() {
@@ -70,112 +64,83 @@ function VolumeIcon() {
 interface TransportBarProps {
   editorRef: React.RefObject<StrudelMirror | null>;
   onEvolve?: () => void;
+  autoEvolve?: boolean;
+  onToggleAutoEvolve?: () => void;
 }
 
-export function TransportBar({ editorRef, onEvolve }: TransportBarProps) {
-  const { playing, mode } = useStore();
-  const isAutopilot = mode === "autopilot";
+export function TransportBar({
+  editorRef,
+  onEvolve,
+  autoEvolve,
+  onToggleAutoEvolve,
+}: TransportBarProps) {
+  const { playing } = useStore();
 
-  if (isAutopilot) {
-    return (
-      <footer className="fixed bottom-0 w-full h-14 bg-surface-1 border-t border-white/10 flex items-center z-50">
-        {/* Left: Pause + Evolve */}
-        <div className="flex items-center h-full px-6 gap-6">
-          <button
-            onClick={() => editorRef.current?.toggle()}
-            className="w-10 h-10 flex items-center justify-center hover:bg-agent/10 transition-colors border border-agent/20 cursor-pointer"
-          >
-            {playing ? (
-              <PauseIcon className="text-agent" />
-            ) : (
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="none" className="text-agent">
-                <polygon points="5 3 19 12 5 21 5 3" />
-              </svg>
-            )}
-          </button>
-          <button
-            onClick={onEvolve}
-            className="h-10 px-6 font-micro text-xs tracking-widest bg-agent/10 text-agent border border-agent hover:bg-agent hover:text-base transition-all flex items-center gap-3 cursor-pointer"
-          >
-            <span className="w-2 h-2 bg-agent rounded-full animate-[pulse-dot_1.5s_ease-in-out_infinite]" />
-            EVOLVE
-          </button>
-        </div>
-
-        {/* Center: Marquee ticker */}
-        <div className="flex-1 h-full flex items-center bg-base/50 overflow-hidden relative">
-          <div className="whitespace-nowrap font-micro text-[10px] tracking-[0.3em] text-agent/80 px-8 animate-[marquee_10s_linear_infinite]">
-            {AUTOPILOT_TICKER}
-          </div>
-          {/* Gradient fades */}
-          <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-surface-1 to-transparent" />
-          <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-surface-1 to-transparent" />
-        </div>
-
-        {/* Right: Clock + Volume */}
-        <div className="px-6 flex items-center gap-6">
-          <div className="hidden sm:flex flex-col items-end">
-            <span className="font-micro text-[9px] text-text-dim tracking-widest">CLOCK</span>
-            <span className="font-mono text-xs text-text">124.00 BPM</span>
-          </div>
-          <div className="h-10 w-px bg-white/5" />
-          <div className="flex items-center gap-3">
-            <VolumeIcon />
-            <div className="w-24 h-1 bg-surface-3 rounded-full relative overflow-hidden">
-              <div className="absolute inset-y-0 left-0 w-3/4 bg-agent" />
-            </div>
-          </div>
-        </div>
-      </footer>
-    );
-  }
-
-  /* ── Manual mode ── */
   return (
-    <footer className="fixed bottom-0 w-full z-50 flex justify-between items-center h-16 bg-surface-1 border-t border-white/5 px-6">
+    <div className="w-full flex justify-between items-center h-12 bg-surface-1 border-b border-white/5 px-3 md:px-4 gap-2 md:gap-3 shrink-0">
       {/* Left: Play/Stop */}
-      <div className="flex items-center gap-3 w-1/4">
+      <div className="flex items-center gap-2 shrink-0">
         <button
           onClick={() => editorRef.current?.toggle()}
-          className="flex items-center gap-2 bg-creator text-base px-6 py-2 rounded-full hover:brightness-110 transition-transform active:scale-95 cursor-pointer"
+          className="flex items-center gap-2 bg-creator text-base px-3 md:px-4 py-1.5 rounded-full hover:brightness-110 transition-transform active:scale-95 cursor-pointer"
+          title="Play / Pause"
         >
           {playing ? <PauseIcon /> : <PlayIcon />}
-          <span className="font-micro text-[10px] font-bold tracking-widest">
+          <span className="font-micro text-[10px] font-bold tracking-widest hidden sm:inline">
             {playing ? "PAUSE" : "PLAY"}
           </span>
         </button>
         <button
           onClick={() => editorRef.current?.stop()}
-          className="flex items-center gap-2 bg-transparent glass-line text-text px-4 py-2 rounded-sm hover:bg-white/5 transition-transform active:scale-95 cursor-pointer"
+          className="flex items-center gap-2 bg-transparent glass-line text-text px-2 md:px-3 py-1.5 rounded-sm hover:bg-white/5 transition-transform active:scale-95 cursor-pointer"
+          title="Stop"
+          aria-label="Stop"
         >
           <StopIcon />
         </button>
-      </div>
-
-      {/* Center: Scrolling Ticker */}
-      <div className="flex-1 overflow-hidden mx-8 h-full flex items-center bg-base/50">
-        <div className="whitespace-nowrap font-micro text-[10px] tracking-[0.2em] text-text-dim uppercase animate-[ticker_30s_linear_infinite]">
-          {MANUAL_TICKER}
-        </div>
-      </div>
-
-      {/* Right: Re-run / Evolve */}
-      <div className="flex items-center justify-end gap-3 w-1/4">
         <button
           onClick={() => editorRef.current?.evaluate()}
-          className="flex items-center gap-2 text-text-dim hover:text-text font-micro text-[10px] tracking-widest transition-colors cursor-pointer"
+          className="flex items-center gap-1.5 text-text-dim hover:text-text font-micro text-[10px] tracking-widest transition-colors cursor-pointer px-2 py-1.5"
+          title="Re-evaluate current code (Ctrl+Enter)"
         >
           <RefreshIcon />
-          RE-RUN
-        </button>
-        <button
-          onClick={onEvolve}
-          className="flex items-center gap-2 bg-agent/10 border border-agent/30 text-agent px-4 py-2 rounded-sm hover:bg-agent/20 transition-all duration-150 active:scale-95 cursor-pointer"
-        >
-          <SparkleIcon />
-          <span className="font-micro text-[10px] font-bold tracking-widest">EVOLVE</span>
+          <span className="hidden md:inline">RE-RUN</span>
         </button>
       </div>
-    </footer>
+
+      {/* Center spacer */}
+      <div className="flex-1" />
+
+      {/* Right: Evolve / Auto */}
+      <div className="flex items-center gap-2 shrink-0">
+        <button
+          onClick={onEvolve}
+          className="flex items-center gap-1.5 bg-agent/10 border border-agent/30 text-agent px-2 md:px-3 py-1.5 rounded-sm hover:bg-agent/20 transition-all duration-150 active:scale-95 cursor-pointer"
+          title="Evolve once"
+        >
+          <SparkleIcon />
+          <span className="font-micro text-[10px] font-bold tracking-widest hidden sm:inline">
+            EVOLVE
+          </span>
+        </button>
+        {onToggleAutoEvolve && (
+          <button
+            onClick={onToggleAutoEvolve}
+            className={`flex items-center gap-1.5 border px-2 md:px-3 py-1.5 rounded-sm transition-all duration-150 active:scale-95 cursor-pointer font-micro text-[10px] font-bold tracking-widest ${
+              autoEvolve
+                ? "bg-agent/20 border-agent text-agent"
+                : "border-white/10 text-text-dim hover:text-text hover:border-white/20"
+            }`}
+            title="Auto-evolve: AI mutates your code every 30s while playing"
+            aria-pressed={!!autoEvolve}
+          >
+            {autoEvolve && (
+              <span className="w-1.5 h-1.5 bg-agent rounded-full animate-[pulse-dot_1.5s_ease-in-out_infinite]" />
+            )}
+            <span>AUTO</span>
+          </button>
+        )}
+      </div>
+    </div>
   );
 }

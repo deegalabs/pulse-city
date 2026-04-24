@@ -8,14 +8,15 @@ const EVOLVE_INTERVAL_MS = 30_000;
 
 interface Options {
   editorRef: React.RefObject<StrudelMirror | null>;
+  enabled: boolean;
 }
 
-export function useAutopilotEvolve({ editorRef }: Options) {
-  const { mode, playing, code, setCode, setTrackTitle } = useStore();
+export function useAutopilotEvolve({ editorRef, enabled }: Options) {
+  const { playing, code, setCode, setTrackTitle } = useStore();
   const inFlightRef = useRef(false);
 
   useEffect(() => {
-    if (mode !== "autopilot" || !playing) return;
+    if (!enabled || !playing) return;
 
     const tick = async () => {
       if (inFlightRef.current) return;
@@ -51,5 +52,5 @@ export function useAutopilotEvolve({ editorRef }: Options) {
 
     const id = window.setInterval(tick, EVOLVE_INTERVAL_MS);
     return () => window.clearInterval(id);
-  }, [mode, playing, editorRef, code, setCode, setTrackTitle]);
+  }, [enabled, playing, editorRef, code, setCode, setTrackTitle]);
 }

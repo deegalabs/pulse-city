@@ -5,6 +5,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { SpectrumAnalyzer } from "@/components/spectrum/spectrum-analyzer";
 import { StrudelEditor } from "@/components/editor/strudel-editor";
 import type { StrudelMirror } from "@strudel/codemirror";
+import { useStore } from "@/lib/store";
 
 const FALLBACK_CODE = `$: s("bd*4").bank('RolandTR909').gain(.8).analyze(1)
 $: s("~ cp ~ cp").bank('RolandTR909').room(.3).gain(.5)
@@ -27,6 +28,14 @@ export default function RadioPage() {
   const [booting, setBooting] = useState(false);
   const [uptime, setUptime] = useState("00:00:00");
   const [codeOpen, setCodeOpen] = useState(false);
+  const { setBroadcast, setBroadcastActive } = useStore();
+
+  // Mark broadcast active while radio is playing.
+  // Do NOT clear on unmount — Strudel's audio scheduler keeps running the
+  // pattern after we navigate away, so the broadcast is still "live".
+  useEffect(() => {
+    if (playing) setBroadcastActive(true);
+  }, [playing, setBroadcastActive]);
 
   // Uptime counter
   useEffect(() => {
@@ -76,8 +85,10 @@ export default function RadioPage() {
       if (!editor) return;
       if (playing) {
         editor.stop();
+        setBroadcastActive(false);
       } else {
         editor.evaluate();
+        setBroadcastActive(true);
       }
       return;
     }
@@ -124,6 +135,8 @@ export default function RadioPage() {
       code = code.trim();
       setRadioCode(code);
       setRadioTitle(title);
+      setBroadcast(code, title);
+      setBroadcastActive(true);
       editor.setCode(code);
       editor.evaluate();
     } catch (err) {
@@ -163,6 +176,7 @@ export default function RadioPage() {
     code = code.trim();
     setRadioCode(code);
     setRadioTitle(title);
+    setBroadcast(code, title);
     editor.setCode(code);
     editor.evaluate();
   }
@@ -184,6 +198,7 @@ export default function RadioPage() {
           if (data.code) {
             const evolved = data.code.trim();
             setRadioCode(evolved);
+            setBroadcast(evolved, radioTitle);
             editor.setCode(evolved);
             editor.evaluate();
           }
@@ -193,7 +208,7 @@ export default function RadioPage() {
       }
     }, 30000);
     return () => clearInterval(interval);
-  }, [playing, radioCode]);
+  }, [playing, radioCode, radioTitle, setBroadcast]);
 
   return (
     <div className="h-dvh flex flex-col overflow-hidden relative bg-base text-text font-body selection:bg-listener selection:text-base">

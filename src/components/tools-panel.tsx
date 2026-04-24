@@ -1,7 +1,5 @@
 "use client";
 
-import { useStore } from "@/lib/store";
-
 interface ToolsPanelProps {
   onToolClick?: (tool: string) => void;
 }
@@ -34,8 +32,6 @@ const ICON_PATHS: Record<string, string> = {
     "M12 15V3M4.93 11.44 2 20h20l-2.93-8.56M7.5 3h9M12 3v12",
 };
 
-const AUTOPILOT_ICONS = ["graphic_eq", "layers", "waves", "blur_on"];
-
 function ToolIcon({ icon, className }: { icon: string; className?: string }) {
   const path = ICON_PATHS[icon];
   if (!path) return null;
@@ -58,55 +54,32 @@ function ToolIcon({ icon, className }: { icon: string; className?: string }) {
 }
 
 export function ToolsPanel({ onToolClick }: ToolsPanelProps) {
-  const { mode } = useStore();
-  const isAutopilot = mode === "autopilot";
-
-  if (isAutopilot) {
-    return (
-      <div className="border-t border-white/10 p-6 bg-base/50 grayscale opacity-50 select-none">
-        <div className="font-micro text-[10px] tracking-[0.2em] text-text-dim mb-4 flex items-center gap-2">
-          <ToolIcon icon="construction" className="!w-3 !h-3" />
-          TOOLKIT [LOCKED]
-        </div>
-        <div className="grid grid-cols-4 gap-2">
-          {AUTOPILOT_ICONS.map((icon) => (
-            <div
-              key={icon}
-              className="aspect-square bg-surface-2 border border-white/5 flex items-center justify-center"
-            >
-              <ToolIcon icon={icon} className="text-text-dim" />
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="h-[300px] bg-surface-1 p-6 glass-line border-x-0 border-b-0">
-      <span className="font-micro text-[10px] tracking-widest text-text-dim mb-4 block">
+    <div className="bg-surface-1 px-3 py-3 border-b border-white/10">
+      <span className="font-micro text-[10px] tracking-widest text-text-dim mb-2 block">
         TOOLKIT
       </span>
-      <div className="grid grid-cols-2 gap-3 h-[calc(100%-24px)]">
+      <div className="grid grid-cols-4 gap-1.5">
         {TOOLS.map((tool) => (
           <button
             key={tool.name}
             onClick={() => onToolClick?.(tool.name)}
-            className={`bg-surface-2 glass-line p-3 flex flex-col justify-between items-start hover:bg-surface-3 transition-colors cursor-pointer ${
+            className={`bg-surface-2 glass-line p-2 flex flex-col items-center gap-1 hover:bg-surface-3 transition-colors cursor-pointer ${
               tool.accent ? "border-agent/30" : ""
             }`}
+            title={tool.name}
           >
+            <ToolIcon
+              icon={tool.icon}
+              className={tool.accent ? "text-agent" : "text-text-dim"}
+            />
             <span
-              className={`font-micro text-[10px] tracking-widest ${
+              className={`font-micro text-[8px] tracking-widest ${
                 tool.accent ? "text-agent" : "text-creator"
               }`}
             >
               {tool.name}
             </span>
-            <ToolIcon
-              icon={tool.icon}
-              className={tool.accent ? "text-agent" : "text-text-dim"}
-            />
           </button>
         ))}
       </div>

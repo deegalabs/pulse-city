@@ -8,6 +8,7 @@ import { getModel } from "@/lib/ai/model-router";
 import {
   AUTOPILOT_CHAT_PROMPT,
   MANUAL_CHAT_PROMPT,
+  CUE_CHAT_PROMPT,
 } from "@/lib/ai/prompts";
 import { getClientIp } from "@/lib/server/request";
 import { checkRateLimit } from "@/lib/server/rate-limit";
@@ -41,6 +42,7 @@ export async function POST(req: Request) {
     messages?: unknown;
     mode?: unknown;
     currentCode?: unknown;
+    variant?: unknown;
   };
 
   if (!Array.isArray(payload.messages) || payload.messages.length === 0 || payload.messages.length > 60) {
@@ -52,6 +54,8 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Invalid mode" }, { status: 400 });
   }
 
+  const variant = payload.variant === "cue" ? "cue" : "default";
+
   const currentCode = asString(payload.currentCode, 40_000);
   if (!currentCode) {
     return NextResponse.json({ error: "currentCode is required" }, { status: 400 });
@@ -60,7 +64,11 @@ export async function POST(req: Request) {
   const messages = payload.messages as UIMessage[];
 
   const systemPrompt =
-    mode === "autopilot" ? AUTOPILOT_CHAT_PROMPT : MANUAL_CHAT_PROMPT;
+    variant === "cue"
+      ? CUE_CHAT_PROMPT
+      : mode === "autopilot"
+        ? AUTOPILOT_CHAT_PROMPT
+        : MANUAL_CHAT_PROMPT;
 
   const model = getModel("chat");
 
