@@ -5,8 +5,28 @@ import { asString, safeJson } from "@/lib/server/validation";
 const ALLOWED_MODES = new Set(["autopilot", "manual"]);
 
 // GET /api/patterns — list current user's patterns
-export async function GET() {
+// GET /api/patterns?public=1 — list public patterns (no auth required)
+export async function GET(request: Request) {
   const supabase = await createClient();
+  const { searchParams } = new URL(request.url);
+  const publicOnly = searchParams.get("public") === "1";
+  const limit = Math.min(100, Number(searchParams.get("limit") ?? "60") || 60);
+
+  if (publicOnly) {
+    // RLS policy allows anonymous reads when is_public = true
+    const { data, error } = await supabase
+      .from("patterns")
+      .select()
+      .eq("is_public", true)
+      .order("updated_at", { ascending: false })
+      .limit(limit);
+    if (error) {
+      console.error("Public patterns GET failed:", error);
+      return NextResponse.json({ error: "Failed to load patterns" }, { status: 500 });
+    }
+    return NextResponse.json(data);
+  }
+
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -19,7 +39,8 @@ export async function GET() {
     .from("patterns")
     .select()
     .eq("user_id", user.id)
-    .order("updated_at", { ascending: false });
+    .order("updated_at", { ascending: false })
+    .limit(limit);
 
   if (error) {
     console.error("Patterns GET failed:", error);

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 
 interface PatternSummary {
   id: string;
@@ -20,6 +20,14 @@ export function PatternsModal({ open, onClose, onLoad }: PatternsModalProps) {
   const [patterns, setPatterns] = useState<PatternSummary[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [toast, setToast] = useState<string | null>(null);
+  const importInputRef = useRef<HTMLInputElement>(null);
+
+  const flash = useCallback((msg: string) => {
+    setToast(msg);
+    window.setTimeout(() => setToast(null), 2500);
+  }, []);
 
   const fetchPatterns = useCallback(async () => {
     setLoading(true);
@@ -75,6 +83,111 @@ export function PatternsModal({ open, onClose, onLoad }: PatternsModalProps) {
     }
   }
 
+  async function handleDuplicate(id: string) {
+    setBusy(true);
+    try {
+      const res = await fetch(`/api/patterns/${id}`);
+      if (!res.ok) throw new Error();
+      const data = await res.json();
+      const created = await fetch("/api/patterns", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          code: data.code,
+          title: `${data.title} (copy)`,
+          mode: data.mode,
+        }),
+      });
+      if (!created.ok) throw new Error();
+      flash("Duplicated");
+      await fetchPatterns();
+    } catch {
+      flash("Duplicate failed");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function handleExportAll() {
+    setBusy(true);
+    try {
+      const out: Array<{ title: string; code: string; mode: string }> = [];
+      for (const p of patterns) {
+        const res = await fetch(`/api/patterns/${p.id}`);
+        if (!res.ok) continue;
+        const data = await res.json();
+        out.push({ title: data.title, code: data.code, mode: data.mode });
+      }
+      const blob = new Blob([JSON.stringify(out, null, 2)], {
+        type: "application/json",
+      });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `pulse-city-patterns-${Date.now()}.json`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      flash(`Exported ${out.length} pattern${out.length === 1 ? "" : "s"}`);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function handleImport(file: File | null) {
+    if (!file) return;
+    setBusy(true);
+    try {
+      const text = await file.text();
+      const data = JSON.parse(text);
+      if (!Array.isArray(data)) throw new Error("Expected a JSON array");
+      let imported = 0;
+      for (const entry of data) {
+        if (typeof entry?.code !== "string") continue;
+        const res = await fetch("/api/patterns", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            code: entry.code,
+            title: entry.title ?? "Imported",
+            mode: entry.mode ?? "manual",
+          }),
+        });
+        if (res.ok) imported++;
+      }
+      flash(`Imported ${imported} / ${data.length}`);
+      await fetchPatterns();
+    } catch (err) {
+      console.error("Import failed:", err);
+      flash("Import failed — JSON format?");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function handleDeleteAll() {
+    if (patterns.length === 0) return;
+    if (
+      !confirm(
+        `Delete ALL ${patterns.length} pattern${patterns.length === 1 ? "" : "s"}? This cannot be undone.`
+      )
+    )
+      return;
+    setBusy(true);
+    try {
+      await Promise.all(
+        patterns.map((p) =>
+          fetch(`/api/patterns/${p.id}`, { method: "DELETE" })
+        )
+      );
+      flash("All patterns deleted");
+      setPatterns([]);
+    } finally {
+      setBusy(false);
+    }
+  }
+
   return (
     <div
       className="fixed inset-0 z-50 bg-scrim backdrop-blur-sm flex items-center justify-center"
@@ -122,6 +235,55 @@ export function PatternsModal({ open, onClose, onLoad }: PatternsModalProps) {
             COMMUNITY
           </button>
         </div>
+
+        {/* ── Action bar ── */}
+        <div className="flex items-center gap-1 px-3 py-2 border-b border-white/10 bg-surface-2/40">
+          <input
+            ref={importInputRef}
+            type="file"
+            accept="application/json,.json"
+            onChange={(e) => handleImport(e.target.files?.[0] ?? null)}
+            className="hidden"
+          />
+          <button
+            onClick={() => importInputRef.current?.click()}
+            disabled={busy}
+            className="font-micro text-[9px] tracking-widest uppercase text-text-dim hover:text-text disabled:opacity-40 px-2 py-1 cursor-pointer transition-colors"
+            title="Import a JSON export"
+          >
+            [ IMPORT ]
+          </button>
+          <button
+            onClick={handleExportAll}
+            disabled={busy || patterns.length === 0}
+            className="font-micro text-[9px] tracking-widest uppercase text-text-dim hover:text-text disabled:opacity-40 px-2 py-1 cursor-pointer transition-colors"
+            title="Download all patterns as JSON"
+          >
+            [ EXPORT ]
+          </button>
+          <button
+            onClick={fetchPatterns}
+            disabled={busy}
+            className="font-micro text-[9px] tracking-widest uppercase text-text-dim hover:text-text disabled:opacity-40 px-2 py-1 cursor-pointer transition-colors"
+            title="Refresh list"
+          >
+            ↻
+          </button>
+          <div className="flex-1" />
+          <button
+            onClick={handleDeleteAll}
+            disabled={busy || patterns.length === 0}
+            className="font-micro text-[9px] tracking-widest uppercase text-destructive hover:bg-destructive/10 disabled:opacity-40 px-2 py-1 cursor-pointer transition-colors"
+            title="Delete all patterns (irreversible)"
+          >
+            [ DELETE ALL ]
+          </button>
+        </div>
+        {toast && (
+          <div className="px-4 py-1.5 bg-creator/10 text-creator font-micro text-[9px] tracking-widest uppercase">
+            {toast}
+          </div>
+        )}
 
         {/* ── Content ── */}
         <div className="flex-1 overflow-y-auto p-3 space-y-2">
@@ -188,6 +350,13 @@ export function PatternsModal({ open, onClose, onLoad }: PatternsModalProps) {
                     className="font-micro text-[10px] tracking-widest text-creator hover:text-creator/80 cursor-pointer transition-colors"
                   >
                     [ LOAD ]
+                  </button>
+                  <button
+                    onClick={() => handleDuplicate(p.id)}
+                    className="font-micro text-[10px] tracking-widest text-text-dim hover:text-text cursor-pointer transition-colors"
+                    title="Duplicate"
+                  >
+                    [ DUP ]
                   </button>
                   <button
                     onClick={() => handleShare(p.id)}

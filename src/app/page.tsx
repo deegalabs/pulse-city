@@ -77,12 +77,23 @@ export default function BootPage() {
             </p>
           </div>
 
-          {/* Metric Strip */}
+          {/* Metric Strip — what the studio does */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-3xl">
-            {["4 surfaces", "14 tokens", "4 typefaces", "2 motions"].map((label) => (
-              <div key={label} className="p-4 bg-surface-1 border border-border flex flex-col items-center">
-                <span className="font-micro text-[10px] text-text-dim tracking-[0.2em] uppercase">
-                  {label}
+            {[
+              { label: "Livecoding", hint: "Strudel" },
+              { label: "AI copilot", hint: "Haiku · Sonnet" },
+              { label: "Sounds", hint: "500+ samples" },
+              { label: "24/7 Radio", hint: "autopilot" },
+            ].map((item) => (
+              <div
+                key={item.label}
+                className="p-4 bg-surface-1 border border-border flex flex-col items-center gap-1"
+              >
+                <span className="font-heading text-xs text-text tracking-tight uppercase">
+                  {item.label}
+                </span>
+                <span className="font-micro text-[9px] text-text-dim tracking-[0.2em] uppercase">
+                  {item.hint}
                 </span>
               </div>
             ))}
@@ -168,14 +179,27 @@ export default function BootPage() {
         </div>
         <div className="flex flex-col items-center gap-4">
           <div className="flex gap-6">
-            <a href="https://github.com" className="font-micro uppercase tracking-[0.2em] text-[10px] text-text-dim hover:text-text transition-colors">
+            <a
+              href="https://github.com/deegalabs"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-micro uppercase tracking-[0.2em] text-[10px] text-text-dim hover:text-text transition-colors"
+            >
               [ GITHUB ]
             </a>
-            <a className="font-micro uppercase tracking-[0.2em] text-[10px] text-text-dim hover:text-text transition-colors cursor-pointer">
-              [ DISCORD ]
-            </a>
-            <a className="font-micro uppercase tracking-[0.2em] text-[10px] text-text-dim hover:text-text transition-colors cursor-pointer">
-              [ SIGNAL ]
+            <Link
+              href="/docs/introduction"
+              className="font-micro uppercase tracking-[0.2em] text-[10px] text-text-dim hover:text-text transition-colors"
+            >
+              [ DOCS ]
+            </Link>
+            <a
+              href="https://strudel.cc"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-micro uppercase tracking-[0.2em] text-[10px] text-text-dim hover:text-text transition-colors"
+            >
+              [ STRUDEL ↗ ]
             </a>
           </div>
           <div className="font-micro uppercase tracking-[0.2em] text-[10px] text-text-dim opacity-80">
